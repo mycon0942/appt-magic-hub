@@ -7,7 +7,8 @@ const schema = z.object({ method: z.enum(['sync', 'infinite']), syncClientId: z.
 async function encrypt(value: string) {
   const secret = process.env['PAYMENT_SETTINGS_ENCRYPTION_KEY']
   if (!secret) throw new Error('Chave de proteção indisponível')
-  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), 'AES-GCM', false, ['encrypt'])
+  const material = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(secret))
+  const key = await crypto.subtle.importKey('raw', material, 'AES-GCM', false, ['encrypt'])
   const iv = crypto.getRandomValues(new Uint8Array(12))
   const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(value))
   return { ciphertext: Buffer.from(ciphertext).toString('base64'), iv: Buffer.from(iv).toString('base64') }
