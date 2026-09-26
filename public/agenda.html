@@ -114,40 +114,6 @@
   .pub-step .h{ font-size:12.5px; font-weight:650; margin-bottom:8px; display:flex; gap:8px; align-items:center; }
   .pub-step .h em{ font-style:normal; font-size:10.5px; color:var(--cta-text); background:var(--cta-fill); border-radius:9999px; padding:2px 7px; }
 
-  /* Refinamentos do painel */
-  #home-cat-scroll{ gap:12px; }
-  #home-cat-scroll .cat-card{ width:98px; padding:0; border:0; background:transparent; gap:8px; align-items:center; text-align:center; }
-  #home-cat-scroll .cat-card .ic{ width:76px; height:76px; border-radius:8px; background:var(--canvas-soft); border:1px solid var(--hairline-soft); color:var(--ink-soft); }
-  #home-cat-scroll .cat-card .ic svg{ width:25px; height:25px; }
-  #home-cat-scroll .cat-card .label{ font-size:11px; line-height:1.35; color:var(--ink-soft); }
-  #home-cat-scroll .cat-card:hover .ic{ background:var(--field); }
-  .profile-cover-full{ isolation:isolate; }
-  #view-profile .profile-cover-full::after{ background:linear-gradient(180deg, transparent 20%, var(--canvas) 100%); }
-  #view-profile .profile-row::before{ content:""; position:absolute; z-index:-1; inset:-26px -18px -32px; background:linear-gradient(180deg, transparent, var(--canvas) 45%); pointer-events:none; }
-  .pub-cover .pub-share{ position:absolute; right:16px; top:16px; z-index:3; display:flex; align-items:center; justify-content:center; width:40px; height:40px; border:1px solid var(--hairline); border-radius:50%; background:var(--canvas-soft); color:var(--ink); }
-  .pub-offer-tabs{ display:flex; gap:8px; margin-bottom:16px; }
-  .pub-offer-tabs button{ border:1px solid var(--hairline-soft); background:var(--canvas-soft); color:var(--muted); padding:9px 16px; border-radius:999px; font-size:12px; font-weight:600; }
-  .pub-offer-tabs button.is-active{ background:var(--cta-fill); color:var(--cta-text); }
-  .pub-offer-row{ display:flex; gap:12px; overflow-x:auto; scrollbar-width:none; padding:2px 0 16px; scroll-snap-type:x mandatory; }
-  .pub-offer-row::-webkit-scrollbar{ display:none; }
-  .pub-offer-card{ flex:0 0 min(72vw,230px); scroll-snap-align:start; border:1px solid var(--hairline-soft); background:var(--canvas-soft); border-radius:8px; overflow:hidden; }
-  .pub-offer-art{ height:122px; display:grid; place-items:center; font-size:42px; background:var(--field); }
-  .pub-offer-details{ padding:12px; }
-  .pub-offer-details .nm{ min-height:36px; font-size:13px; font-weight:650; }
-  .pub-offer-details .dt{ font-size:11px; color:var(--muted); margin:5px 0 12px; }
-  .pub-offer-details .go{ width:100%; border:0; padding:9px; border-radius:6px; background:var(--cta-fill); color:var(--cta-text); font-weight:700; }
-  .fin-detail{ border-top:1px solid var(--hairline-soft); padding:14px 0; display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:12px; }
-  .fin-detail span{ color:var(--muted); }
-  .fin-detail b{ font-size:13px; }
-  .fin-section-title{ font-size:14px; margin:22px 0 8px; }
-  .fin-kpi-value{ overflow-wrap:anywhere; }
-  .booking-progress{ display:flex; gap:6px; margin:0 0 16px; }
-  .booking-progress span{ flex:1; text-align:center; border-bottom:2px solid var(--hairline); color:var(--faint); padding:0 2px 10px; font-size:11px; }
-  .booking-progress span.is-active{ color:var(--ink); border-color:var(--ink); }
-  #bkprev-body .pub-step{ border-radius:8px; }
-  @media(min-width:768px){ .app{ max-width:760px; } .bottom-nav{ max-width:700px; } .modal-overlay{ align-items:center; } .modal-card{ max-width:540px; border-radius:12px; } }
-  @media(min-width:1280px){ .app{ max-width:960px; } .bottom-nav{ max-width:880px; } .section{ padding-left:28px; padding-right:28px; } .topbar,.page-head{ padding-left:28px; padding-right:28px; } }
-  @media(max-width:370px){ .fin-kpi-grid{ gap:5px; } .fin-kpi-card{ padding:9px 6px; } .fin-kpi-value{ font-size:12px; } .profile-meta{ gap:6px; } }
   /* ---------- Mobile app shell ---------- */
   .app{
     width:100%; max-width:430px;
@@ -576,6 +542,40 @@
   .pm-doc-link{ font-size:10.5px; font-weight:650; color:var(--muted); flex-shrink:0; white-space:nowrap; padding:6px 4px; }
   .pm-doc-link:hover{ color:var(--ink); }
   .pm-env-note{ font-size:11.5px; color:var(--faint); margin:-8px 0 14px; }
+  /* Refinamentos do painel */
+  #home-cat-scroll{ gap:12px; }
+  #home-cat-scroll .cat-card{ width:98px; padding:0; border:0; background:transparent; gap:8px; align-items:center; text-align:center; }
+  #home-cat-scroll .cat-card .ic{ width:76px; height:76px; border-radius:8px; background:var(--canvas-soft); border:1px solid var(--hairline-soft); color:var(--ink-soft); }
+  #home-cat-scroll .cat-card .ic svg{ width:25px; height:25px; }
+  #home-cat-scroll .cat-card .label{ font-size:11px; line-height:1.35; color:var(--ink-soft); }
+  #home-cat-scroll .cat-card:hover .ic{ background:var(--field); }
+  .profile-cover-full{ isolation:isolate; }
+  #view-profile .profile-cover-full::after{ background:linear-gradient(180deg, transparent 20%, var(--canvas) 100%); }
+  #view-profile .profile-row::before{ content:""; position:absolute; z-index:-1; inset:-26px -18px -32px; background:linear-gradient(180deg, transparent, var(--canvas) 45%); pointer-events:none; }
+  .pub-cover .pub-share{ position:absolute; right:16px; top:16px; z-index:3; display:flex; align-items:center; justify-content:center; width:40px; height:40px; border:1px solid var(--hairline); border-radius:50%; background:var(--canvas-soft); color:var(--ink); }
+  .pub-offer-tabs{ display:flex; gap:8px; margin-bottom:16px; }
+  .pub-offer-tabs button{ border:1px solid var(--hairline-soft); background:var(--canvas-soft); color:var(--muted); padding:9px 16px; border-radius:999px; font-size:12px; font-weight:600; }
+  .pub-offer-tabs button.is-active{ background:var(--cta-fill); color:var(--cta-text); }
+  .pub-offer-row{ display:flex; gap:12px; overflow-x:auto; scrollbar-width:none; padding:2px 0 16px; scroll-snap-type:x mandatory; }
+  .pub-offer-row::-webkit-scrollbar{ display:none; }
+  .pub-offer-card{ flex:0 0 min(72vw,230px); scroll-snap-align:start; border:1px solid var(--hairline-soft); background:var(--canvas-soft); border-radius:8px; overflow:hidden; }
+  .pub-offer-art{ height:122px; display:grid; place-items:center; font-size:42px; background:var(--field); }
+  .pub-offer-details{ padding:12px; }
+  .pub-offer-details .nm{ min-height:36px; font-size:13px; font-weight:650; }
+  .pub-offer-details .dt{ font-size:11px; color:var(--muted); margin:5px 0 12px; }
+  .pub-offer-details .go{ width:100%; border:0; padding:9px; border-radius:6px; background:var(--cta-fill); color:var(--cta-text); font-weight:700; }
+  .fin-detail{ border-top:1px solid var(--hairline-soft); padding:14px 0; display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:12px; }
+  .fin-detail span{ color:var(--muted); }
+  .fin-detail b{ font-size:13px; }
+  .fin-section-title{ font-size:14px; margin:22px 0 8px; }
+  .fin-kpi-value{ overflow-wrap:anywhere; }
+  .booking-progress{ display:flex; gap:6px; margin:0 0 16px; }
+  .booking-progress span{ flex:1; text-align:center; border-bottom:2px solid var(--hairline); color:var(--faint); padding:0 2px 10px; font-size:11px; }
+  .booking-progress span.is-active{ color:var(--ink); border-color:var(--ink); }
+  #bkprev-body .pub-step{ border-radius:8px; }
+  @media(min-width:768px){ .app{ max-width:760px; } .bottom-nav{ max-width:700px; } .modal-overlay{ align-items:center; } .modal-card{ max-width:540px; border-radius:12px; } }
+  @media(min-width:1280px){ .app{ max-width:960px; } .bottom-nav{ max-width:880px; } .section{ padding-left:28px; padding-right:28px; } .topbar,.page-head{ padding-left:28px; padding-right:28px; } }
+  @media(max-width:370px){ .fin-kpi-grid{ gap:5px; } .fin-kpi-card{ padding:9px 6px; } .fin-kpi-value{ font-size:12px; } .profile-meta{ gap:6px; } }
 </style>
 </head>
 <body>
@@ -1926,6 +1926,7 @@
     { id:'b2', kicker:'Novidade', title:'Novo horário aos sábados', sub:'Agende já o seu horário', emoji:'📅' }
   ];
 
+  let publicOfferType = 'servico';
   function renderProfile(){
     const grad = coverPresets[profile.coverIndex];
     document.getElementById('profile-cover').style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
@@ -2570,7 +2571,6 @@
 
     renderPublicOffers();
   }
-  let publicOfferType = 'servico';
   function renderPublicOffers(){
     const items = services.filter(s => (s.type || 'servico') === publicOfferType);
     const groups = [...new Set(items.map(s=>s.cat))];
