@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      payment_settings: {
+        Row: {
+          created_at: string
+          credentials_ciphertext: string | null
+          credentials_iv: string | null
+          infinite_handle: string | null
+          method: string
+          sync_client_id: string | null
+          sync_environment: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          credentials_ciphertext?: string | null
+          credentials_iv?: string | null
+          infinite_handle?: string | null
+          method: string
+          sync_client_id?: string | null
+          sync_environment?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          credentials_ciphertext?: string | null
+          credentials_iv?: string | null
+          infinite_handle?: string | null
+          method?: string
+          sync_client_id?: string | null
+          sync_environment?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
