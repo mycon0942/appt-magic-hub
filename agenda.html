@@ -2033,205 +2033,6 @@
   document.getElementById('modal-close').addEventListener('click', closeClientModal);
   overlay.addEventListener('click', e => { if(e.target === overlay) closeClientModal(); });
 
-
-  /* =========================================================
-     TOAST NOTIFICATIONS
-  ========================================================= */
-  function toast(msg){
-    const el = document.getElementById('toast');
-    if(!el) return;
-    el.textContent = msg;
-    el.classList.add('show');
-    clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(()=>el.classList.remove('show'), 2200);
-  }
-
-  /* =========================================================
-     NAVEGAÇÃO GLOBAL ENTRE TELAS (VIEWS & DATA-NAV)
-  ========================================================= */
-  const views = {
-    home: document.getElementById('view-home'),
-    services: document.getElementById('view-services'),
-    agenda: document.getElementById('view-agenda'),
-    profile: document.getElementById('view-profile'),
-    dashboard: document.getElementById('view-dashboard'),
-    public: document.getElementById('view-public')
-  };
-
-  function goTo(view){
-    if(!views[view]) return;
-    Object.keys(views).forEach(k => {
-      if(views[k]) views[k].classList.toggle('hidden', k !== view);
-    });
-
-    // Atualiza estado ativo na bottom nav
-    document.querySelectorAll('.bottom-nav .nav-item').forEach(el => {
-      el.classList.toggle('is-active', el.dataset.nav === view);
-    });
-
-    // Rola para o topo suavemente
-    const appEl = document.querySelector('.app');
-    if(appEl) appEl.scrollTo({ top: 0, behavior: 'smooth' });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // Listener global para todos os links e botões com [data-nav]
-  document.addEventListener('click', e => {
-    const trigger = e.target.closest('[data-nav]');
-    if(trigger) {
-      e.preventDefault();
-      goTo(trigger.dataset.nav);
-    }
-  });
-
-  // FAB central da bottom nav abre menu rápido de criação
-  const fabBtn = document.getElementById('nav-fab-btn');
-  if(fabBtn){
-    fabBtn.addEventListener('click', () => {
-      const q = document.getElementById('quick-overlay');
-      if(q) q.classList.remove('hidden');
-    });
-  }
-
-  /* =========================================================
-     CONTROLE DE VISUALIZAÇÃO DA AGENDA (DIA / SEMANA / MÊS)
-  ========================================================= */
-  const panels = {
-    dia: document.getElementById('agenda-dia'),
-    semana: document.getElementById('agenda-semana'),
-    mes: document.getElementById('agenda-mes')
-  };
-
-  document.querySelectorAll('.seg-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetView = btn.dataset.view;
-      if(!targetView) return;
-      document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      Object.keys(panels).forEach(k => {
-        if(panels[k]) panels[k].classList.toggle('hidden', k !== targetView);
-      });
-    });
-  });
-
-  // Grade do mês (Setembro 2026)
-  const monthGrid = document.getElementById('month-grid');
-  if(monthGrid){
-    const leading = 2, daysInMonth = 30, today = 11, withAppt = [11,14,16,21,27];
-    let cells = '';
-    for(let i=0;i<leading;i++) cells += '<div class="month-cell empty"></div>';
-    for(let d=1; d<=daysInMonth; d++){
-      cells += '<div class="month-cell ' + (d===today?'today':'') + '">' + d + (withAppt.includes(d)?'<span class="mdot"></span>':'') + '</div>';
-    }
-    monthGrid.innerHTML = cells;
-  }
-
-  /* =========================================================
-     CANCELAR E REAGENDAR AGENDAMENTO
-  ========================================================= */
-  function cancelAppointment(){
-    if(!currentClientId) return;
-    const entry = daySchedule.find(s => s.id === currentClientId);
-    if(entry){ entry.type = 'free'; delete entry.id; }
-    const idx = clients.findIndex(c => c.id === currentClientId);
-    if(idx > -1) clients.splice(idx, 1);
-    overlay.classList.add('hidden');
-    renderDaySchedule();
-    renderApptList();
-    updateApptCountTag();
-    renderProfile();
-    toast('Agendamento cancelado');
-  }
-
-  const reschedOverlay = document.getElementById('reschedule-overlay');
-  const reschedDays = [
-    { key:'sex11', label:'Sex', num:'11', isToday:true },
-    { key:'sab12', label:'Sáb', num:'12' },
-    { key:'dom13', label:'Dom', num:'13' },
-    { key:'seg14', label:'Seg', num:'14' },
-    { key:'ter15', label:'Ter', num:'15' },
-    { key:'qua16', label:'Qua', num:'16' },
-    { key:'qui17', label:'Qui', num:'17' }
-  ];
-  const reschedHours = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
-  let reschedSelectedDay = reschedDays[0].key;
-  let reschedSelectedTime = null;
-
-  function openReschedule(){
-    overlay.classList.add('hidden');
-    reschedSelectedDay = reschedDays[0].key;
-    reschedSelectedTime = null;
-    renderReschedDays();
-    renderReschedTimes();
-    if(reschedOverlay) reschedOverlay.classList.remove('hidden');
-  }
-  function closeReschedule(){ if(reschedOverlay) reschedOverlay.classList.add('hidden'); }
-
-  function renderReschedDays(){
-    const strip = document.getElementById('resched-day-strip');
-    if(!strip) return;
-    strip.innerHTML = reschedDays.map(d =>
-      '<button type="button" class="day-pill ' + (d.key===reschedSelectedDay?'is-active':'') + '" data-day="' + d.key + '">' +
-        '<span class="dow">' + d.label + '</span><span class="num">' + d.num + '</span>' +
-      '</button>'
-    ).join('');
-  }
-
-  const dayStrip = document.getElementById('resched-day-strip');
-  if(dayStrip){
-    dayStrip.addEventListener('click', e => {
-      const b = e.target.closest('[data-day]');
-      if(!b) return;
-      reschedSelectedDay = b.dataset.day;
-      reschedSelectedTime = null;
-      renderReschedDays();
-      renderReschedTimes();
-    });
-  }
-
-  function renderReschedTimes(){
-    const grid = document.getElementById('resched-time-grid');
-    if(!grid) return;
-    const dayObj = reschedDays.find(d=>d.key===reschedSelectedDay);
-    grid.innerHTML = reschedHours.map(t => {
-      const entry = dayObj && dayObj.isToday ? daySchedule.find(s=>s.time===t && s.type==='client') : null;
-      const taken = !!(entry && entry.id !== currentClientId);
-      return '<button type="button" class="time-pill ' + (t===reschedSelectedTime?'is-selected':'') + ' ' + (taken?'is-taken':'') + '" data-time="' + t + '" ' + (taken?'disabled':'') + '>' + t + '</button>';
-    }).join('');
-  }
-
-  const timeGrid = document.getElementById('resched-time-grid');
-  if(timeGrid){
-    timeGrid.addEventListener('click', e => {
-      const b = e.target.closest('[data-time]');
-      if(!b || b.disabled) return;
-      reschedSelectedTime = b.dataset.time;
-      renderReschedTimes();
-    });
-  }
-
-  function confirmReschedule(){
-    if(!reschedSelectedTime){ toast('Escolha um horário'); return; }
-    const c = clients.find(x=>x.id===currentClientId);
-    if(!c) return;
-    const dayObj = reschedDays.find(d=>d.key===reschedSelectedDay);
-    const oldEntry = daySchedule.find(s=>s.id===currentClientId);
-
-    if(dayObj && dayObj.isToday){
-      if(oldEntry) oldEntry.time = reschedSelectedTime;
-      else daySchedule.push({ time:reschedSelectedTime, type:'client', id:currentClientId });
-      c.time = 'Hoje, ' + reschedSelectedTime;
-    }else if(dayObj){
-      if(oldEntry){ oldEntry.type = 'free'; delete oldEntry.id; }
-      c.time = dayObj.label + ' ' + dayObj.num + ', ' + reschedSelectedTime;
-    }
-    closeReschedule();
-    renderDaySchedule();
-    renderApptList();
-    updateApptCountTag();
-    toast('Agendamento remarcado para ' + c.time);
-  }
-
   // UPLOAD DE FOTOS DA CLIENTE E INSPIRAÇÕES
   const clientMediaInput = document.getElementById('client-media-file-input');
   if(clientMediaInput){
@@ -2575,15 +2376,205 @@
     else openEditModal(s.id);
   });
 
-  // clique nos cards de serviço/produto (lista e cards)
-  document.getElementById('svc-list').addEventListener('click', e => {
-    const card = e.target.closest('[data-id]');
-    if(!card) return;
-    const s = services.find(x=>x.id===card.dataset.id);
-    if(!s) return;
-    if(s.type === 'produto') openProductModal(s.id);
-    else openEditModal(s.id);
+
+
+  /* =========================================================
+     TOAST NOTIFICATIONS
+  ========================================================= */
+  function toast(msg){
+    const el = document.getElementById('toast');
+    if(!el) return;
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(()=>el.classList.remove('show'), 2200);
+  }
+
+  /* =========================================================
+     NAVEGAÇÃO GLOBAL ENTRE TELAS (VIEWS & DATA-NAV)
+  ========================================================= */
+  const views = {
+    home: document.getElementById('view-home'),
+    services: document.getElementById('view-services'),
+    agenda: document.getElementById('view-agenda'),
+    profile: document.getElementById('view-profile'),
+    dashboard: document.getElementById('view-dashboard'),
+    public: document.getElementById('view-public')
+  };
+
+  function goTo(view){
+    if(!views[view]) return;
+    Object.keys(views).forEach(k => {
+      if(views[k]) views[k].classList.toggle('hidden', k !== view);
+    });
+
+    // Atualiza estado ativo na bottom nav
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(el => {
+      el.classList.toggle('is-active', el.dataset.nav === view);
+    });
+
+    // Rola para o topo suavemente
+    const appEl = document.querySelector('.app');
+    if(appEl) appEl.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Listener global para todos os links e botões com [data-nav]
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-nav]');
+    if(trigger) {
+      e.preventDefault();
+      goTo(trigger.dataset.nav);
+    }
   });
+
+  // FAB central da bottom nav abre menu rápido de criação
+  const fabBtn = document.getElementById('nav-fab-btn');
+  if(fabBtn){
+    fabBtn.addEventListener('click', () => {
+      const q = document.getElementById('quick-overlay');
+      if(q) q.classList.remove('hidden');
+    });
+  }
+
+  /* =========================================================
+     CONTROLE DE VISUALIZAÇÃO DA AGENDA (DIA / SEMANA / MÊS)
+  ========================================================= */
+  const panels = {
+    dia: document.getElementById('agenda-dia'),
+    semana: document.getElementById('agenda-semana'),
+    mes: document.getElementById('agenda-mes')
+  };
+
+  document.querySelectorAll('.seg-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetView = btn.dataset.view;
+      if(!targetView) return;
+      document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      Object.keys(panels).forEach(k => {
+        if(panels[k]) panels[k].classList.toggle('hidden', k !== targetView);
+      });
+    });
+  });
+
+  // Grade do mês (Setembro 2026)
+  const monthGrid = document.getElementById('month-grid');
+  if(monthGrid){
+    const leading = 2, daysInMonth = 30, today = 11, withAppt = [11,14,16,21,27];
+    let cells = '';
+    for(let i=0;i<leading;i++) cells += '<div class="month-cell empty"></div>';
+    for(let d=1; d<=daysInMonth; d++){
+      cells += '<div class="month-cell ' + (d===today?'today':'') + '">' + d + (withAppt.includes(d)?'<span class="mdot"></span>':'') + '</div>';
+    }
+    monthGrid.innerHTML = cells;
+  }
+
+  /* =========================================================
+     CANCELAR E REAGENDAR AGENDAMENTO
+  ========================================================= */
+  function cancelAppointment(){
+    if(!currentClientId) return;
+    const entry = daySchedule.find(s => s.id === currentClientId);
+    if(entry){ entry.type = 'free'; delete entry.id; }
+    const idx = clients.findIndex(c => c.id === currentClientId);
+    if(idx > -1) clients.splice(idx, 1);
+    overlay.classList.add('hidden');
+    renderDaySchedule();
+    renderApptList();
+    updateApptCountTag();
+    renderProfile();
+    toast('Agendamento cancelado');
+  }
+
+  const reschedOverlay = document.getElementById('reschedule-overlay');
+  const reschedDays = [
+    { key:'sex11', label:'Sex', num:'11', isToday:true },
+    { key:'sab12', label:'Sáb', num:'12' },
+    { key:'dom13', label:'Dom', num:'13' },
+    { key:'seg14', label:'Seg', num:'14' },
+    { key:'ter15', label:'Ter', num:'15' },
+    { key:'qua16', label:'Qua', num:'16' },
+    { key:'qui17', label:'Qui', num:'17' }
+  ];
+  const reschedHours = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
+  let reschedSelectedDay = reschedDays[0].key;
+  let reschedSelectedTime = null;
+
+  function openReschedule(){
+    overlay.classList.add('hidden');
+    reschedSelectedDay = reschedDays[0].key;
+    reschedSelectedTime = null;
+    renderReschedDays();
+    renderReschedTimes();
+    if(reschedOverlay) reschedOverlay.classList.remove('hidden');
+  }
+
+  function closeReschedule(){ if(reschedOverlay) reschedOverlay.classList.add('hidden'); }
+
+  function renderReschedDays(){
+    const strip = document.getElementById('resched-day-strip');
+    if(!strip) return;
+    strip.innerHTML = reschedDays.map(d =>
+      '<button type="button" class="day-pill ' + (d.key===reschedSelectedDay?'is-active':'') + '" data-day="' + d.key + '">' +
+        '<span class="dow">' + d.label + '</span><span class="num">' + d.num + '</span>' +
+      '</button>'
+    ).join('');
+  }
+
+  const dayStrip = document.getElementById('resched-day-strip');
+  if(dayStrip){
+    dayStrip.addEventListener('click', e => {
+      const b = e.target.closest('[data-day]');
+      if(!b) return;
+      reschedSelectedDay = b.dataset.day;
+      reschedSelectedTime = null;
+      renderReschedDays();
+      renderReschedTimes();
+    });
+  }
+
+  function renderReschedTimes(){
+    const grid = document.getElementById('resched-time-grid');
+    if(!grid) return;
+    const dayObj = reschedDays.find(d=>d.key===reschedSelectedDay);
+    grid.innerHTML = reschedHours.map(t => {
+      const entry = dayObj && dayObj.isToday ? daySchedule.find(s=>s.time===t && s.type==='client') : null;
+      const taken = !!(entry && entry.id !== currentClientId);
+      return '<button type="button" class="time-pill ' + (t===reschedSelectedTime?'is-selected':'') + ' ' + (taken?'is-taken':'') + '" data-time="' + t + '" ' + (taken?'disabled':'') + '>' + t + '</button>';
+    }).join('');
+  }
+
+  const timeGrid = document.getElementById('resched-time-grid');
+  if(timeGrid){
+    timeGrid.addEventListener('click', e => {
+      const b = e.target.closest('[data-time]');
+      if(!b || b.disabled) return;
+      reschedSelectedTime = b.dataset.time;
+      renderReschedTimes();
+    });
+  }
+
+  function confirmReschedule(){
+    if(!reschedSelectedTime){ toast('Escolha um horário'); return; }
+    const c = clients.find(x=>x.id===currentClientId);
+    if(!c) return;
+    const dayObj = reschedDays.find(d=>d.key===reschedSelectedDay);
+    const oldEntry = daySchedule.find(s=>s.id===currentClientId);
+    if(dayObj && dayObj.isToday){
+      if(oldEntry) oldEntry.time = reschedSelectedTime;
+      else daySchedule.push({ time:reschedSelectedTime, type:'client', id:currentClientId });
+      c.time = 'Hoje, ' + reschedSelectedTime;
+    }else if(dayObj){
+      if(oldEntry){ oldEntry.type = 'free'; delete oldEntry.id; }
+      c.time = dayObj.label + ' ' + dayObj.num + ', ' + reschedSelectedTime;
+    }
+    closeReschedule();
+    renderDaySchedule();
+    renderApptList();
+    updateApptCountTag();
+    toast('Agendamento remarcado para ' + c.time);
+  }
 
   /* =========================================================
      MODAL DE PRODUTO (checkout)
@@ -2902,25 +2893,9 @@
   /* =========================================================
      CRIAR NOVO SERVIÇO/PRODUTO (a partir do +)
   ========================================================= */
-  function createNewItem(){
-    editingId = 's_' + Date.now();
-    editingType = 'servico';
-    document.querySelector('#edit-overlay .modal-name').textContent = 'Novo item';
-    editOverlay.dataset.mode = 'create';
-
-    document.getElementById('edit-name').value = '';
-    document.getElementById('edit-duration').value = '';
-    document.getElementById('edit-price').value = '';
-    document.getElementById('edit-desc').value = '';
-    document.getElementById('edit-badge').value = '';
-    document.getElementById('edit-image').value = '';
-    document.getElementById('edit-cat').innerHTML = categories.map(c => `<option value="${c.key}">${c.label}</option>`).join('');
-    renderEditImage(categories[0].emoji);
-    document.getElementById('edit-emoji-swatches').innerHTML = emojiOptions.map(e => `
-      <button type="button" class="emoji-swatch ${e===categories[0].emoji?'is-active':''}" data-emoji="${e}">${e}</button>
-    `).join('');
-    setLinkType('servico');
-    editOverlay.classList.remove('hidden');
+  function createNewItem(type = 'servico'){
+    currentCatalogType = type || 'servico';
+    openCreateItemModal();
   }
 
   /* =========================================================
