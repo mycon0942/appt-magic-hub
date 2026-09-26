@@ -31,7 +31,7 @@ export const savePaymentSettings = createServerFn({ method: 'POST' })
     if (readError) throw new Error(readError.message)
     if (!data.credential?.trim() && (old?.method !== data.method || !old?.credentials_ciphertext)) throw new Error('Informe a credencial')
     const protectedValue = data.credential?.trim() ? await encrypt(data.credential.trim()) : null
-    const { error } = await context.supabase.from('payment_settings').upsert({ user_id: context.userId, method: data.method, sync_client_id: data.method === 'sync' ? data.syncClientId?.trim() : null, sync_environment: data.syncEnvironment ?? 'sandbox', infinite_handle: data.method === 'infinite' ? data.infiniteHandle?.trim() : null, credentials_ciphertext: protectedValue?.ciphertext ?? old?.credentials_ciphertext ?? null, credentials_iv: protectedValue?.iv ?? old?.credentials_iv ?? null })
+    const { error } = await context.supabase.from('payment_settings').upsert({ user_id: context.userId, method: data.method, sync_client_id: data.method === 'sync' ? data.syncClientId?.trim() ?? null : null, sync_environment: data.syncEnvironment ?? 'sandbox', infinite_handle: data.method === 'infinite' ? data.infiniteHandle?.trim() ?? null : null, credentials_ciphertext: protectedValue?.ciphertext ?? old?.credentials_ciphertext ?? null, credentials_iv: protectedValue?.iv ?? old?.credentials_iv ?? null })
     if (error) throw new Error(error.message)
     return { ok: true }
   })
