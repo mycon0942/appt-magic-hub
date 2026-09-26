@@ -114,6 +114,40 @@
   .pub-step .h{ font-size:12.5px; font-weight:650; margin-bottom:8px; display:flex; gap:8px; align-items:center; }
   .pub-step .h em{ font-style:normal; font-size:10.5px; color:var(--cta-text); background:var(--cta-fill); border-radius:9999px; padding:2px 7px; }
 
+  /* Refinamentos do painel */
+  #home-cat-scroll{ gap:12px; }
+  #home-cat-scroll .cat-card{ width:98px; padding:0; border:0; background:transparent; gap:8px; align-items:center; text-align:center; }
+  #home-cat-scroll .cat-card .ic{ width:76px; height:76px; border-radius:8px; background:var(--canvas-soft); border:1px solid var(--hairline-soft); color:var(--ink-soft); }
+  #home-cat-scroll .cat-card .ic svg{ width:25px; height:25px; }
+  #home-cat-scroll .cat-card .label{ font-size:11px; line-height:1.35; color:var(--ink-soft); }
+  #home-cat-scroll .cat-card:hover .ic{ background:var(--field); }
+  .profile-cover-full{ isolation:isolate; }
+  #view-profile .profile-cover-full::after{ background:linear-gradient(180deg, transparent 20%, var(--canvas) 100%); }
+  #view-profile .profile-row::before{ content:""; position:absolute; z-index:-1; inset:-26px -18px -32px; background:linear-gradient(180deg, transparent, var(--canvas) 45%); pointer-events:none; }
+  .pub-cover .pub-share{ position:absolute; right:16px; top:16px; z-index:3; display:flex; align-items:center; justify-content:center; width:40px; height:40px; border:1px solid var(--hairline); border-radius:50%; background:var(--canvas-soft); color:var(--ink); }
+  .pub-offer-tabs{ display:flex; gap:8px; margin-bottom:16px; }
+  .pub-offer-tabs button{ border:1px solid var(--hairline-soft); background:var(--canvas-soft); color:var(--muted); padding:9px 16px; border-radius:999px; font-size:12px; font-weight:600; }
+  .pub-offer-tabs button.is-active{ background:var(--cta-fill); color:var(--cta-text); }
+  .pub-offer-row{ display:flex; gap:12px; overflow-x:auto; scrollbar-width:none; padding:2px 0 16px; scroll-snap-type:x mandatory; }
+  .pub-offer-row::-webkit-scrollbar{ display:none; }
+  .pub-offer-card{ flex:0 0 min(72vw,230px); scroll-snap-align:start; border:1px solid var(--hairline-soft); background:var(--canvas-soft); border-radius:8px; overflow:hidden; }
+  .pub-offer-art{ height:122px; display:grid; place-items:center; font-size:42px; background:var(--field); }
+  .pub-offer-details{ padding:12px; }
+  .pub-offer-details .nm{ min-height:36px; font-size:13px; font-weight:650; }
+  .pub-offer-details .dt{ font-size:11px; color:var(--muted); margin:5px 0 12px; }
+  .pub-offer-details .go{ width:100%; border:0; padding:9px; border-radius:6px; background:var(--cta-fill); color:var(--cta-text); font-weight:700; }
+  .fin-detail{ border-top:1px solid var(--hairline-soft); padding:14px 0; display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:12px; }
+  .fin-detail span{ color:var(--muted); }
+  .fin-detail b{ font-size:13px; }
+  .fin-section-title{ font-size:14px; margin:22px 0 8px; }
+  .fin-kpi-value{ overflow-wrap:anywhere; }
+  .booking-progress{ display:flex; gap:6px; margin:0 0 16px; }
+  .booking-progress span{ flex:1; text-align:center; border-bottom:2px solid var(--hairline); color:var(--faint); padding:0 2px 10px; font-size:11px; }
+  .booking-progress span.is-active{ color:var(--ink); border-color:var(--ink); }
+  #bkprev-body .pub-step{ border-radius:8px; }
+  @media(min-width:768px){ .app{ max-width:760px; } .bottom-nav{ max-width:700px; } .modal-overlay{ align-items:center; } .modal-card{ max-width:540px; border-radius:12px; } }
+  @media(min-width:1280px){ .app{ max-width:960px; } .bottom-nav{ max-width:880px; } .section{ padding-left:28px; padding-right:28px; } .topbar,.page-head{ padding-left:28px; padding-right:28px; } }
+  @media(max-width:370px){ .fin-kpi-grid{ gap:5px; } .fin-kpi-card{ padding:9px 6px; } .fin-kpi-value{ font-size:12px; } .profile-meta{ gap:6px; } }
   /* ---------- Mobile app shell ---------- */
   .app{
     width:100%; max-width:430px;
@@ -696,10 +730,13 @@
         <div class="fin-kpi-card"><span class="fin-kpi-label">Atendimentos</span><span class="fin-kpi-value" id="fin-count">0</span></div>
         <div class="fin-kpi-card"><span class="fin-kpi-label">Ticket médio</span><span class="fin-kpi-value" id="fin-avg">R$ 0</span></div>
       </div>
+      <p class="bk-note" id="fin-period-note">Resumo do período</p>
       <div class="fin-chart-wrap">
         <svg id="fin-chart" viewBox="0 0 320 140" preserveAspectRatio="none"></svg>
         <div class="fin-chart-labels" id="fin-chart-labels"></div>
       </div>
+      <h3 class="fin-section-title">Detalhamento</h3>
+      <div id="fin-breakdown"></div>
       <div class="fin-forecast-card">
         <div class="info-label">Previsão para o próximo período</div>
         <div id="fin-forecast" style="font-size:16px; font-weight:700; margin-top:4px; color:var(--ink);"></div>
@@ -793,7 +830,7 @@
       <span class="lbl">agendo.link/<span id="pub-handle">marinaravi</span></span>
       <span class="tag">Visão do cliente</span>
     </div>
-    <div class="pub-cover" id="pub-cover"></div>
+    <div class="pub-cover" id="pub-cover"><button class="pub-share" onclick="sharePublicPage()" aria-label="Compartilhar" title="Compartilhar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.6 6.6-4.2m-6.6 7 6.6 4.2"/></svg></button></div>
     <div class="pub-id">
       <div class="pub-avatar" id="pub-avatar">M</div>
       <div>
@@ -804,7 +841,6 @@
     <p class="pub-bio" id="pub-bio"></p>
     <div class="pub-cta">
       <button class="btn btn-light" onclick="openBookingPreview()">Agendar</button>
-      <button class="btn btn-outline" onclick="toast('Link copiado ✓')">Compartilhar</button>
     </div>
 
     <div class="pub-sec" id="pub-promos-sec">
@@ -818,7 +854,7 @@
     </div>
 
     <div class="pub-sec">
-      <h3>Serviços</h3>
+      <div class="pub-offer-tabs" id="pub-offer-tabs"><button data-type="servico" class="is-active">Serviços</button><button data-type="produto">Produtos</button></div>
       <div id="pub-offers"></div>
     </div>
 
@@ -1273,10 +1309,11 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
+    <div class="booking-progress" id="bkprev-progress"><span>1 · Serviço e horário</span><span>2 · Seus dados</span><span>3 · Pagamento</span></div>
     <div id="bkprev-body"></div>
     <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeBookingPreview()">Cancelar</button>
-      <button class="btn btn-dark" onclick="confirmBookingPreview()">Confirmar agendamento</button>
+      <button class="btn btn-outline" id="bkprev-back" onclick="previousBookingStep()">Voltar</button>
+      <button class="btn btn-dark" id="bkprev-next" onclick="nextBookingStep()">Continuar</button>
     </div>
   </div>
 </div>
@@ -1426,7 +1463,7 @@
   updateApptCountTag();
 
   // services page — a usuária escolhe o modo de visualização (fica salvo para as próximas vezes)
-  let svcViewMode = localStorage.getItem('svcViewMode') || 'list';
+  let svcViewMode = localStorage.getItem('svcViewMode') || 'cards';
   let svcFilter = 'all';
 
   function groupServices(filter){
@@ -2279,6 +2316,9 @@
     const forecast = Math.round(total * 1.08);
     const periodLabel = { dia:'amanhã', semana:'a próxima semana', mes:'o próximo mês' }[range];
     document.getElementById('fin-forecast').textContent = `R$ ${forecast.toLocaleString('pt-BR')} para ${periodLabel}, com base no ritmo atual.`;
+    document.getElementById('fin-period-note').textContent = { dia:'Atendimentos de hoje', semana:'Movimento desta semana', mes:'Movimento deste mês' }[range];
+    const rows = range === 'dia' ? clients.map(c => ({label:c.service, value:parsePrice(c.price)})) : d.labels.map((label,i)=>({label, value:d.values[i]}));
+    document.getElementById('fin-breakdown').innerHTML = rows.map(row=>`<div class="fin-detail"><span>${row.label}</span><b>R$ ${row.value.toLocaleString('pt-BR')}</b></div>`).join('');
   }
   document.getElementById('fin-seg').addEventListener('click', e => {
     const b = e.target.closest('[data-range]');
@@ -2310,62 +2350,63 @@
     });
   }
   function selectPaymentMethod(method){
+    if(paymentConfig.method !== method) paymentConfig.hasCredential = false;
     paymentConfig.method = method;
     renderPaymentMethods();
     renderPaymentFields();
   }
+  let paymentSignedIn = false;
+  function requestPaymentSettings(){ parent.postMessage({ type:'payment:load' }, location.origin); }
+  window.addEventListener('message', event => {
+    if(event.origin !== location.origin || event.source !== parent) return;
+    if(event.data?.type === 'payment:state'){
+      paymentSignedIn = event.data.payload.signedIn;
+      const saved = event.data.payload.settings;
+      paymentConfig.method = saved?.method || null;
+      paymentConfig.sync.clientId = saved?.syncClientId || '';
+      paymentConfig.sync.env = saved?.syncEnvironment || 'sandbox';
+      paymentConfig.infinite.handle = saved?.infiniteHandle || '';
+      paymentConfig.hasCredential = !!saved?.hasCredential;
+      updatePaymentStatus(); renderPaymentMethods(); renderPaymentFields();
+    }
+    if(event.data?.type === 'payment:saved'){
+      paymentConfig.hasCredential = true;
+      closePaymentConfig(); updatePaymentStatus(); toast('Configuração salva na sua conta ✓');
+    }
+    if(event.data?.type === 'payment:error') toast(event.data.payload);
+  });
   function renderPaymentFields(){
     const wrap = document.getElementById('payment-fields');
+    if(!paymentSignedIn){ wrap.innerHTML = `<p class="bk-note">Entre na sua conta para salvar suas configurações com segurança.</p><button class="btn btn-light" onclick="parent.postMessage({type:'payment:login'},location.origin)">Entrar na conta</button>`; return; }
     if(paymentConfig.method === 'sync'){
-      wrap.innerHTML = `
-        <span class="field-label">Client ID</span>
-        <input class="field-input" id="pm-sync-id" value="${paymentConfig.sync.clientId}" placeholder="Seu Client ID na SyncPayments">
-        <span class="field-label">Client Secret</span>
-        <input class="field-input" id="pm-sync-secret" type="password" value="${paymentConfig.sync.clientSecret}" placeholder="Sua Client Secret">
-        <span class="field-label">Ambiente</span>
-        <div class="link-toggle" id="pm-sync-env">
-          <button type="button" data-env="sandbox" class="${paymentConfig.sync.env==='sandbox'?'is-active':''}">Sandbox</button>
-          <button type="button" data-env="producao" class="${paymentConfig.sync.env==='producao'?'is-active':''}">Produção</button>
-        </div>
-        <p class="pm-env-note">As credenciais ficam apenas nesta sessão do protótipo — nenhuma chave é enviada a lugar nenhum.</p>`;
-      document.getElementById('pm-sync-env').addEventListener('click', e => {
-        const b = e.target.closest('button');
-        if(!b) return;
-        paymentConfig.sync.env = b.dataset.env;
-        document.querySelectorAll('#pm-sync-env button').forEach(x => x.classList.toggle('is-active', x===b));
-      });
+      wrap.innerHTML = `<span class="field-label">Client ID</span><input class="field-input" id="pm-sync-id" placeholder="Seu Client ID na SyncPayments">
+        <span class="field-label">Client Secret</span><input class="field-input" id="pm-sync-secret" type="password" autocomplete="off" placeholder="${paymentConfig.hasCredential ? 'Credencial salva · deixe vazio para manter' : 'Sua Client Secret'}">
+        <span class="field-label">Ambiente</span><div class="link-toggle" id="pm-sync-env"><button type="button" data-env="sandbox">Teste</button><button type="button" data-env="producao">Produção</button></div>
+        <p class="pm-env-note">As credenciais são protegidas e não aparecem depois de salvar.</p>`;
+      document.getElementById('pm-sync-id').value = paymentConfig.sync.clientId;
+      document.querySelectorAll('#pm-sync-env button').forEach(b=>b.classList.toggle('is-active',b.dataset.env===paymentConfig.sync.env));
+      document.getElementById('pm-sync-env').addEventListener('click', e=>{ const b=e.target.closest('[data-env]'); if(!b)return; paymentConfig.sync.env=b.dataset.env; document.querySelectorAll('#pm-sync-env button').forEach(x=>x.classList.toggle('is-active',x===b)); });
     }else if(paymentConfig.method === 'infinite'){
-      wrap.innerHTML = `
-        <span class="field-label">Handle InfinitePay</span>
-        <input class="field-input" id="pm-inf-handle" value="${paymentConfig.infinite.handle}" placeholder="@sua-loja">
-        <span class="field-label">API Key</span>
-        <input class="field-input" id="pm-inf-key" type="password" value="${paymentConfig.infinite.apiKey}" placeholder="Sua API Key">
-        <p class="pm-env-note">As credenciais ficam apenas nesta sessão do protótipo — nenhuma chave é enviada a lugar nenhum.</p>`;
-    }else{
-      wrap.innerHTML = `<p style="font-size:12.5px; color:var(--muted); margin-bottom:6px;">Escolha um dos métodos acima para configurar.</p>`;
-    }
+      wrap.innerHTML = `<span class="field-label">Handle InfinitePay</span><input class="field-input" id="pm-inf-handle" placeholder="@sua-loja">
+        <span class="field-label">API Key</span><input class="field-input" id="pm-inf-key" type="password" autocomplete="off" placeholder="${paymentConfig.hasCredential ? 'Credencial salva · deixe vazio para manter' : 'Sua API Key'}">
+        <p class="pm-env-note">As credenciais são protegidas e não aparecem depois de salvar.</p>`;
+      document.getElementById('pm-inf-handle').value = paymentConfig.infinite.handle;
+    }else wrap.innerHTML = `<p class="bk-note">Escolha um dos métodos acima para configurar.</p>`;
   }
   function savePaymentConfig(){
+    if(!paymentSignedIn){ parent.postMessage({type:'payment:login'},location.origin); return; }
     if(!paymentConfig.method){ toast('Escolha um método de pagamento'); return; }
-    if(paymentConfig.method === 'sync'){
-      paymentConfig.sync.clientId = document.getElementById('pm-sync-id').value.trim();
-      paymentConfig.sync.clientSecret = document.getElementById('pm-sync-secret').value.trim();
-      if(!paymentConfig.sync.clientId || !paymentConfig.sync.clientSecret){ toast('Preencha Client ID e Client Secret'); return; }
-    }else{
-      paymentConfig.infinite.handle = document.getElementById('pm-inf-handle').value.trim();
-      paymentConfig.infinite.apiKey = document.getElementById('pm-inf-key').value.trim();
-      if(!paymentConfig.infinite.handle || !paymentConfig.infinite.apiKey){ toast('Preencha o handle e a API Key'); return; }
-    }
-    closePaymentConfig();
-    updatePaymentStatus();
-    toast('Método de pagamento configurado ✓');
+    const credential = paymentConfig.method==='sync' ? document.getElementById('pm-sync-secret').value.trim() : document.getElementById('pm-inf-key').value.trim();
+    const syncClientId = paymentConfig.method==='sync' ? document.getElementById('pm-sync-id').value.trim() : '';
+    const infiniteHandle = paymentConfig.method==='infinite' ? document.getElementById('pm-inf-handle').value.trim() : '';
+    if(!credential && !paymentConfig.hasCredential){ toast('Informe a credencial'); return; }
+    parent.postMessage({type:'payment:save',payload:{method:paymentConfig.method,syncClientId,syncEnvironment:paymentConfig.sync.env,infiniteHandle,credential}},location.origin);
   }
   function updatePaymentStatus(){
-    const el = document.getElementById('payment-status');
-    if(paymentConfig.method === 'sync') el.textContent = 'Pix via API (SyncPayments) conectado';
-    else if(paymentConfig.method === 'infinite') el.textContent = 'InfinitePay conectado';
-    else el.textContent = 'Nenhum método configurado';
+    const el=document.getElementById('payment-status');
+    el.textContent = !paymentSignedIn ? 'Entre para configurar' : paymentConfig.method==='sync' ? 'Pix via API configurado' : paymentConfig.method==='infinite' ? 'InfinitePay configurado' : 'Nenhum método configurado';
   }
+  requestPaymentSettings();
   document.getElementById('payment-entry-btn').addEventListener('click', openPaymentConfig);
   updatePaymentStatus();
 
@@ -2527,14 +2568,18 @@
         <div class="s">${b.sub}</div>
       </div>`).join('');
 
-    document.getElementById('pub-offers').innerHTML = services.map(s => `
-      <div class="pub-offer">
-        <div style="min-width:0;">
-          <div class="nm">${s.name}</div>
-          <div class="dt">${s.duration} • ${s.price}</div>
-        </div>
-        <button class="go" onclick="openBookingPreview('${s.id}')">Agendar</button>
-      </div>`).join('');
+    renderPublicOffers();
+  }
+  let publicOfferType = 'servico';
+  function renderPublicOffers(){
+    const items = services.filter(s => (s.type || 'servico') === publicOfferType);
+    const groups = [...new Set(items.map(s=>s.cat))];
+    document.getElementById('pub-offers').innerHTML = groups.length ? groups.map(catKey=>`<h3>${themeFor(catKey).label}</h3><div class="pub-offer-row">${items.filter(s=>s.cat===catKey).map(s=>`<article class="pub-offer-card"><div class="pub-offer-art">${s.emoji || themeFor(s.cat).emoji}</div><div class="pub-offer-details"><div class="nm">${s.name}</div><div class="dt">${s.duration} · ${s.price}</div><button class="go" onclick="${publicOfferType==='produto' ? `openProductModal('${s.id}')` : `openBookingPreview('${s.id}')`}">${publicOfferType==='produto'?'Detalhes':'Agendar'}</button></div></article>`).join('')}</div>`).join('') : `<p class="bk-note">Nenhum produto disponível no momento.</p>`;
+  }
+  document.getElementById('pub-offer-tabs').addEventListener('click',e=>{ const btn=e.target.closest('[data-type]'); if(!btn)return; publicOfferType=btn.dataset.type; document.querySelectorAll('#pub-offer-tabs button').forEach(b=>b.classList.toggle('is-active',b===btn)); renderPublicOffers(); });
+  async function sharePublicPage(){
+    try { if(navigator.share) await navigator.share({title:profile.name,url:location.href}); else { await navigator.clipboard.writeText(location.href); toast('Link copiado ✓'); } }
+    catch(e){ if(e.name!=='AbortError') toast('Não foi possível compartilhar'); }
   }
   renderPublicProfile();
 
@@ -2595,10 +2640,31 @@
       <div class="bk-note" style="margin-bottom:0;">${paymentConfig.method ? labels[paymentConfig.method] : 'Método definido pelo profissional'}</div>
     </div>`;
     document.getElementById('bkprev-body').innerHTML = html;
+    bookingStep = 1;
+    document.getElementById('bkprev-date')?.setAttribute('min', new Date().toISOString().slice(0,10));
+    showBookingStep();
     bkPrevOverlay.classList.remove('hidden');
   }
   function pickPreviewTime(btn){
     document.querySelectorAll('.bkprev-time').forEach(b => b.classList.toggle('is-active', b === btn));
+  }
+  let bookingStep = 1;
+  function showBookingStep(){
+    document.querySelectorAll('#bkprev-progress span').forEach((span,i)=>span.classList.toggle('is-active',i===bookingStep-1));
+    const groups = {1:['Serviço','Data e horário'],2:['Seus dados','Ficha de anamnese','Termo de consentimento','Observações'],3:['Resgatar promoção','Pagamento']};
+    document.querySelectorAll('#bkprev-body .pub-step').forEach(el=>el.classList.toggle('hidden',!groups[bookingStep].includes(el.querySelector('.h')?.textContent.trim().replace('obrigatória','').trim())));
+    document.getElementById('bkprev-back').textContent = bookingStep===1?'Cancelar':'Voltar';
+    document.getElementById('bkprev-next').textContent = bookingStep===3?'Confirmar agendamento':'Continuar';
+  }
+  function previousBookingStep(){ if(bookingStep===1) closeBookingPreview(); else { bookingStep--; showBookingStep(); } }
+  function nextBookingStep(){
+    if(bookingStep===1 && document.getElementById('bkprev-date') && !document.getElementById('bkprev-date').value){ toast('Escolha uma data'); return; }
+    if(bookingStep===2){
+      const missing=bookingConfig.contact.filter(f=>f.on&&f.required).filter(f=>!(document.querySelector(`[data-contact="${f.key}"]`)?.value||'').trim());
+      if(missing.length){ toast(`Preencha: ${missing.map(f=>f.label).join(', ')}`); return; }
+      const consent=document.getElementById('bkprev-consent'); if(consent&&!consent.checked){toast('Aceite o termo de consentimento');return;}
+    }
+    if(bookingStep<3){bookingStep++;showBookingStep();}else confirmBookingPreview();
   }
   function closeBookingPreview(){ bkPrevOverlay.classList.add('hidden'); }
   function confirmBookingPreview(){
