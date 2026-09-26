@@ -260,6 +260,80 @@
   .svc-card-price{ font-size:17px; font-weight:800; color:var(--ink); }
   .svc-card-btn{ font-size:12.5px; font-weight:700; color:#fff; background:var(--grad-a); padding:10px 18px; border-radius:9999px; flex-shrink:0; }
 
+  
+  /* Dropdown e botão de exibição estilo filtro */
+  .view-filter-btn{
+    width:38px; height:38px; border-radius:9999px;
+    background:var(--canvas-soft); border:1px solid var(--hairline-soft);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink); cursor:pointer; flex-shrink:0; position:relative;
+    transition:background-color .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .view-filter-btn:hover{ background:var(--field); border-color:var(--hairline); }
+  .view-filter-btn.is-active{ background:var(--field); border-color:var(--ink); color:var(--ink); }
+
+  .filter-menu-popover{
+    position:absolute; top:calc(100% + 8px); right:0; z-index:40;
+    width:230px; background:rgba(26,26,26,0.98); backdrop-filter:blur(16px);
+    border:1px solid var(--hairline); border-radius:16px;
+    padding:10px; box-shadow:0 12px 32px rgba(0,0,0,0.5);
+  }
+  .filter-menu-group{ margin-bottom:8px; }
+  .filter-menu-group:last-child{ margin-bottom:0; }
+  .filter-menu-title{ font-size:10px; font-weight:700; color:var(--faint); text-transform:uppercase; letter-spacing:0.05em; padding:4px 8px 6px; }
+  .filter-menu-option{
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    padding:8px 10px; border-radius:10px; border:none; background:transparent;
+    color:var(--muted); font-size:12.5px; font-weight:600; cursor:pointer; text-align:left;
+  }
+  .filter-menu-option:hover{ background:var(--raised); color:var(--ink); }
+  .filter-menu-option.is-selected{ background:var(--field); color:var(--ink); }
+  .filter-menu-check{ width:14px; height:14px; opacity:0; }
+  .filter-menu-option.is-selected .filter-menu-check{ opacity:1; }
+
+  /* Placeholder de busca/filtro acima das categorias */
+  .search-filter-placeholder{
+    display:flex; align-items:center; gap:9px; background:var(--canvas-soft);
+    border:1px solid var(--hairline-soft); border-radius:9999px;
+    padding:8px 14px; margin-bottom:12px; color:var(--muted); font-size:12.5px;
+  }
+  .search-filter-placeholder input{
+    border:none; background:transparent; color:var(--ink); font-size:12.5px;
+    outline:none; width:100%; font-family:inherit;
+  }
+  .search-filter-placeholder input::placeholder{ color:var(--faint); }
+
+  /* Formato da Página (Perfil) Redesenhado - UI Visual com Cards */
+  .layout-cards-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%;
+  }
+  .layout-option-card{
+    background:var(--canvas-soft); border:1.5px solid var(--hairline-soft);
+    border-radius:16px; padding:14px 12px; cursor:pointer; text-align:left;
+    position:relative; transition:all .18s ease; display:flex; flex-direction:column; gap:10px;
+  }
+  .layout-option-card:hover{ border-color:var(--hairline); background:var(--raised); }
+  .layout-option-card.is-active{
+    border-color:var(--ink); background:var(--field);
+    box-shadow:0 0 0 1px var(--ink) inset;
+  }
+  .layout-card-badge{
+    position:absolute; top:10px; right:10px; width:18px; height:18px; border-radius:50%;
+    background:var(--ink); color:var(--canvas); display:flex; align-items:center;
+    justify-content:center; opacity:0; transition:opacity .15s ease;
+  }
+  .layout-option-card.is-active .layout-card-badge{ opacity:1; }
+  .layout-card-preview{
+    width:100%; height:58px; border-radius:9px; background:var(--canvas);
+    border:1px solid var(--hairline-soft); padding:6px; display:flex; flex-direction:column; gap:4px;
+    overflow:hidden;
+  }
+  .preview-classic-avatar{ width:16px; height:16px; border-radius:50%; background:#444; }
+  .preview-line{ height:3.5px; border-radius:2px; background:#333; }
+  .preview-hero-avatar{ width:22px; height:22px; border-radius:50%; background:var(--grad-a); margin:0 auto; }
+  .layout-card-label{ font-size:13px; font-weight:700; color:var(--ink); display:block; }
+  .layout-card-desc{ font-size:11px; color:var(--muted); line-height:1.35; display:block; }
+
   /* ---------- Bottom pill nav ---------- */
   .bottom-nav{
     position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
@@ -313,7 +387,7 @@
   .month-cell .mdot{ width:5px; height:5px; border-radius:9999px; background:var(--accent); }
   .month-cell.today .mdot{ background:var(--cta-text); }
 
-  .spacer{ height:8px; }
+  .spacer{ height:96px; }
 
   /* ---------- Modal : ficha de anamnese ---------- */
   .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.72); backdrop-filter:blur(2px); display:flex; align-items:flex-end; justify-content:center; z-index:50; }
@@ -695,37 +769,71 @@
   <!-- ================= CATÁLOGO: SERVIÇOS E PRODUTOS ================= -->
   <div id="view-services" class="hidden">
     <div class="page-head">
-      <div class="seg-control" id="catalog-type-toggle" style="margin-bottom:12px;">
-        <button class="seg-btn is-active" data-cat-type="servico">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M6 6l12 12M18 6L6 18"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/></svg>
-          Serviços do Estúdio
-        </button>
-        <button class="seg-btn" data-cat-type="produto">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
-          Catálogo de Produtos
-        </button>
-      </div>
-      <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <div style="display:flex; align-items:center; justify-content:space-between; position:relative;">
         <div>
-          <h2 id="catalog-heading">Serviços</h2>
+          <h2 id="catalog-heading" style="margin:0;">Serviços</h2>
           <p id="catalog-desc" style="font-size:12px; color:var(--muted); margin:3px 0 0;">Procedimentos disponíveis para agendamento na sua agenda</p>
         </div>
-        <button class="btn btn-light" id="btn-create-item" style="padding:7px 12px; font-size:11.5px; border-radius:8px;">
-          + Novo <span id="create-item-label">serviço</span>
-        </button>
+        
+        <!-- Ícone de exibição estilo filtro com menu dropdown popover -->
+        <div style="position:relative;">
+          <button class="view-filter-btn" id="catalog-filter-btn" aria-label="Filtro e modo de exibição" title="Modos de exibição e tipo de catálogo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16M7 12h10M10 18h4"/>
+            </svg>
+          </button>
+
+          <div class="filter-menu-popover hidden" id="catalog-filter-menu">
+            <div class="filter-menu-group">
+              <div class="filter-menu-title">Catálogo</div>
+              <button type="button" class="filter-menu-option is-selected" data-set-cat="servico">
+                <span style="display:flex; align-items:center; gap:8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/></svg>
+                  Serviços
+                </span>
+                <svg class="filter-menu-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              </button>
+              <button type="button" class="filter-menu-option" data-set-cat="produto">
+                <span style="display:flex; align-items:center; gap:8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+                  Produtos (Checkout)
+                </span>
+                <svg class="filter-menu-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              </button>
+            </div>
+
+            <div style="height:1px; background:var(--hairline-soft); margin:6px 0;"></div>
+
+            <div class="filter-menu-group">
+              <div class="filter-menu-title">Formato de Exibição</div>
+              <button type="button" class="filter-menu-option" data-set-mode="cards">
+                <span style="display:flex; align-items:center; gap:8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                  Cards visuais
+                </span>
+                <svg class="filter-menu-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              </button>
+              <button type="button" class="filter-menu-option" data-set-mode="list">
+                <span style="display:flex; align-items:center; gap:8px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                  Lista compacta
+                </span>
+                <svg class="filter-menu-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
     <div class="section" style="padding-top:14px;">
-      <div class="svc-toggle" id="svc-toggle">
-        <button data-mode="list">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-          Lista
-        </button>
-        <button data-mode="cards">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-          Cards
-        </button>
+      <!-- Placeholder de busca e filtro acima das tabs de categorias -->
+      <div class="search-filter-placeholder">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="svc-search-input" placeholder="Buscar serviços ou produtos pelo nome...">
       </div>
+
+      <!-- Tabs de categorias com scroll horizontal -->
       <div class="cat-scroll" id="svc-filters" style="margin-bottom:18px;"></div>
       <div id="svc-list"></div>
     </div>
@@ -851,10 +959,45 @@
     </div>
 
     <div class="profile-section">
-      <div class="profile-section-head"><h3>Formato da página</h3></div>
-      <div class="seg-control" id="layout-toggle" style="width:100%;">
-        <button data-layout="classic" class="is-active" style="flex:1;">Clássico</button>
-        <button data-layout="hero" style="flex:1;">Destaque</button>
+      <div class="profile-section-head">
+        <h3>Formato da página</h3>
+        <span style="font-size:11.5px; color:var(--muted);">Como seu público visualiza</span>
+      </div>
+      <div class="layout-cards-grid" id="layout-toggle">
+        <div class="layout-option-card is-active" data-layout="classic">
+          <div class="layout-card-badge">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="layout-card-preview" style="justify-content:center;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <div class="preview-classic-avatar"></div>
+              <div style="flex:1; display:flex; flex-direction:column; gap:2px;">
+                <div class="preview-line" style="width:70%;"></div>
+                <div class="preview-line" style="width:40%; opacity:0.6;"></div>
+              </div>
+            </div>
+            <div class="preview-line" style="width:100%; margin-top:4px;"></div>
+          </div>
+          <div>
+            <span class="layout-card-label">Clássico</span>
+            <span class="layout-card-desc">Foto lateral, dados rápidos e visual direto ao ponto</span>
+          </div>
+        </div>
+
+        <div class="layout-option-card" data-layout="hero">
+          <div class="layout-card-badge">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="layout-card-preview" style="align-items:center; justify-content:center; text-align:center;">
+            <div class="preview-hero-avatar"></div>
+            <div class="preview-line" style="width:55%; margin-top:2px;"></div>
+            <div class="preview-line" style="width:35%; opacity:0.6;"></div>
+          </div>
+          <div>
+            <span class="layout-card-label">Destaque</span>
+            <span class="layout-card-desc">Avatar centralizado, selo e presença visual marcante</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1763,28 +1906,31 @@
   }
   updateApptCountTag();
 
-  // CATÁLOGO: SELETOR ENTRE SERVIÇOS E PRODUTOS (CHECKOUT)
+  // CATÁLOGO: SELETOR ENTRE SERVIÇOS E PRODUTOS (CHECKOUT) & CONTROLE DE EXIBIÇÃO
   let currentCatalogType = 'servico'; // 'servico' | 'produto'
-  let svcViewMode = localStorage.getItem('svcViewMode') || 'cards';
+  let svcViewMode = localStorage.getItem('svcViewMode') || 'cards'; // 'cards' | 'list'
   let svcFilter = 'all';
+  let svcSearchQuery = '';
 
   function setCatalogType(type){
     currentCatalogType = type;
-    document.querySelectorAll('#catalog-type-toggle button').forEach(b => {
-      b.classList.toggle('is-active', b.dataset.catType === type);
-    });
-
     const isProduct = type === 'produto';
     const heading = document.getElementById('catalog-heading');
     const desc = document.getElementById('catalog-desc');
-    const createLabel = document.getElementById('create-item-label');
+    const searchInput = document.getElementById('svc-search-input');
+
     if(heading) heading.textContent = isProduct ? 'Catálogo de Produtos' : 'Serviços do Estúdio';
     if(desc) desc.textContent = isProduct
       ? 'Produtos físicos para venda direta e checkout — sem necessidade de agendamento'
       : 'Procedimentos e agendamentos na sua agenda';
-    if(createLabel) createLabel.textContent = isProduct ? 'produto' : 'serviço';
+    if(searchInput) searchInput.placeholder = isProduct ? 'Buscar produtos pelo nome...' : 'Buscar serviços pelo nome...';
 
-    // Atualiza chips de filtro
+    // Atualiza estado selecionado no menu popover
+    document.querySelectorAll('#catalog-filter-menu [data-set-cat]').forEach(b => {
+      b.classList.toggle('is-selected', b.dataset.setCat === type);
+    });
+
+    // Atualiza chips de filtro de categoria
     const filterCatList = isProduct ? productCategories : categories;
     const filterWrap = document.getElementById('svc-filters');
     if(filterWrap){
@@ -1796,19 +1942,76 @@
     renderServices('all');
   }
 
-  const catalogToggle = document.getElementById('catalog-type-toggle');
-  if(catalogToggle){
-    catalogToggle.addEventListener('click', e => {
-      const btn = e.target.closest('button[data-cat-type]');
-      if(!btn) return;
-      setCatalogType(btn.dataset.catType);
+  function setViewMode(mode){
+    svcViewMode = mode;
+    localStorage.setItem('svcViewMode', mode);
+    document.querySelectorAll('#catalog-filter-menu [data-set-mode]').forEach(b => {
+      b.classList.toggle('is-selected', b.dataset.setMode === mode);
+    });
+    renderServices(svcFilter);
+  }
+
+  // Controle de abertura/fechamento do Popover de Filtro
+  const filterBtn = document.getElementById('catalog-filter-btn');
+  const filterMenu = document.getElementById('catalog-filter-menu');
+
+  if(filterBtn && filterMenu){
+    filterBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = !filterMenu.classList.contains('hidden');
+      filterMenu.classList.toggle('hidden', isOpen);
+      filterBtn.classList.toggle('is-active', !isOpen);
+    });
+
+    document.addEventListener('click', e => {
+      if(!filterMenu.contains(e.target) && e.target !== filterBtn){
+        filterMenu.classList.add('hidden');
+        filterBtn.classList.remove('is-active');
+      }
+    });
+
+    filterMenu.addEventListener('click', e => {
+      const catBtn = e.target.closest('[data-set-cat]');
+      if(catBtn){
+        setCatalogType(catBtn.dataset.setCat);
+        filterMenu.classList.add('hidden');
+        filterBtn.classList.remove('is-active');
+        return;
+      }
+      const modeBtn = e.target.closest('[data-set-mode]');
+      if(modeBtn){
+        setViewMode(modeBtn.dataset.setMode);
+        filterMenu.classList.add('hidden');
+        filterBtn.classList.remove('is-active');
+      }
+    });
+  }
+
+  // Placeholder e Input de busca rápida
+  const searchInput = document.getElementById('svc-search-input');
+  if(searchInput){
+    searchInput.addEventListener('input', e => {
+      svcSearchQuery = (e.target.value || '').trim().toLowerCase();
+      renderServices(svcFilter);
     });
   }
 
   function groupServices(filter){
     const grouped = {};
-    const filteredByType = services.filter(s => (s.type || 'servico') === currentCatalogType);
-    filteredByType.filter(s => filter==='all' || s.cat===filter).forEach(s => {
+    let items = services.filter(s => (s.type || 'servico') === currentCatalogType);
+
+    if(filter !== 'all'){
+      items = items.filter(s => s.cat === filter);
+    }
+
+    if(svcSearchQuery){
+      items = items.filter(s =>
+        (s.name && s.name.toLowerCase().includes(svcSearchQuery)) ||
+        (s.desc && s.desc.toLowerCase().includes(svcSearchQuery))
+      );
+    }
+
+    items.forEach(s => {
       (grouped[s.cat] = grouped[s.cat] || []).push(s);
     });
     return grouped;
@@ -1853,7 +2056,6 @@
         } else {
           priceBlock = `<span class="svc-card-price">${s.price}</span>`;
         }
-
         return `
           <div class="svc-card-visual" data-id="${s.id}">
             <div class="svc-card-image" style="${s.image ? `background:url('${s.image}') center/cover no-repeat;` : `background:linear-gradient(180deg, ${cat.soft} 0%, ${cat.soft} 40%, rgba(0,0,0,0.55) 78%, var(--canvas-soft) 100%);`}">
@@ -1882,33 +2084,34 @@
     if(!list) return;
     const grouped = groupServices(svcFilter);
     if(Object.keys(grouped).length === 0){
-      list.innerHTML = `<p style="color:var(--muted); font-size:13px; padding:20px 0; text-align:center;">Nenhum ${currentCatalogType === 'produto' ? 'produto' : 'serviço'} nesta categoria.</p>`;
+      list.innerHTML = `<p style="color:var(--muted); font-size:13px; padding:24px 0; text-align:center;">Nenhum ${currentCatalogType === 'produto' ? 'produto' : 'serviço'} encontrado.</p>`;
       return;
     }
     list.innerHTML = svcViewMode === 'cards' ? renderServicesCards(grouped) : renderServicesList(grouped);
   }
 
-  // Inicializar filtros
-  document.getElementById('svc-filters').innerHTML =
-    `<button class="chip is-active" data-filter="all">Todas</button>` +
-    categories.map(c => `<button class="chip" data-filter="${c.key}">${c.label}</button>`).join('');
+  // Inicializar filtros de categorias
+  const svcFiltersEl = document.getElementById('svc-filters');
+  if(svcFiltersEl){
+    svcFiltersEl.innerHTML =
+      `<button class="chip is-active" data-filter="all">Todas</button>` +
+      categories.map(c => `<button class="chip" data-filter="${c.key}">${c.label}</button>`).join('');
 
-  document.getElementById('svc-filters').addEventListener('click', e => {
-    const chip = e.target.closest('.chip');
-    if(!chip) return;
-    document.querySelectorAll('#svc-filters .chip').forEach(c=>c.classList.remove('is-active'));
-    chip.classList.add('is-active');
-    renderServices(chip.dataset.filter);
-  });
-
-  document.querySelectorAll('#svc-toggle button').forEach(btn => {
-    btn.classList.toggle('is-active', btn.dataset.mode === svcViewMode);
-    btn.addEventListener('click', () => {
-      svcViewMode = btn.dataset.mode;
-      localStorage.setItem('svcViewMode', svcViewMode);
-      document.querySelectorAll('#svc-toggle button').forEach(b => b.classList.toggle('is-active', b === btn));
-      renderServices(svcFilter);
+    svcFiltersEl.addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      document.querySelectorAll('#svc-filters .chip').forEach(c=>c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      renderServices(chip.dataset.filter);
     });
+  }
+
+  // Inicializar estados do menu popover
+  document.querySelectorAll('#catalog-filter-menu [data-set-mode]').forEach(b => {
+    b.classList.toggle('is-selected', b.dataset.setMode === svcViewMode);
+  });
+  document.querySelectorAll('#catalog-filter-menu [data-set-cat]').forEach(b => {
+    b.classList.toggle('is-selected', b.dataset.setCat === currentCatalogType);
   });
 
   renderServices('all');
@@ -2419,6 +2622,15 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // Listener global para abrir detalhes do cliente em qualquer lista (Home, Agenda, etc.)
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-client]');
+    if(trigger && trigger.dataset.client){
+      e.preventDefault();
+      openModal(trigger.dataset.client);
+    }
+  });
+
   // Listener global para todos os links e botões com [data-nav]
   document.addEventListener('click', e => {
     const trigger = e.target.closest('[data-nav]');
@@ -2675,7 +2887,7 @@
     document.getElementById('profile-stat-services').textContent = services.length + ' serviços';
     document.getElementById('verified-badge').classList.toggle('hidden', profile.layout !== 'hero');
     document.getElementById('view-profile').classList.toggle('layout-hero', profile.layout === 'hero');
-    document.querySelectorAll('#layout-toggle button').forEach(b => b.classList.toggle('is-active', b.dataset.layout === profile.layout));
+    document.querySelectorAll('#layout-toggle [data-layout]').forEach(b => b.classList.toggle('is-active', b.dataset.layout === profile.layout));
 
     if(document.getElementById('pub-name')) renderPublicProfile();
     document.getElementById('banner-list').innerHTML = banners.map(b => `
