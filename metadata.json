@@ -1,0 +1,6 @@
+{
+  "name": "agendo — Painel de agendamentos",
+  "description": "Painel agendo: agenda, serviços, fichas de anamnese, promoções e pagamentos em um só lugar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
