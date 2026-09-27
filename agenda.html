@@ -1405,38 +1405,85 @@
       <span class="lbl">agendo.link/<span id="pub-handle">marinaravi</span></span>
       <span class="tag">Visão do cliente</span>
     </div>
-    <div class="pub-cover" id="pub-cover"><button class="pub-share" onclick="sharePublicPage()" aria-label="Compartilhar" title="Compartilhar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.6 6.6-4.2m-6.6 7 6.6 4.2"/></svg></button></div>
+    
+    <div class="pub-cover" id="pub-cover">
+      <button class="pub-share" onclick="sharePublicPage()" aria-label="Compartilhar" title="Compartilhar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.6 6.6-4.2m-6.6 7 6.6 4.2"/></svg>
+      </button>
+    </div>
+
+    <!-- Componente de Identificação do Perfil -->
     <div class="pub-id">
       <div class="pub-avatar" id="pub-avatar">M</div>
       <div>
         <h2 id="pub-name">Marina Ravi</h2>
-        <div class="meta"><span id="pub-services">11 serviços</span><span>São Paulo</span><span>★ 4,9</span></div>
+        <div class="meta">
+          <span id="pub-services">17 serviços</span>
+          <span>São Paulo</span>
+          <span>★ 4,9</span>
+        </div>
       </div>
     </div>
-    <p class="pub-bio" id="pub-bio"></p>
-    <div class="pub-cta">
-      <button class="btn btn-light" onclick="openBookingPreview()">Agendar</button>
-    </div>
+    <p class="pub-bio" id="pub-bio">Especialista em estética facial e corporal</p>
 
-    <div class="pub-sec" id="pub-promos-sec">
-      <h3>Promoções</h3>
+    <!-- Banner promocional posicionado logo abaixo do perfil com overlay degradê (sem botão solto de Agendar) -->
+    <div class="pub-sec" id="pub-promos-sec" style="margin:12px 0 16px;">
       <div id="pub-promos"></div>
     </div>
 
-    <div class="pub-sec">
-      <h3>Sobre</h3>
-      <div class="pub-about" id="pub-about"></div>
+    <!-- 4 TABS DA PÁGINA PÚBLICA: [Serviços] [Produtos] [Sobre mim] [Mídias] -->
+    <div class="pub-nav-tabs-wrap" id="pub-main-tabs">
+      <button type="button" class="pub-nav-tab is-active" data-pubtab="servicos">Serviços</button>
+      <button type="button" class="pub-nav-tab" data-pubtab="produtos">Produtos</button>
+      <button type="button" class="pub-nav-tab" data-pubtab="sobre">Sobre mim</button>
+      <button type="button" class="pub-nav-tab" data-pubtab="midia">Mídias</button>
     </div>
 
-    <div class="pub-sec">
-      <div class="pub-offer-tabs" id="pub-offer-tabs"><button data-type="servico" class="is-active">Serviços</button><button data-type="produto">Produtos</button></div>
-      <div id="pub-offers"></div>
+    <!-- CONTEÚDO TAB 1: SERVIÇOS -->
+    <div id="pub-tab-servicos" class="pub-tab-pane">
+      <div id="pub-services-list"></div>
+    </div>
+
+    <!-- CONTEÚDO TAB 2: PRODUTOS -->
+    <div id="pub-tab-produtos" class="pub-tab-pane hidden">
+      <div id="pub-products-list"></div>
+    </div>
+
+    <!-- CONTEÚDO TAB 3: SOBRE MIM -->
+    <div id="pub-tab-sobre" class="pub-tab-pane hidden">
+      <div class="pub-about-card">
+        <h4>Sobre a Especialista</h4>
+        <div class="pub-about" id="pub-about" style="font-size:13px; line-height:1.6; color:var(--muted); margin-bottom:16px;"></div>
+        
+        <h4>Diferenciais & Formação</h4>
+        <p>Atendimento exclusivo e humanizado, unindo tecnologia de ponta, cosmetologia avançada e protocolos personalizados.</p>
+        <div class="pub-badge-pills">
+          <span class="pub-badge-pill">✓ Estética Avançada</span>
+          <span class="pub-badge-pill">✓ Biossegurança Rigorosa</span>
+          <span class="pub-badge-pill">✓ Protocolos Personalizados</span>
+          <span class="pub-badge-pill">✓ Cosméticos de Alta Performance</span>
+        </div>
+
+        <div style="margin-top:18px; border-top:1px solid var(--hairline-soft); padding-top:14px;">
+          <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">📍 Localização & Atendimento</div>
+          <div style="font-size:13px; font-weight:600; color:var(--ink);">São Paulo — SP · Atendimento individual com hora marcada</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTEÚDO TAB 4: MÍDIAS (GRID 3x9 - EXATAMENTE 27 FOTOS) -->
+    <div id="pub-tab-midia" class="pub-tab-pane hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span style="font-size:13px; font-weight:700; color:var(--ink);">Galeria de Resultados & Procedimentos</span>
+        <span style="font-size:11px; color:var(--muted);">Grid 3×9 · 27 mídias</span>
+      </div>
+      <p style="font-size:11.5px; color:var(--muted); margin:0 0 10px; line-height:1.4;">Toque em qualquer foto para ampliar os detalhes em alta definição.</p>
+      <div class="pub-media-grid-3x9" id="pub-media-grid-container"></div>
     </div>
 
     <div class="spacer"></div>
   </div>
   <div class="spacer"></div>
-
   <nav class="bottom-nav">
     <button class="nav-item is-active" data-nav="home">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg>
@@ -1695,52 +1742,127 @@
   </div>
 </div>
 
-<!-- ================= MODAL : DETALHES DO PRODUTO (checkout) ================= -->
+<!-- ================= MODAL : DETALHES DO PRODUTO (checkout / edição) ================= -->
 <div id="product-overlay" class="modal-overlay hidden">
-  <div class="modal-card">
-    <div class="modal-head">
-      <div class="modal-name">Detalhes do produto</div>
+  <div class="modal-card" style="max-height:92vh; overflow-y:auto;">
+    <div class="modal-head" style="align-items:center;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="modal-name">Detalhes do produto</div>
+        <!-- Botão de editar disponível apenas no painel de serviços profissional -->
+        <button type="button" class="btn btn-outline" id="product-prof-edit-btn" onclick="toggleProductEditMode()" style="display:none; font-size:11px; padding:4px 9px; border-radius:9999px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+          Editar informações
+        </button>
+      </div>
       <button class="modal-close" onclick="closeProductModal()" aria-label="Fechar">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
 
-    <div class="product-hero" id="product-hero">
-      <span class="p-badge hidden" id="product-badge">Novo</span>
-      <button class="product-edit-fab" id="product-edit-btn" aria-label="Editar produto">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-      </button>
-      <span id="product-emoji"></span>
-    </div>
-
-    <div class="product-cat-label" id="product-cat">Categoria</div>
-    <div class="product-title" id="product-title">Produto</div>
-    <div class="product-desc" id="product-desc">—</div>
-
-    <div class="product-features">
-      <div class="product-feature">🎁<br>Presenteável</div>
-      <div class="product-feature">✓<br>Pronto para venda</div>
-      <div class="product-feature">📦<br>Vinculado ao checkout</div>
-    </div>
-
-    <div class="product-buy-row">
-      <div class="product-price-block">
-        <div class="price" id="product-price">R$ 0</div>
+    <!-- MODO VISUALIZAÇÃO DO PRODUTO (Visão do cliente / Detalhes) -->
+    <div id="product-view-mode">
+      <div class="product-hero" id="product-hero">
+        <span class="p-badge hidden" id="product-badge">Promoção</span>
+        <button class="product-edit-fab" id="product-edit-btn" aria-label="Editar produto" onclick="toggleProductEditMode()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+        </button>
+        <span id="product-emoji"></span>
       </div>
-      <div class="product-qty">
-        <button onclick="changeProductQty(-1)">−</button>
-        <span id="product-qty">1</span>
-        <button onclick="changeProductQty(1)">+</button>
+
+      <div class="product-cat-label" id="product-cat">Skincare Facial</div>
+      <div class="product-title" id="product-title">Sérum Vitamina C Pura 15% 30ml</div>
+      <div class="product-desc" id="product-desc">Antioxidante de alta potência que clareia manchas e devolve a luminosidade da pele.</div>
+
+      <!-- BADGES DE BENEFÍCIO: Presenteável | Pronto para venda | Vinculado ao checkout -->
+      <div class="product-features" id="product-features-display">
+        <div class="product-feature" id="feat-disp-1">🎁<br><span>Presenteável</span></div>
+        <div class="product-feature" id="feat-disp-2">✓<br><span>Pronto para venda</span></div>
+        <div class="product-feature" id="feat-disp-3">📦<br><span>Vinculado ao checkout</span></div>
+      </div>
+
+      <!-- PREÇO DE / POR E QUANTIDADE -->
+      <div class="product-buy-row">
+        <div class="product-price-block">
+          <div class="price" id="product-price">R$ 119</div>
+        </div>
+        <div class="product-qty" id="product-qty-wrap">
+          <button onclick="changeProductQty(-1)">−</button>
+          <span id="product-qty">1</span>
+          <button onclick="changeProductQty(1)">+</button>
+        </div>
+      </div>
+
+      <div id="product-cart-btn-wrap">
+        <a href="#" class="btn btn-dark" style="width:100%; justify-content:center; margin-bottom:18px;" onclick="addProductToCheckout(event)">Adicionar ao carrinho</a>
+      </div>
+
+      <!-- 3 ABAS DO PRODUTO: [Sobre] [Ficha técnica] [Avaliações] -->
+      <div class="product-tabs">
+        <button type="button" class="product-tab is-active" data-ptab="sobre">Sobre</button>
+        <button type="button" class="product-tab" data-ptab="specs">Ficha técnica</button>
+        <button type="button" class="product-tab" data-ptab="avaliacoes">Avaliações</button>
+      </div>
+      <div class="product-tab-content" id="product-tab-content"></div>
+    </div>
+
+    <!-- MODO EDIÇÃO DO PRODUTO (Disponível em tempo real no painel de serviços) -->
+    <div id="product-edit-form" class="hidden" style="margin-top:10px;">
+      <div style="background:rgba(255,255,255,0.04); border:1px solid var(--hairline-soft); border-radius:12px; padding:12px; margin-bottom:14px;">
+        <span style="font-size:12px; font-weight:700; color:var(--ink); display:block; margin-bottom:3px;">✏️ Editar Informações do Produto</span>
+        <span style="font-size:11px; color:var(--muted); line-height:1.4;">As alterações serão sincronizadas diretamente na sua página pública e no catálogo de checkout.</span>
+      </div>
+
+      <span class="field-label">Título / Nome do Produto</span>
+      <input class="field-input" id="pe-title" placeholder="Ex: Sérum Vitamina C Pura 15% 30ml">
+
+      <div class="field-row">
+        <div>
+          <span class="field-label">Categoria</span>
+          <input class="field-input" id="pe-cat" placeholder="Ex: Skincare Facial">
+        </div>
+        <div>
+          <span class="field-label">Selo Promocional</span>
+          <input class="field-input" id="pe-badge" placeholder="Ex: Promoção, Mais vendido">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div>
+          <span class="field-label">Preço Original (De)</span>
+          <input class="field-input" id="pe-orig-price" placeholder="Ex: R$ 145">
+        </div>
+        <div>
+          <span class="field-label">Preço Final (Por)</span>
+          <input class="field-input" id="pe-price" placeholder="Ex: R$ 119">
+        </div>
+      </div>
+
+      <span class="field-label">Descrição Resumida</span>
+      <textarea class="field-textarea" id="pe-desc" rows="2" placeholder="Antioxidante de alta potência que clareia manchas e devolve a luminosidade da pele."></textarea>
+
+      <!-- BADGES DE BENEFÍCIO -->
+      <span class="field-label">Badges de Benefício (Ícones e Textos)</span>
+      <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:14px;">
+        <input class="field-input" id="pe-feat-1" placeholder="Badge 1 (Ex: 🎁 Presenteável)">
+        <input class="field-input" id="pe-feat-2" placeholder="Badge 2 (Ex: ✓ Pronto para venda)">
+        <input class="field-input" id="pe-feat-3" placeholder="Badge 3 (Ex: 📦 Vinculado ao checkout)">
+      </div>
+
+      <!-- CONTEÚDO DAS 3 ABAS -->
+      <span class="field-label">Conteúdo da Aba "Sobre"</span>
+      <textarea class="field-textarea" id="pe-about" rows="3" placeholder="Informações detalhadas sobre o produto e modo de ação..."></textarea>
+
+      <span class="field-label">Conteúdo da Aba "Ficha Técnica"</span>
+      <textarea class="field-textarea" id="pe-specs" rows="2" placeholder="Especificações técnicas, volume, validade e ingredientes..."></textarea>
+
+      <span class="field-label">Conteúdo da Aba "Avaliações"</span>
+      <textarea class="field-textarea" id="pe-reviews" rows="2" placeholder="Depoimentos ou nota média dos clientes..."></textarea>
+
+      <div class="modal-actions" style="margin-top:16px;">
+        <button type="button" class="btn btn-outline" onclick="toggleProductEditMode()">Cancelar</button>
+        <button type="button" class="btn btn-dark" onclick="saveProductModalEdit()">Salvar no catálogo & página pública</button>
       </div>
     </div>
-    <a href="#" class="btn btn-dark" style="width:100%; justify-content:center; margin-bottom:18px;" onclick="addProductToCheckout(event)">Adicionar ao carrinho</a>
-
-    <div class="product-tabs">
-      <button class="product-tab is-active" data-ptab="sobre">Sobre</button>
-      <button class="product-tab" data-ptab="specs">Ficha técnica</button>
-      <button class="product-tab" data-ptab="avaliacoes">Avaliações</button>
-    </div>
-    <div class="product-tab-content" id="product-tab-content"></div>
   </div>
 </div>
 
@@ -2495,7 +2617,7 @@
               ${isProduct ? '<div class="product-checkout-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>Venda direta · Checkout</div>' : ''}
               <div class="svc-card-bottom" style="margin-top:8px;">
                 ${priceBlock}
-                <span class="svc-card-btn">${isProduct ? 'Comprar' : 'Detalhes'}</span>
+                <span class="svc-card-btn">${isProduct ? 'Ver detalhes' : 'Detalhes'}</span>
               </div>
             </div>
           </div>`;
@@ -2599,11 +2721,15 @@
     if(!c) return;
     currentClientId = id;
 
-    // Header info
-    document.getElementById('m-avatar').textContent = initials(c.name);
-    document.getElementById('m-name').textContent = c.name;
-    document.getElementById('m-vip').classList.toggle('hidden', !c.vip);
-    document.getElementById('m-service').textContent = c.service;
+    // Header info (com verificação segura de null)
+    const mAvatar = document.getElementById('m-avatar');
+    if(mAvatar) mAvatar.textContent = initials(c.name);
+    const mName = document.getElementById('m-name');
+    if(mName) mName.textContent = c.name;
+    const mVip = document.getElementById('m-vip');
+    if(mVip) mVip.classList.toggle('hidden', !c.vip);
+    const mService = document.getElementById('m-service');
+    if(mService) mService.textContent = c.service;
 
     // Tab 1: Dados agenda
     const statusBadge = document.getElementById('m-status-badge');
@@ -2612,23 +2738,26 @@
     if(agendaSvc) agendaSvc.textContent = c.service;
     const timePrice = document.getElementById('m-agenda-time-price');
     if(timePrice) timePrice.textContent = `${c.time} · ${c.price} (${c.duration || '60 min'})`;
+    
+    const mPhone = document.getElementById('m-phone');
+    if(mPhone) mPhone.textContent = c.phone || '—';
+    const mDob = document.getElementById('m-dob');
+    if(mDob) mDob.textContent = c.dob || '—';
+    const mTime = document.getElementById('m-time');
+    if(mTime) mTime.textContent = c.time || '—';
+    const mSince = document.getElementById('m-since');
+    if(mSince) mSince.textContent = c.since || '—';
+    const mConsentDate = document.getElementById('m-consent-date');
+    if(mConsentDate) mConsentDate.textContent = c.consent || '—';
 
-    document.getElementById('m-phone').textContent = c.phone;
-    document.getElementById('m-dob').textContent = c.dob;
-    document.getElementById('m-body').textContent = c.body;
-    document.getElementById('m-blood').textContent = c.blood;
-    document.getElementById('m-time').textContent = c.time;
-    document.getElementById('m-since').textContent = c.since;
-    document.getElementById('m-consent-date').textContent = c.consent || '—';
-
-    // WhatsApp and Call
+    // WhatsApp e Ligação direta
     const cleanPhone = (c.phone || '').replace(/\D/g, '');
     const waBtn = document.getElementById('m-whatsapp-btn');
     if(waBtn) waBtn.href = `https://wa.me/55${cleanPhone}?text=Ol%C3%A1%20${encodeURIComponent(c.name)}%2C%20tudo%20bem%3F%20Aqui%20%C3%A9%20do%20est%C3%BAdio%20sobre%20seu%20agendamento.`;
     const callBtn = document.getElementById('m-call-btn');
     if(callBtn) callBtn.href = `tel:${cleanPhone}`;
 
-    // History list
+    // Histórico de atendimentos da cliente
     const historyList = document.getElementById('m-history-list');
     if(historyList){
       if(c.historyList && c.historyList.length > 0){
@@ -2646,23 +2775,24 @@
       }
     }
 
-    // Tab 2: Ficha anamnese
+    // Tab 2: Ficha anamnese dinâmica
     renderAnamneseFields(c);
 
-    // Tab 3: Mídias
+    // Tab 3: Mídias da cliente e inspirações
     renderClientMedia(c);
 
     // Seleciona a primeira aba ("Dados agenda")
     selectModalTab('agenda');
 
-    overlay.classList.remove('hidden');
+    const clientOverlay = document.getElementById('modal-overlay');
+    if(clientOverlay) clientOverlay.classList.remove('hidden');
   }
 
-  function closeClientModal(){ overlay.classList.add('hidden'); }
-  document.getElementById('modal-close').addEventListener('click', closeClientModal);
-  overlay.addEventListener('click', e => { if(e.target === overlay) closeClientModal(); });
+  function closeClientModal(){
+    const clientOverlay = document.getElementById('modal-overlay');
+    if(clientOverlay) clientOverlay.classList.add('hidden');
+  }
 
-  
   // Ouvinte universal para fechar qualquer modal ao clicar fora (backdrop) ou no botão X
   document.addEventListener('click', e => {
     if(e.target.classList && e.target.classList.contains('modal-overlay')){
@@ -2670,8 +2800,8 @@
     }
     const closeBtn = e.target.closest('.modal-close');
     if(closeBtn){
-      const overlay = closeBtn.closest('.modal-overlay');
-      if(overlay) overlay.classList.add('hidden');
+      const overlayEl = closeBtn.closest('.modal-overlay');
+      if(overlayEl) overlayEl.classList.add('hidden');
     }
   });
 
@@ -2679,9 +2809,7 @@
   document.addEventListener('keydown', e => {
     if(e.key === 'Escape') closeAllModals();
   });
-
-
-
+  
   // UPLOAD DE FOTOS DA CLIENTE E INSPIRAÇÕES
   const clientMediaInput = document.getElementById('client-media-file-input');
   if(clientMediaInput){
@@ -3245,7 +3373,7 @@
 
   
   /* =========================================================
-     MODAL DE PRODUTO (checkout / detalhes e edição)
+     MODAL DE PRODUTO (checkout / detalhes e edição em tempo real)
   ========================================================= */
   const productOverlay = document.getElementById('product-overlay');
   let productQty = 1;
@@ -3256,11 +3384,11 @@
     currentEditingProductId = id;
     isProductInEditMode = false;
 
-    // Se aberto pelo painel de serviços, exibe o botão de editar informações
+    // Se aberto pelo painel de serviços profissional -> exibe botão de editar informações
     const profEditBtn = document.getElementById('product-prof-edit-btn');
     if(profEditBtn) profEditBtn.style.display = isProfessional ? 'inline-flex' : 'none';
 
-    // Ocultar formulário de edição e exibir dados
+    // Ocultar formulário de edição e exibir modo de visualização
     const viewMode = document.getElementById('product-view-mode');
     const editForm = document.getElementById('product-edit-form');
     if(viewMode) viewMode.classList.remove('hidden');
@@ -3292,6 +3420,15 @@
     const descEl = document.getElementById('product-desc');
     if(descEl) descEl.textContent = s.desc || 'Antioxidante de alta potência que clareia manchas e devolve a luminosidade da pele.';
 
+    // Badges de benefício: 🎁 Presenteável, ✓ Pronto para venda, 📦 Vinculado ao checkout
+    const f1 = document.getElementById('feat-disp-1');
+    const f2 = document.getElementById('feat-disp-2');
+    const f3 = document.getElementById('feat-disp-3');
+    if(f1) f1.querySelector('span').textContent = s.feature1 || 'Presenteável';
+    if(f2) f2.querySelector('span').textContent = s.feature2 || 'Pronto para venda';
+    if(f3) f3.querySelector('span').textContent = s.feature3 || 'Vinculado ao checkout';
+
+    // Preço De / Por
     const priceEl = document.getElementById('product-price');
     if(priceEl){
       if(s.originalPrice && s.originalPrice !== s.price){
@@ -3301,11 +3438,17 @@
       }
     }
 
-    // Botão de editar no hero
+    // Botão de editar no hero (somente para o profissional)
     const editFab = document.getElementById('product-edit-btn');
     if(editFab) editFab.style.display = isProfessional ? 'flex' : 'none';
 
-    // Preencher campos de edição
+    // Se estiver em modo cliente (página pública), garantir que quantidade e carrinho aparecem
+    const cartBtnWrap = document.getElementById('product-cart-btn-wrap');
+    const qtyWrap = document.getElementById('product-qty-wrap');
+    if(cartBtnWrap) cartBtnWrap.style.display = 'block';
+    if(qtyWrap) qtyWrap.style.display = 'inline-flex';
+
+    // Preencher campos do formulário de edição
     const peTitle = document.getElementById('pe-title');
     if(peTitle) peTitle.value = s.name || '';
     const peCat = document.getElementById('pe-cat');
@@ -3318,6 +3461,12 @@
     if(pePrice) pePrice.value = s.price || '';
     const peDesc = document.getElementById('pe-desc');
     if(peDesc) peDesc.value = s.desc || '';
+    const peF1 = document.getElementById('pe-feat-1');
+    if(peF1) peF1.value = s.feature1 || 'Presenteável';
+    const peF2 = document.getElementById('pe-feat-2');
+    if(peF2) peF2.value = s.feature2 || 'Pronto para venda';
+    const peF3 = document.getElementById('pe-feat-3');
+    if(peF3) peF3.value = s.feature3 || 'Vinculado ao checkout';
     const peAbout = document.getElementById('pe-about');
     if(peAbout) peAbout.value = s.aboutContent || s.desc || 'Antioxidante de alta potência que clareia manchas e devolve a luminosidade da pele.\n\nItem vinculado ao checkout — disponível para venda direta, sem necessidade de agendamento.';
     const peSpecs = document.getElementById('pe-specs');
@@ -3326,7 +3475,7 @@
     if(peReviews) peReviews.value = s.reviewsContent || '★ 4.9 de 5 baseado em 42 avaliações de clientes verificados.';
 
     selectProductTab('sobre', s);
-    productOverlay.classList.remove('hidden');
+    if(productOverlay) productOverlay.classList.remove('hidden');
   }
 
   function toggleProductEditMode(){
@@ -3351,6 +3500,9 @@
     s.originalPrice = document.getElementById('pe-orig-price').value.trim();
     s.price = document.getElementById('pe-price').value.trim() || s.price;
     s.desc = document.getElementById('pe-desc').value.trim();
+    s.feature1 = document.getElementById('pe-feat-1').value.trim() || 'Presenteável';
+    s.feature2 = document.getElementById('pe-feat-2').value.trim() || 'Pronto para venda';
+    s.feature3 = document.getElementById('pe-feat-3').value.trim() || 'Vinculado ao checkout';
     s.aboutContent = document.getElementById('pe-about').value.trim();
     s.specsContent = document.getElementById('pe-specs').value.trim();
     s.reviewsContent = document.getElementById('pe-reviews').value.trim();
@@ -3362,12 +3514,16 @@
     toast('Produto atualizado no catálogo e na página pública ✓');
   }
 
-  function closeProductModal(){ productOverlay.classList.add('hidden'); }
+  function closeProductModal(){
+    if(productOverlay) productOverlay.classList.add('hidden');
+  }
+
   function changeProductQty(delta){
     productQty = Math.max(1, productQty + delta);
     const qtyEl = document.getElementById('product-qty');
     if(qtyEl) qtyEl.textContent = productQty;
   }
+
   function addProductToCheckout(e){
     e.preventDefault();
     closeProductModal();
