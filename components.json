@@ -18,5 +18,7 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {},
+  "": "https://ui.shadcn.com/schema.json",
+  "version": "1.0.0"
 }

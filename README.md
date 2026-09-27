@@ -1,24 +1,30 @@
-# Remix of Appointment Suite
+# agendo — Hub Completo de Agendamento, Estética e Gestão
 
-Agora adione na pagina de perfil a função de configurar o modal de agendamento do cliente ao clicar no botao de agendar, o modal de configuração deve ter funcoes de tapas de agenda e anamnese, dados de comtato, resgatar promoção (cupons), vincular formato de pagamento.
+Aplicativo completo de agendamento profissional, fichas de anamnese, gestão de serviços, produtos e promoções, conectado em tempo real com **Lovable**, **Supabase** e **GitHub**.
 
-This project was built with [Lovable](https://lovable.dev).
+## 🚀 Funcionalidades Recentes
 
-## Build with Lovable
+- **Banners Promocionais Estilo "Link da Bio" (90x400px)**:
+  - Upload de fotos diretamente da galeria do dispositivo (sem necessidade de URL externa).
+  - Banners com link clicável e ícone indicador.
+  - Alternância de exibição instantânea: **Modo Lista** ou **Scroll Horizontal** (carrossel snap).
+  - Posicionamento dinâmico no site público: **Topo**, **Entre seções** ou **Rodapé**.
+- **Ficha Completa do Cliente com 3 Abas**:
+  - **Anamnese**: Histórico clínico, alergias, procedimentos anteriores, cuidados diários e queixas.
+  - **Dados da Agenda**: Telefone/WhatsApp com atalhos de discagem direta, nascimento, data de adesão e histórico de agendamentos (campos desnecessários de tipo sanguíneo e medidas físicas foram removidos).
+  - **Galeria de Mídias**: Registro fotográfico de antes/depois e evolução do tratamento com suporte a lightbox em tela cheia e upload da galeria.
+- **Navegação Inteligente**:
+  - Fechamento automático de qualquer modal ativo ao trocar de aba na barra de navegação inferior.
+- **Integração Supabase & Lovable**:
+  - Configuração de métodos de pagamento, autenticação e sincronização contínua.
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/262194ee-9e00-4756-b100-1636cfe9a04e).
+## 🛠️ Tecnologias
+- **Frontend**: React 19, TypeScript, Tailwind CSS, Vite
+- **Backend / Persistência**: Supabase, PostgreSQL
+- **Integração**: Lovable Sync & GitHub Actions
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
+## 📦 Desenvolvimento Local
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+npm install
 npm run dev
 ```

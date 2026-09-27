@@ -1,3 +1,4 @@
+// agendo - Painel Principal e Ponte de Comunicação com Supabase
 import { useEffect, useRef, useState } from 'react';
 import {
   getAccount,
