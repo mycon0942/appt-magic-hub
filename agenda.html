@@ -407,6 +407,266 @@
     margin-bottom:10px; overflow:hidden; background-size:cover; background-position:center;
   }
 
+  
+  /* ---------- Dashboard Financeiro Minimalista ---------- */
+  .fin-seg-minimal{
+    display:inline-flex;
+    align-items:center;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:9999px;
+    padding:3px;
+    gap:2px;
+  }
+  .fin-seg-minimal button{
+    border:none;
+    background:transparent;
+    color:var(--muted);
+    font-size:11.5px;
+    font-weight:500;
+    padding:5px 13px;
+    border-radius:9999px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .fin-seg-minimal button.is-active{
+    background:#ffffff;
+    color:#000000;
+    font-weight:650;
+    box-shadow:0 1px 4px rgba(0,0,0,0.25);
+  }
+  .fin-kpi-minimal-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:8px;
+    margin-bottom:16px;
+  }
+  .fin-kpi-minimal-card{
+    background:rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:12px;
+    padding:12px 10px;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    transition:border-color .15s ease;
+  }
+  .fin-kpi-minimal-card:hover{ border-color:rgba(255,255,255,0.12); }
+  .fin-kpi-minimal-label{
+    font-size:9.5px;
+    font-weight:500;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .fin-kpi-minimal-value{
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:-0.02em;
+    overflow-wrap:anywhere;
+  }
+
+  /* ---------- Banner Página Pública com Overlay Degradê ---------- */
+  .pub-promo{
+    width:100%;
+    max-width:400px;
+    min-height:92px;
+    border-radius:16px;
+    padding:14px 16px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    /* Degradê premium com iluminação de borda e sombra */
+    background:linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(28,28,34,0.92) 55%, rgba(14,14,18,0.98) 100%);
+    border:1px solid rgba(255,255,255,0.12);
+    box-shadow:0 8px 24px -4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+    text-decoration:none;
+    color:inherit;
+    box-sizing:border-box;
+    margin:12px auto 16px;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .pub-promo::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0.5) 100%);
+    pointer-events:none;
+    z-index:1;
+  }
+  .pub-promo:hover{
+    transform:translateY(-2px);
+    border-color:rgba(255,255,255,0.25);
+    box-shadow:0 12px 28px -4px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.18);
+  }
+  .pub-promo.has-image{
+    background-size:cover !important;
+    background-position:center !important;
+  }
+  .pub-promo.has-image::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.35) 100%);
+    z-index:1;
+  }
+  .pub-promo > * { position:relative; z-index:2; }
+  .pub-promo .k{
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--faint);
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:3px;
+  }
+  .pub-promo .t{
+    font-size:14.5px;
+    font-weight:750;
+    color:var(--ink);
+    line-height:1.25;
+    margin-bottom:2px;
+  }
+  .pub-promo .s{
+    font-size:11.5px;
+    color:var(--muted);
+    line-height:1.3;
+  }
+  .pub-promo .pub-promo-link-ic{
+    position:absolute;
+    right:14px;
+    bottom:14px;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink);
+  }
+
+  /* ---------- Tabs da Página Pública (Serviços | Produtos | Sobre mim | Mídias) ---------- */
+  .pub-nav-tabs-wrap{
+    display:flex;
+    background:var(--canvas-soft);
+    border:1px solid var(--hairline-soft);
+    border-radius:9999px;
+    padding:4px;
+    gap:3px;
+    margin:14px 0 18px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .pub-nav-tabs-wrap::-webkit-scrollbar{ display:none; }
+  .pub-nav-tab{
+    flex:1;
+    border:none;
+    background:transparent;
+    color:var(--muted);
+    font-size:12px;
+    font-weight:600;
+    padding:8px 12px;
+    border-radius:9999px;
+    cursor:pointer;
+    white-space:nowrap;
+    text-align:center;
+    transition:all .15s ease;
+  }
+  .pub-nav-tab.is-active{
+    background:var(--cta-fill);
+    color:var(--cta-text);
+    box-shadow:0 1px 3px rgba(0,0,0,0.25);
+  }
+
+  /* ---------- Grid 3x9 da Tab Mídias (27 fotos) ---------- */
+  .pub-media-grid-3x9{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:8px;
+    margin-top:12px;
+  }
+  .pub-media-cell{
+    position:relative;
+    aspect-ratio:1 / 1;
+    border-radius:12px;
+    overflow:hidden;
+    background:var(--field);
+    border:1px solid var(--hairline-soft);
+    cursor:pointer;
+    transition:transform .18s ease, border-color .18s ease;
+  }
+  .pub-media-cell:hover{
+    transform:scale(1.02);
+    border-color:rgba(255,255,255,0.3);
+  }
+  .pub-media-cell img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .pub-media-cell-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.75) 100%);
+    display:flex;
+    align-items:flex-end;
+    padding:6px;
+    pointer-events:none;
+  }
+  .pub-media-cell-tag{
+    font-size:9px;
+    font-weight:650;
+    color:#ffffff;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    line-height:1.2;
+    text-shadow:0 1px 2px rgba(0,0,0,0.8);
+  }
+
+  /* ---------- Sobre Mim na Página Pública ---------- */
+  .pub-about-card{
+    background:var(--canvas-soft);
+    border:1px solid var(--hairline-soft);
+    border-radius:16px;
+    padding:18px 16px;
+    margin-bottom:14px;
+  }
+  .pub-about-card h4{
+    font-size:14px;
+    font-weight:700;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  .pub-about-card p{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.55;
+    margin:0 0 12px;
+  }
+  .pub-badge-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:10px;
+  }
+  .pub-badge-pill{
+    font-size:10.5px;
+    font-weight:600;
+    background:var(--field);
+    border:1px solid var(--hairline-soft);
+    color:var(--ink);
+    padding:4px 9px;
+    border-radius:9999px;
+  }
+
   /* ---------- Bottom pill nav ---------- */
   .bottom-nav{
     position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
@@ -970,23 +1230,27 @@
   <!-- ================= DASHBOARD FINANCEIRO ================= -->
   <div id="view-dashboard" class="hidden">
     <div class="page-head">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <button class="icon-btn" style="width:38px; height:38px;" onclick="goTo('services')" aria-label="Voltar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <h2 style="margin:0;">Dashboard financeiro</h2>
-      </div>
-      <div class="seg-control" id="fin-seg">
-        <button data-range="dia" class="is-active">Dia</button>
-        <button data-range="semana">Semana</button>
-        <button data-range="mes">Mês</button>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="icon-btn" style="width:36px; height:36px;" onclick="goTo('services')" aria-label="Voltar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <h2 style="margin:0; font-size:18px; font-weight:700;">Financeiro</h2>
+        </div>
+        <!-- Segmento Minimalista (Dia / Semana / Mês) -->
+        <div class="fin-seg-minimal" id="fin-seg">
+          <button data-range="dia" class="is-active">Dia</button>
+          <button data-range="semana">Semana</button>
+          <button data-range="mes">Mês</button>
+        </div>
       </div>
     </div>
     <div class="section">
-      <div class="fin-kpi-grid">
-        <div class="fin-kpi-card"><span class="fin-kpi-label">Faturamento</span><span class="fin-kpi-value" id="fin-revenue">R$ 0</span></div>
-        <div class="fin-kpi-card"><span class="fin-kpi-label">Atendimentos</span><span class="fin-kpi-value" id="fin-count">0</span></div>
-        <div class="fin-kpi-card"><span class="fin-kpi-label">Ticket médio</span><span class="fin-kpi-value" id="fin-avg">R$ 0</span></div>
+      <!-- KPIs Minimalistas -->
+      <div class="fin-kpi-minimal-grid">
+        <div class="fin-kpi-minimal-card"><span class="fin-kpi-minimal-label">Faturamento</span><span class="fin-kpi-minimal-value" id="fin-revenue">R$ 0</span></div>
+        <div class="fin-kpi-minimal-card"><span class="fin-kpi-minimal-label">Atendimentos</span><span class="fin-kpi-minimal-value" id="fin-count">0</span></div>
+        <div class="fin-kpi-minimal-card"><span class="fin-kpi-minimal-label">Ticket Médio</span><span class="fin-kpi-minimal-value" id="fin-avg">R$ 0</span></div>
       </div>
       <p class="bk-note" id="fin-period-note">Resumo do período</p>
       <div class="fin-chart-wrap">
@@ -1353,7 +1617,7 @@
       <button type="button" class="btn btn-outline" id="edit-image-remove-btn" style="display:none; font-size:11.5px; padding:9px 12px;">Remover foto</button>
     </div>
 
-    <div class="emoji-swatches" id="edit-emoji-swatches"></div>
+    
 
     <span class="field-label">Vincular a (Tipo do Item)</span>
     <div class="link-toggle" id="edit-link-toggle">
@@ -1781,9 +2045,60 @@
   </div>
 </div>
 
+<!-- ================= MODAL : LIGHTBOX MÍDIA ================= -->
+<div id="lightbox-overlay" class="modal-overlay hidden" style="z-index:90;">
+  <div class="lightbox-card">
+    <div class="modal-head">
+      <div>
+        <div class="modal-name" id="lightbox-title">Visualizar Mídia</div>
+        <div style="font-size:12px; color:var(--muted);" id="lightbox-sub">Cliente</div>
+      </div>
+      <button class="modal-close" onclick="closeLightbox()" aria-label="Fechar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="lightbox-img-wrap" id="lightbox-img-wrap">
+      <img id="lightbox-img" src="" alt="Mídia">
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+      <span class="agenda-status-badge" id="lightbox-badge">Mídia</span>
+      <button class="btn btn-outline" style="font-size:11.5px; padding:6px 12px;" onclick="closeLightbox()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL : LISTA DE CLIENTES ================= -->
+<div id="clients-list-overlay" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <div class="modal-name">Clientes & Anamnese</div>
+        <div style="font-size:12px; color:var(--muted);">Selecione um cliente para abrir os detalhes</div>
+      </div>
+      <button class="modal-close" onclick="closeClientsList()" aria-label="Fechar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="appt-list" id="all-clients-list"></div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
+  // Variáveis Globais de Estado
+  let bannerDisplayMode = localStorage.getItem('bannerDisplayMode') || 'list';
+  let bannerPosition = localStorage.getItem('bannerPosition') || 'top';
+  let bannerUploadedImage = '';
+  let currentCatalogType = 'servico';
+  let svcViewMode = 'cards';
+  let svcFilter = 'all';
+  let svcSearchQuery = '';
+  let publicOfferType = 'servico';
+  let publicCurrentTab = 'servicos';
+  let currentEditingProductId = null;
+  let isProductInEditMode = false;
+
   const clients = [
     {
       id:'c1', name:'Ana Ferreira', vip:true, phone:'(11) 98221-4470', dob:'14/03/1991', since:'jan/2024',
@@ -2018,10 +2333,10 @@
   updateApptCountTag();
 
   // CATÁLOGO: SELETOR ENTRE SERVIÇOS E PRODUTOS (CHECKOUT) & CONTROLE DE EXIBIÇÃO
-  let currentCatalogType = 'servico'; // 'servico' | 'produto'
-  let svcViewMode = localStorage.getItem('svcViewMode') || 'cards'; // 'cards' | 'list'
-  let svcFilter = 'all';
-  let svcSearchQuery = '';
+  currentCatalogType = 'servico';
+  svcViewMode = localStorage.getItem('svcViewMode') || 'cards';
+  svcFilter = 'all';
+  svcSearchQuery = '';
 
   function setCatalogType(type){
     currentCatalogType = type;
@@ -2346,6 +2661,26 @@
   function closeClientModal(){ overlay.classList.add('hidden'); }
   document.getElementById('modal-close').addEventListener('click', closeClientModal);
   overlay.addEventListener('click', e => { if(e.target === overlay) closeClientModal(); });
+
+  
+  // Ouvinte universal para fechar qualquer modal ao clicar fora (backdrop) ou no botão X
+  document.addEventListener('click', e => {
+    if(e.target.classList && e.target.classList.contains('modal-overlay')){
+      e.target.classList.add('hidden');
+    }
+    const closeBtn = e.target.closest('.modal-close');
+    if(closeBtn){
+      const overlay = closeBtn.closest('.modal-overlay');
+      if(overlay) overlay.classList.add('hidden');
+    }
+  });
+
+  // Tecla Escape fecha todos os modais abertos
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape') closeAllModals();
+  });
+
+
 
   // UPLOAD DE FOTOS DA CLIENTE E INSPIRAÇÕES
   const clientMediaInput = document.getElementById('client-media-file-input');
@@ -2686,7 +3021,8 @@
     if(!card) return;
     const s = services.find(x=>x.id===card.dataset.id);
     if(!s) return;
-    if(s.type === 'produto') openProductModal(s.id);
+    // Aberto pelo painel de serviços profissional -> permite edição
+    if(s.type === 'produto') openProductModal(s.id, true);
     else openEditModal(s.id);
   });
 
@@ -2907,69 +3243,161 @@
     toast('Agendamento remarcado para ' + c.time);
   }
 
+  
   /* =========================================================
-     MODAL DE PRODUTO (checkout)
+     MODAL DE PRODUTO (checkout / detalhes e edição)
   ========================================================= */
   const productOverlay = document.getElementById('product-overlay');
   let productQty = 1;
 
-  function openProductModal(id){
-    const s = services.find(x=>x.id===id);
+  function openProductModal(id, isProfessional = false){
+    const s = services.find(x => x.id === id);
     if(!s) return;
+    currentEditingProductId = id;
+    isProductInEditMode = false;
+
+    // Se aberto pelo painel de serviços, exibe o botão de editar informações
+    const profEditBtn = document.getElementById('product-prof-edit-btn');
+    if(profEditBtn) profEditBtn.style.display = isProfessional ? 'inline-flex' : 'none';
+
+    // Ocultar formulário de edição e exibir dados
+    const viewMode = document.getElementById('product-view-mode');
+    const editForm = document.getElementById('product-edit-form');
+    if(viewMode) viewMode.classList.remove('hidden');
+    if(editForm) editForm.classList.add('hidden');
+
     const cat = themeFor(s.cat);
     productQty = 1;
-    document.getElementById('product-qty').textContent = '1';
-    document.getElementById('product-hero').style.background = s.image ? `url('${s.image}') center/cover no-repeat` : `linear-gradient(180deg, ${cat.soft} 0%, rgba(0,0,0,0.55) 100%)`;
-    document.getElementById('product-emoji').textContent = s.image ? '' : (s.emoji || cat.emoji);
-    document.getElementById('product-badge').classList.toggle('hidden', !s.badge);
-    document.getElementById('product-badge').textContent = s.badge || '';
-    document.getElementById('product-cat').textContent = cat.label;
-    document.getElementById('product-title').textContent = s.name;
-    document.getElementById('product-desc').textContent = s.desc || '';
+    const qtyEl = document.getElementById('product-qty');
+    if(qtyEl) qtyEl.textContent = '1';
 
-    // PREÇO COM PROMOÇÃO "DE / POR"
-    const priceEl = document.getElementById('product-price');
-    if(s.originalPrice && s.originalPrice !== s.price){
-      priceEl.innerHTML = `<span class="price-old" style="font-size:13px; margin-right:6px;">De ${s.originalPrice}</span><span style="font-size:18px; font-weight:700;">Por ${s.price}</span>`;
-    } else {
-      priceEl.textContent = s.price;
+    const hero = document.getElementById('product-hero');
+    if(hero) hero.style.background = s.image ? `url('${s.image}') center/cover no-repeat` : `linear-gradient(180deg, ${cat.soft} 0%, rgba(0,0,0,0.7) 100%)`;
+    
+    const emojiEl = document.getElementById('product-emoji');
+    if(emojiEl) emojiEl.textContent = s.image ? '' : (s.emoji || cat.emoji || '🧴');
+
+    const badgeEl = document.getElementById('product-badge');
+    if(badgeEl){
+      badgeEl.classList.toggle('hidden', !s.badge);
+      badgeEl.textContent = s.badge || '';
     }
 
-    document.getElementById('product-edit-btn').onclick = () => { closeProductModal(); openEditModal(s.id); };
-    document.getElementById('product-edit-btn').dataset.id = s.id;
+    const catEl = document.getElementById('product-cat');
+    if(catEl) catEl.textContent = s.catLabel || cat.label;
+
+    const titleEl = document.getElementById('product-title');
+    if(titleEl) titleEl.textContent = s.name;
+
+    const descEl = document.getElementById('product-desc');
+    if(descEl) descEl.textContent = s.desc || 'Antioxidante de alta potência que clareia manchas e devolve a luminosidade da pele.';
+
+    const priceEl = document.getElementById('product-price');
+    if(priceEl){
+      if(s.originalPrice && s.originalPrice !== s.price){
+        priceEl.innerHTML = `<span class="price-old" style="font-size:13px; margin-right:6px; opacity:0.6; text-decoration:line-through;">De ${s.originalPrice}</span><span style="font-size:18px; font-weight:750; color:var(--ink);">Por ${s.price}</span>`;
+      } else {
+        priceEl.textContent = s.price;
+      }
+    }
+
+    // Botão de editar no hero
+    const editFab = document.getElementById('product-edit-btn');
+    if(editFab) editFab.style.display = isProfessional ? 'flex' : 'none';
+
+    // Preencher campos de edição
+    const peTitle = document.getElementById('pe-title');
+    if(peTitle) peTitle.value = s.name || '';
+    const peCat = document.getElementById('pe-cat');
+    if(peCat) peCat.value = s.catLabel || cat.label || '';
+    const peBadge = document.getElementById('pe-badge');
+    if(peBadge) peBadge.value = s.badge || '';
+    const peOrig = document.getElementById('pe-orig-price');
+    if(peOrig) peOrig.value = s.originalPrice || '';
+    const pePrice = document.getElementById('pe-price');
+    if(pePrice) pePrice.value = s.price || '';
+    const peDesc = document.getElementById('pe-desc');
+    if(peDesc) peDesc.value = s.desc || '';
+    const peAbout = document.getElementById('pe-about');
+    if(peAbout) peAbout.value = s.aboutContent || s.desc || 'Antioxidante de alta potência que clareia manchas e devolve a luminosidade da pele.\n\nItem vinculado ao checkout — disponível para venda direta, sem necessidade de agendamento.';
+    const peSpecs = document.getElementById('pe-specs');
+    if(peSpecs) peSpecs.value = s.specsContent || 'Volume: 30ml\nUso diário facial\nValidade: 24 meses\nTextura: Sérum aquoso leve';
+    const peReviews = document.getElementById('pe-reviews');
+    if(peReviews) peReviews.value = s.reviewsContent || '★ 4.9 de 5 baseado em 42 avaliações de clientes verificados.';
+
     selectProductTab('sobre', s);
     productOverlay.classList.remove('hidden');
   }
+
+  function toggleProductEditMode(){
+    isProductInEditMode = !isProductInEditMode;
+    const viewMode = document.getElementById('product-view-mode');
+    const editForm = document.getElementById('product-edit-form');
+    if(viewMode) viewMode.classList.toggle('hidden', isProductInEditMode);
+    if(editForm) editForm.classList.toggle('hidden', !isProductInEditMode);
+  }
+
+  function saveProductModalEdit(){
+    if(!currentEditingProductId) return;
+    const s = services.find(x => x.id === currentEditingProductId);
+    if(!s) return;
+
+    const title = document.getElementById('pe-title').value.trim();
+    if(!title){ toast('Informe o nome do produto'); return; }
+
+    s.name = title;
+    s.catLabel = document.getElementById('pe-cat').value.trim() || 'Skincare Facial';
+    s.badge = document.getElementById('pe-badge').value.trim();
+    s.originalPrice = document.getElementById('pe-orig-price').value.trim();
+    s.price = document.getElementById('pe-price').value.trim() || s.price;
+    s.desc = document.getElementById('pe-desc').value.trim();
+    s.aboutContent = document.getElementById('pe-about').value.trim();
+    s.specsContent = document.getElementById('pe-specs').value.trim();
+    s.reviewsContent = document.getElementById('pe-reviews').value.trim();
+
+    toggleProductEditMode();
+    openProductModal(s.id, true);
+    renderServices(svcFilter);
+    renderPublicProfile();
+    toast('Produto atualizado no catálogo e na página pública ✓');
+  }
+
   function closeProductModal(){ productOverlay.classList.add('hidden'); }
   function changeProductQty(delta){
-    productQty = Math.max(1, productQty+delta);
-    document.getElementById('product-qty').textContent = productQty;
+    productQty = Math.max(1, productQty + delta);
+    const qtyEl = document.getElementById('product-qty');
+    if(qtyEl) qtyEl.textContent = productQty;
   }
   function addProductToCheckout(e){
     e.preventDefault();
-    toast(productQty+'x adicionado ao checkout ✓');
+    closeProductModal();
+    toast('Produto adicionado ao carrinho (' + productQty + 'x) ✓');
   }
+
   function selectProductTab(tab, s){
-    document.querySelectorAll('.product-tab').forEach(b => b.classList.toggle('is-active', b.dataset.ptab===tab));
+    document.querySelectorAll('.product-tab').forEach(b => b.classList.toggle('is-active', b.dataset.ptab === tab));
     const content = document.getElementById('product-tab-content');
+    if(!content || !s) return;
     if(tab === 'sobre'){
-      content.innerHTML = `${s.desc || ''}<br><br>Item vinculado ao checkout — disponível para venda direta, sem necessidade de agendamento.`;
-    }else if(tab === 'specs'){
-      content.innerHTML = `<table class="spec-table">
-        <tr><td>Categoria</td><td>${themeFor(s.cat).label}</td></tr>
+      const text = s.aboutContent || s.desc || 'Antioxidante de alta potência que clareia manchas e devolve a luminosidade da pele.';
+      content.innerHTML = `<p style="font-size:13px; line-height:1.55; color:var(--muted);">${text.replace(/\n/g, '<br>')}</p><p style="font-size:12px; color:var(--faint); margin-top:8px;">📦 Item vinculado ao checkout — disponível para venda direta, sem necessidade de agendamento.</p>`;
+    } else if(tab === 'specs'){
+      content.innerHTML = `<table class="specs-table">
+        <tr><td>Categoria</td><td>${s.catLabel || themeFor(s.cat).label}</td></tr>
         <tr><td>Preço promocional</td><td>${s.price}</td></tr>
         ${s.originalPrice ? `<tr><td>Preço original</td><td>${s.originalPrice}</td></tr>` : ''}
-        <tr><td>Tipo</td><td>Produto (venda direta checkout)</td></tr>
-        <tr><td>Retirada / Envio</td><td>Pronta entrega no estúdio ou envio rápido</td></tr>
+        <tr><td>Especificações</td><td>${(s.specsContent || 'Uso facial diário · 30ml').replace(/\n/g, '<br>')}</td></tr>
+        <tr><td>Disponibilidade</td><td>Pronta entrega ou retirada imediata no estúdio</td></tr>
       </table>`;
-    }else{
-      content.innerHTML = `<span style="color:var(--faint)">Ainda não há avaliações para este item.</span>`;
+    } else {
+      content.innerHTML = `<div style="font-size:12.5px; color:var(--muted); line-height:1.5;">${(s.reviewsContent || '★ 4.9 de 5 baseado em 42 avaliações de clientes verificados.').replace(/\n/g, '<br>')}</div>`;
     }
   }
+
   document.querySelectorAll('.product-tab').forEach(btn => {
     btn.addEventListener('click', () => {
-      const s = services.find(x=>x.id===document.getElementById('product-edit-btn').dataset.id);
-      selectProductTab(btn.dataset.ptab, s);
+      const s = services.find(x => x.id === currentEditingProductId);
+      if(s) selectProductTab(btn.dataset.ptab, s);
     });
   });
 
@@ -2995,7 +3423,6 @@
     { id:'b2', kicker:'Novidade', title:'Novo horário aos sábados', sub:'Agende já o seu horário', emoji:'📅' }
   ];
 
-  let publicOfferType = 'servico';
   function renderProfile(){
     const grad = coverPresets[profile.coverIndex];
     document.getElementById('profile-cover').style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
@@ -3612,17 +4039,57 @@
   /* =========================================================
      PERFIL PÚBLICO (visão do cliente) + AGENDAR
   ========================================================= */
+  
+  const publicMediaGallery = [
+    { title: 'Limpeza Facial Profunda', cat: 'Facial', img: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Peeling de Diamante', cat: 'Facial', img: 'https://images.unsplash.com/photo-1512290900672-1f55b9a4c000?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Microagulhamento Glow', cat: 'Facial', img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Design de Sobrancelhas', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Henna Definida', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Lash Lifting Curvatura', cat: 'Cílios', img: 'https://images.unsplash.com/photo-1583001809873-a128495da465?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Massagem Relaxante', cat: 'Corporal', img: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Drenagem Linfática', cat: 'Corporal', img: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Pedras Quentes Spa', cat: 'Spa', img: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Revitalização Labial', cat: 'Facial', img: 'https://images.unsplash.com/photo-1588515724527-074a7a56616c?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Argiloterapia Detox', cat: 'Facial', img: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Higienização de Poros', cat: 'Facial', img: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Sérum Vitamina C 15%', cat: 'Cosméticos', img: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Cosméticos Home Care', cat: 'Home Care', img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Ambiente do Consultório', cat: 'Clínica', img: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Maca e Aconchego', cat: 'Clínica', img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Aromaterapia Floral', cat: 'Spa', img: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Glow Skin Dourado', cat: 'Resultado', img: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Antes & Depois Pele', cat: 'Antes/Depois', img: 'https://images.unsplash.com/photo-1576426863848-c21f53c60b19?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Uniformização Facial', cat: 'Resultado', img: 'https://images.unsplash.com/photo-1516914943479-89db7d9ae7f2?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Hidratação Intensiva', cat: 'Facial', img: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Alinhamento Fio a Fio', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Extensão Clássica', cat: 'Cílios', img: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Óleo Reparador Argan', cat: 'Capilar', img: 'https://images.unsplash.com/photo-1608248597359-5980a3794b15?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Vela Terapêutica Lavanda', cat: 'Home Care', img: 'https://images.unsplash.com/photo-1508759073847-9ca702cec7d2?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Máscara Rosa Detox', cat: 'Skincare', img: 'https://images.unsplash.com/photo-1567928815104-b67c42707418?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Manteiga Karité & Amêndoas', cat: 'Corpo', img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80' }
+  ];
+
   function renderPublicProfile(){
     const grad = coverPresets[profile.coverIndex];
-    document.getElementById('pub-cover').style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
-    document.getElementById('pub-avatar').textContent = profile.avatarEmoji;
-    document.getElementById('pub-name').textContent = profile.name;
-    document.getElementById('pub-bio').textContent = profile.bio;
-    document.getElementById('pub-about').textContent = profile.about;
-    document.getElementById('pub-services').textContent = services.length + ' serviços';
-    document.getElementById('bkprev-name').textContent = profile.name.split(' ')[0];
-    document.getElementById('pub-handle').textContent = profile.name.toLowerCase().replace(/[^a-z]/g,'');
+    const pubCover = document.getElementById('pub-cover');
+    if(pubCover) pubCover.style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
+    const pubAvatar = document.getElementById('pub-avatar');
+    if(pubAvatar) pubAvatar.textContent = profile.avatarEmoji;
+    const pubName = document.getElementById('pub-name');
+    if(pubName) pubName.textContent = profile.name;
+    const pubBio = document.getElementById('pub-bio');
+    if(pubBio) pubBio.textContent = profile.bio || 'Especialista em estética facial e corporal';
+    const pubAbout = document.getElementById('pub-about');
+    if(pubAbout) pubAbout.textContent = profile.about;
+    const pubServices = document.getElementById('pub-services');
+    if(pubServices) pubServices.textContent = services.length + ' serviços';
+    const bkprevName = document.getElementById('bkprev-name');
+    if(bkprevName) bkprevName.textContent = profile.name.split(' ')[0];
+    const pubHandle = document.getElementById('pub-handle');
+    if(pubHandle) pubHandle.textContent = profile.name.toLowerCase().replace(/[^a-z]/g,'');
 
+    // Banners promocionais com overlay degradê posicionado logo abaixo da bio
     const promosSec = document.getElementById('pub-promos-sec');
     const promos = document.getElementById('pub-promos');
     if(promosSec && promos){
@@ -3635,41 +4102,96 @@
         const hrefAttr = b.link ? `href="${b.link}" target="_blank" rel="noopener"` : '';
         return `
         <${tag} ${hrefAttr} class="pub-promo ${hasImgClass}" style="${bgStyle}">
-          <div class="k">${b.emoji ? `<span>${b.emoji}</span> ` : ''}${b.kicker || 'Destaque'}</div>
+          <div class="k">${b.kicker || 'Destaque'}</div>
           <div class="t">${b.title}</div>
           <div class="s">${b.sub || ''}</div>
           ${b.link ? `<span class="pub-promo-link-ic" title="Abrir link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg></span>` : ''}
         </${tag}>`;
       }).join('');
-
-      // Posicionamento dinâmico entre componentes na visualização pública
-      const viewPub = document.getElementById('view-public');
-      const ctaEl = viewPub.querySelector('.pub-cta');
-      const aboutSec = viewPub.querySelectorAll('.pub-sec')[1];
-      const offersSec = viewPub.querySelectorAll('.pub-sec')[2];
-      
-      if(bannerPosition === 'top' && ctaEl){
-        ctaEl.parentNode.insertBefore(promosSec, ctaEl);
-      } else if(bannerPosition === 'bottom' && viewPub.querySelector('.spacer')){
-        viewPub.insertBefore(promosSec, viewPub.querySelector('.spacer'));
-      } else if(aboutSec && aboutSec.parentNode){
-        aboutSec.parentNode.insertBefore(promosSec, aboutSec);
-      }
     }
 
-    renderPublicOffers();
+    renderPublicTabContent();
   }
-  function renderPublicOffers(){
-    const items = services.filter(s => (s.type || 'servico') === publicOfferType);
-    const groups = [...new Set(items.map(s=>s.cat))];
-    document.getElementById('pub-offers').innerHTML = groups.length ? groups.map(catKey=>`<h3>${themeFor(catKey).label}</h3><div class="pub-offer-row">${items.filter(s=>s.cat===catKey).map(s=>`<article class="pub-offer-card"><div class="pub-offer-art">${s.emoji || themeFor(s.cat).emoji}</div><div class="pub-offer-details"><div class="nm">${s.name}</div><div class="dt">${s.duration} · ${s.price}</div><button class="go" onclick="${publicOfferType==='produto' ? `openProductModal('${s.id}')` : `openBookingPreview('${s.id}')`}">${publicOfferType==='produto'?'Detalhes':'Agendar'}</button></div></article>`).join('')}</div>`).join('') : `<p class="bk-note">Nenhum produto disponível no momento.</p>`;
+
+  function renderPublicTabContent(){
+    // Alternar abas públicas
+    document.querySelectorAll('.pub-tab-pane').forEach(p => p.classList.add('hidden'));
+    const activePane = document.getElementById('pub-tab-' + publicCurrentTab);
+    if(activePane) activePane.classList.remove('hidden');
+
+    document.querySelectorAll('#pub-main-tabs .pub-nav-tab').forEach(b => {
+      b.classList.toggle('is-active', b.dataset.pubtab === publicCurrentTab);
+    });
+
+    if(publicCurrentTab === 'servicos'){
+      const svcItems = services.filter(s => (s.type || 'servico') === 'servico');
+      const groups = [...new Set(svcItems.map(s => s.cat))];
+      const container = document.getElementById('pub-services-list');
+      if(container){
+        container.innerHTML = groups.length ? groups.map(catKey => `
+          <h3 style="font-size:13px; font-weight:700; color:var(--ink); margin:18px 0 8px;">${themeFor(catKey).label}</h3>
+          <div class="pub-offer-row">
+            ${svcItems.filter(s => s.cat === catKey).map(s => `
+              <article class="pub-offer-card">
+                <div class="pub-offer-art">${s.emoji || themeFor(s.cat).emoji}</div>
+                <div class="pub-offer-details">
+                  <div class="nm">${s.name}</div>
+                  <div class="dt">${s.duration} · ${s.price}</div>
+                  <button class="go" onclick="openBookingPreview('${s.id}')">Agendar</button>
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        `).join('') : '<p class="bk-note">Nenhum serviço disponível.</p>';
+      }
+    } else if(publicCurrentTab === 'produtos'){
+      const prodItems = services.filter(s => s.type === 'produto');
+      const groups = [...new Set(prodItems.map(s => s.cat))];
+      const container = document.getElementById('pub-products-list');
+      if(container){
+        container.innerHTML = groups.length ? groups.map(catKey => `
+          <h3 style="font-size:13px; font-weight:700; color:var(--ink); margin:18px 0 8px;">${themeFor(catKey).label}</h3>
+          <div class="pub-offer-row">
+            ${prodItems.filter(s => s.cat === catKey).map(s => `
+              <article class="pub-offer-card">
+                <div class="pub-offer-art" style="${s.image ? `background:url('${s.image}') center/cover no-repeat;` : ''}">
+                  ${s.image ? '' : (s.emoji || themeFor(s.cat).emoji)}
+                </div>
+                <div class="pub-offer-details">
+                  <div class="nm">${s.name}</div>
+                  <div class="dt">${s.originalPrice ? `<span style="text-decoration:line-through; opacity:0.6; margin-right:4px;">De ${s.originalPrice}</span>` : ''}<b>Por ${s.price}</b></div>
+                  <button class="go" onclick="openProductModal('${s.id}', false)">Ver detalhes</button>
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        `).join('') : '<p class="bk-note">Nenhum produto cadastrado no catálogo.</p>';
+      }
+    } else if(publicCurrentTab === 'midia'){
+      const gridContainer = document.getElementById('pub-media-grid-container');
+      if(gridContainer){
+        gridContainer.innerHTML = publicMediaGallery.map(m => `
+          <div class="pub-media-cell" onclick="openLightbox('${m.img}', '${m.title}', 'Estética & Cuidados · Marina Ravi')">
+            <img src="${m.img}" alt="${m.title}" loading="lazy">
+            <div class="pub-media-cell-overlay">
+              <span class="pub-media-cell-tag">${m.title}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
   }
-  document.getElementById('pub-offer-tabs').addEventListener('click',e=>{ const btn=e.target.closest('[data-type]'); if(!btn)return; publicOfferType=btn.dataset.type; document.querySelectorAll('#pub-offer-tabs button').forEach(b=>b.classList.toggle('is-active',b===btn)); renderPublicOffers(); });
-  async function sharePublicPage(){
-    try { if(navigator.share) await navigator.share({title:profile.name,url:location.href}); else { await navigator.clipboard.writeText(location.href); toast('Link copiado ✓'); } }
-    catch(e){ if(e.name!=='AbortError') toast('Não foi possível compartilhar'); }
+
+  // Listener para as abas da página pública
+  const mainTabs = document.getElementById('pub-main-tabs');
+  if(mainTabs){
+    mainTabs.addEventListener('click', e => {
+      const btn = e.target.closest('[data-pubtab]');
+      if(!btn) return;
+      publicCurrentTab = btn.dataset.pubtab;
+      renderPublicTabContent();
+    });
   }
-  renderPublicProfile();
 
   const bkPrevOverlay = document.getElementById('bkprev-overlay');
   function openBookingPreview(serviceId){
@@ -3754,6 +4276,14 @@
     }
     if(bookingStep<3){bookingStep++;showBookingStep();}else confirmBookingPreview();
   }
+    async function sharePublicPage(){
+    try {
+      if(navigator.share) await navigator.share({ title: profile.name, url: location.href });
+      else { await navigator.clipboard.writeText(location.href); toast('Link copiado ✓'); }
+    } catch(e) {
+      if(e.name !== 'AbortError') toast('Não foi possível compartilhar');
+    }
+  }
   function closeBookingPreview(){ bkPrevOverlay.classList.add('hidden'); }
   function confirmBookingPreview(){
     const missing = bookingConfig.contact.filter(f => f.on && f.required)
@@ -3772,45 +4302,47 @@
     closeBookingPreview();
     toast('Agendamento enviado ✓');
   }
+
+  // Expor funções essenciais para chamadas inline (onclick) com verificação segura
+  window.goTo = typeof goTo !== 'undefined' ? goTo : null;
+  window.closeAllModals = typeof closeAllModals !== 'undefined' ? closeAllModals : null;
+  window.openProductModal = typeof openProductModal !== 'undefined' ? openProductModal : null;
+  window.closeProductModal = typeof closeProductModal !== 'undefined' ? closeProductModal : null;
+  window.toggleProductEditMode = typeof toggleProductEditMode !== 'undefined' ? toggleProductEditMode : null;
+  window.saveProductModalEdit = typeof saveProductModalEdit !== 'undefined' ? saveProductModalEdit : null;
+  window.changeProductQty = typeof changeProductQty !== 'undefined' ? changeProductQty : null;
+  window.addProductToCheckout = typeof addProductToCheckout !== 'undefined' ? addProductToCheckout : null;
+  window.openBookingPreview = typeof openBookingPreview !== 'undefined' ? openBookingPreview : null;
+  window.closeBookingPreview = typeof closeBookingPreview !== 'undefined' ? closeBookingPreview : null;
+  window.openLightbox = typeof openLightbox !== 'undefined' ? openLightbox : null;
+  window.closeLightbox = typeof closeLightbox !== 'undefined' ? closeLightbox : null;
+  window.openClientsList = typeof openClientsList !== 'undefined' ? openClientsList : null;
+  window.closeClientsList = typeof closeClientsList !== 'undefined' ? closeClientsList : null;
+  window.sharePublicPage = typeof sharePublicPage !== 'undefined' ? sharePublicPage : null;
+  window.openEditModal = typeof openEditModal !== 'undefined' ? openEditModal : null;
+  window.closeEdit = typeof closeEdit !== 'undefined' ? closeEdit : null;
+  window.saveEditItem = typeof saveEditItem !== 'undefined' ? saveEditItem : null;
+  window.openModal = typeof openModal !== 'undefined' ? openModal : null;
+  window.closeClientModal = typeof closeClientModal !== 'undefined' ? closeClientModal : null;
+  window.openBannerForm = typeof openBannerForm !== 'undefined' ? openBannerForm : null;
+  window.closeBannerForm = typeof closeBannerForm !== 'undefined' ? closeBannerForm : null;
+  window.saveBanner = typeof saveBanner !== 'undefined' ? saveBanner : null;
+  window.openQuick = typeof openQuick !== 'undefined' ? openQuick : null;
+  window.closeQuick = typeof closeQuick !== 'undefined' ? closeQuick : null;
+  window.openManualBooking = typeof openManualBooking !== 'undefined' ? openManualBooking : null;
+  window.closeManualBooking = typeof closeManualBooking !== 'undefined' ? closeManualBooking : null;
+  window.openReschedule = typeof openReschedule !== 'undefined' ? openReschedule : null;
+  window.closeReschedule = typeof closeReschedule !== 'undefined' ? closeReschedule : null;
+  window.openHoursConfig = typeof openHoursConfig !== 'undefined' ? openHoursConfig : null;
+  window.closeHoursConfig = typeof closeHoursConfig !== 'undefined' ? closeHoursConfig : null;
+  window.openPaymentConfig = typeof openPaymentConfig !== 'undefined' ? openPaymentConfig : null;
+  window.closePaymentConfig = typeof closePaymentConfig !== 'undefined' ? closePaymentConfig : null;
+  window.openTemplateEditor = typeof openTemplateEditor !== 'undefined' ? openTemplateEditor : null;
+  window.closeTemplateEditor = typeof closeTemplateEditor !== 'undefined' ? closeTemplateEditor : null;
+  window.openBookingConfig = typeof openBookingConfig !== 'undefined' ? openBookingConfig : null;
+  window.closeBookingConfig = typeof closeBookingConfig !== 'undefined' ? closeBookingConfig : null;
+  window.openProfileEdit = typeof openProfileEdit !== 'undefined' ? openProfileEdit : null;
+  window.closeProfileEdit = typeof closeProfileEdit !== 'undefined' ? closeProfileEdit : null;
 </script>
-
-<!-- ================= MODAL : LIGHTBOX MÍDIA ================= -->
-<div id="lightbox-overlay" class="modal-overlay hidden" style="z-index:90;">
-  <div class="lightbox-card">
-    <div class="modal-head">
-      <div>
-        <div class="modal-name" id="lightbox-title">Visualizar Mídia</div>
-        <div style="font-size:12px; color:var(--muted);" id="lightbox-sub">Cliente</div>
-      </div>
-      <button class="modal-close" onclick="closeLightbox()" aria-label="Fechar">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-    <div class="lightbox-img-wrap" id="lightbox-img-wrap">
-      <img id="lightbox-img" src="" alt="Mídia">
-    </div>
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <span class="agenda-status-badge" id="lightbox-badge">Mídia</span>
-      <button class="btn btn-outline" style="font-size:11.5px; padding:6px 12px;" onclick="closeLightbox()">Fechar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ================= MODAL : LISTA DE CLIENTES ================= -->
-<div id="clients-list-overlay" class="modal-overlay hidden">
-  <div class="modal-card">
-    <div class="modal-head">
-      <div>
-        <div class="modal-name">Clientes & Anamnese</div>
-        <div style="font-size:12px; color:var(--muted);">Selecione um cliente para abrir os detalhes</div>
-      </div>
-      <button class="modal-close" onclick="closeClientsList()" aria-label="Fechar">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-    <div class="appt-list" id="all-clients-list"></div>
-  </div>
-</div>
-
 </body>
 </html>
