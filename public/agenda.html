@@ -3622,14 +3622,39 @@
     document.getElementById('bkprev-name').textContent = profile.name.split(' ')[0];
     document.getElementById('pub-handle').textContent = profile.name.toLowerCase().replace(/[^a-z]/g,'');
 
+    const promosSec = document.getElementById('pub-promos-sec');
     const promos = document.getElementById('pub-promos');
-    document.getElementById('pub-promos-sec').classList.toggle('hidden', banners.length === 0);
-    promos.innerHTML = banners.map(b => `
-      <div class="pub-promo">
-        <div class="k">${b.emoji || ''} ${b.kicker}</div>
-        <div class="t">${b.title}</div>
-        <div class="s">${b.sub}</div>
-      </div>`).join('');
+    if(promosSec && promos){
+      promosSec.classList.toggle('hidden', banners.length === 0);
+      promos.className = 'pub-promo-wrap mode-' + bannerDisplayMode;
+      promos.innerHTML = banners.map(b => {
+        const bgStyle = b.image ? `background-image:url('${b.image}');` : '';
+        const hasImgClass = b.image ? 'has-image' : '';
+        const tag = b.link ? 'a' : 'div';
+        const hrefAttr = b.link ? `href="${b.link}" target="_blank" rel="noopener"` : '';
+        return `
+        <${tag} ${hrefAttr} class="pub-promo ${hasImgClass}" style="${bgStyle}">
+          <div class="k">${b.emoji ? `<span>${b.emoji}</span> ` : ''}${b.kicker || 'Destaque'}</div>
+          <div class="t">${b.title}</div>
+          <div class="s">${b.sub || ''}</div>
+          ${b.link ? `<span class="pub-promo-link-ic" title="Abrir link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg></span>` : ''}
+        </${tag}>`;
+      }).join('');
+
+      // Posicionamento dinâmico entre componentes na visualização pública
+      const viewPub = document.getElementById('view-public');
+      const ctaEl = viewPub.querySelector('.pub-cta');
+      const aboutSec = viewPub.querySelectorAll('.pub-sec')[1];
+      const offersSec = viewPub.querySelectorAll('.pub-sec')[2];
+      
+      if(bannerPosition === 'top' && ctaEl){
+        ctaEl.parentNode.insertBefore(promosSec, ctaEl);
+      } else if(bannerPosition === 'bottom' && viewPub.querySelector('.spacer')){
+        viewPub.insertBefore(promosSec, viewPub.querySelector('.spacer'));
+      } else if(aboutSec && aboutSec.parentNode){
+        aboutSec.parentNode.insertBefore(promosSec, aboutSec);
+      }
+    }
 
     renderPublicOffers();
   }
