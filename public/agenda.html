@@ -922,6 +922,120 @@
     margin-bottom: 16px;
   }
   
+  
+  /* ---------- Design Moderno & Clean - Página de Afiliados ---------- */
+  .aff-hero-card{
+    background: radial-gradient(120% 120% at 50% 0%, rgba(255, 95, 138, 0.15) 0%, rgba(20, 18, 28, 0.95) 70%, rgba(10, 10, 14, 1) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.6);
+  }
+  .aff-hero-card::before{
+    content: "";
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(255,95,138,0.25) 0%, transparent 70%);
+    pointer-events: none;
+    border-radius: 50%;
+  }
+  .aff-badge-pill{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background: rgba(255, 95, 138, 0.12);
+    border: 1px solid rgba(255, 95, 138, 0.25);
+    color: #ff5f8a;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .aff-stats-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 18px 0 6px;
+  }
+  .aff-stat-box{
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .aff-stat-val{
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    display: block;
+    line-height: 1.2;
+  }
+  .aff-stat-lbl{
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-top: 2px;
+    display: block;
+  }
+  .aff-card-clean{
+    background: var(--canvas-soft);
+    border: 1px solid var(--hairline-soft);
+    border-radius: 20px;
+    padding: 18px;
+    margin-bottom: 14px;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .aff-step-item{
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+  .aff-step-item:last-child{ border-bottom: none; padding-bottom: 2px; }
+  .aff-step-num{
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--hairline);
+    color: var(--ink);
+    font-weight: 750;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  .aff-step-num.is-pink{
+    background: rgba(255,95,138,0.15);
+    border-color: rgba(255,95,138,0.3);
+    color: #ff5f8a;
+  }
+  .aff-step-content b{
+    font-size: 13px;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 2px;
+    font-weight: 650;
+  }
+  .aff-step-content p{
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.45;
+    margin: 0;
+  }
+  
   /* ---------- Bottom pill nav ---------- */
   .bottom-nav{
     position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
@@ -1768,129 +1882,173 @@
 
   <!-- ================= TELA COMPLETA : PROGRAMA DE AFILIADOS & REGRAS ================= -->
   <div id="view-affiliates" class="hidden">
-    <div class="pub-bar" style="position:sticky; top:0; z-index:40; display:flex; align-items:center; gap:10px; padding:12px 18px; background:rgba(5,5,5,.88); backdrop-filter:blur(14px); border-bottom:1px solid var(--hairline-soft);">
+    <!-- Barra Superior Fixa Minimalista -->
+    <div class="pub-bar" style="position:sticky; top:0; z-index:40; display:flex; align-items:center; gap:12px; padding:12px 18px; background:rgba(8,8,12,.92); backdrop-filter:blur(16px); border-bottom:1px solid var(--hairline-soft);">
       <button class="back" onclick="goTo('home')" aria-label="Voltar para início">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <span class="lbl" style="font-size:13px; font-weight:700; color:var(--ink);">Programa de Afiliados</span>
-      <span class="tag" style="background:rgba(255,95,138,0.15); color:#ff5f8a; font-weight:700;">30% Recorrente</span>
+      <div style="flex:1; min-width:0;">
+        <span style="font-size:13.5px; font-weight:700; color:var(--ink); display:block; line-height:1.2;">Programa de Afiliados</span>
+        <span style="font-size:10.5px; color:var(--muted);">Parcerias & Monetização</span>
+      </div>
+      <span class="aff-badge-pill">30% a 50%</span>
     </div>
 
-    <div style="padding:18px 18px 0;">
-      <!-- Hero Informativo do Programa -->
-      <div class="hero" style="background:linear-gradient(135deg, #1f1b2e 0%, #171520 60%, #0d0c12 100%); border:1px solid rgba(255,95,138,0.3); margin:0 0 16px;">
-        <div style="display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:9999px; background:rgba(255,95,138,0.15); color:#ff5f8a; font-size:10.5px; font-weight:750; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">
-          <span style="width:6px; height:6px; border-radius:9999px; background:#ff5f8a;"></span>
-          Cakto Split Recorrente
+    <div style="padding:18px 18px 24px;">
+
+      <!-- HERO CARD MODERNO & CLEAN -->
+      <div class="aff-hero-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span class="aff-badge-pill">
+            <span style="width:6px; height:6px; border-radius:50%; background:#ff5f8a;"></span>
+            Cakto Split Recorrente
+          </span>
+          <span style="font-size:11px; color:rgba(255,255,255,0.7); font-weight:600;">Direto no Pix</span>
         </div>
-        <h1 style="font-size:22px; line-height:1.2;">Monetize indicando o agendo para colegas e estúdios</h1>
-        <p style="font-size:12.5px; color:rgba(255,255,255,0.85); line-height:1.5; margin-top:6px;">
-          Receba 30% todo mês direto na sua conta sobre todas as mensalidades dos estúdios que você indicar.
+
+        <h1 style="font-family:'Poppins', sans-serif; font-size:22px; font-weight:700; line-height:1.25; color:#ffffff; margin:0 0 8px;">
+          Monetize indicando o agendo para colegas e estúdios
+        </h1>
+        <p style="font-size:12.5px; color:rgba(255,255,255,0.8); line-height:1.55; margin:0;">
+          Receba até <b>50% de comissão todo mês</b> sobre as assinaturas geradas pelo seu link com liquidação direta.
         </p>
+
+        <!-- Mini Métricas / Projeção -->
+        <div class="aff-stats-grid">
+          <div class="aff-stat-box">
+            <span class="aff-stat-val" style="color:#ff5f8a;">50%</span>
+            <span class="aff-stat-lbl">1ºs 15 clientes</span>
+          </div>
+          <div class="aff-stat-box">
+            <span class="aff-stat-val">30%</span>
+            <span class="aff-stat-lbl">Recorrente vitalício</span>
+          </div>
+          <div class="aff-stat-box">
+            <span class="aff-stat-val" style="color:#34c281;">Pix</span>
+            <span class="aff-stat-lbl">Split automático</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD DE FIDELIZAÇÃO: PROGRESSO DOS 15 CLIENTES -->
+      <div class="aff-card-clean" style="margin-top:14px; background:linear-gradient(180deg, rgba(255,95,138,0.06) 0%, var(--canvas-soft) 100%); border-color:rgba(255,95,138,0.25);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:14px;">🔥</span>
+            <b style="font-size:12.5px; color:var(--ink); font-family:'Poppins', sans-serif;">Bônus Acelerador (50%)</b>
+          </div>
+          <span style="font-size:11px; color:#ff5f8a; font-weight:700; background:rgba(255,95,138,0.12); padding:2px 8px; border-radius:999px;">
+            Meta: 15 Estúdios
+          </span>
+        </div>
+
+        <p style="font-size:11.5px; color:var(--muted); line-height:1.45; margin:0 0 10px;">
+          Seus primeiros 15 clientes garantem <b>50% de comissão</b>. A partir do 16º, a comissão padrão de 30% permanece para sempre.
+        </p>
+
+        <!-- Barra de Progresso Elegante -->
+        <div style="background:var(--field); border-radius:9999px; height:8px; overflow:hidden; position:relative; margin-bottom:6px;">
+          <div style="width:80%; height:100%; background:linear-gradient(90deg, #ff5f8a, #ffb020); border-radius:9999px;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:10.5px; color:var(--muted); font-weight:600;">
+          <span>Progresso atual: <b style="color:var(--ink);">12 / 15 indicados</b></span>
+          <span style="color:#ff5f8a;">Faltam apenas 3 para a meta</span>
+        </div>
       </div>
 
       <!-- ESTADO 1: AFILIAÇÃO ATIVA / LIBERADA -->
       <div id="affiliate-status-active" class="hidden">
-        <div style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:16px; padding:16px; margin-bottom:16px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; font-weight:700;">Seu Link de Afiliado Exclusivo</span>
-            <span style="font-size:10.5px; color:var(--success); font-weight:700; background:rgba(52,194,129,0.12); padding:2px 8px; border-radius:9999px;">● Afiliação Aprovada</span>
+        <div class="aff-card-clean" style="border-color:rgba(52,194,129,0.3); background:rgba(52,194,129,0.03);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; font-weight:700;">Seu Link de Indicação</span>
+            <span style="font-size:10.5px; color:var(--success); font-weight:700; background:rgba(52,194,129,0.12); padding:3px 9px; border-radius:9999px;">● Afiliação Ativa</span>
           </div>
-          <div style="display:flex; align-items:center; gap:8px; margin-top:8px;">
-            <input class="field-input" id="affiliate-page-link-input" readonly value="https://agendo.app/convite?ref=marinaravi" style="font-family:monospace; font-size:11.5px; color:var(--ink); margin:0; padding:10px 12px;">
+          
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input class="field-input" id="affiliate-page-link-input" readonly value="https://agendo.app/convite?ref=marinaravi" style="font-family:monospace; font-size:11.5px; color:var(--ink); margin:0; padding:10px 12px; background:var(--canvas);">
             <button class="btn btn-dark" style="height:40px; padding:0 14px; font-size:11.5px; flex-shrink:0;" onclick="copyUserAffiliateLink()">Copiar</button>
           </div>
-        </div>
 
-        <div class="fin-kpi-grid" style="margin-bottom:16px;">
-          <div class="fin-kpi-card">
-            <span class="fin-kpi-label">Estúdios Indicados</span>
-            <span class="fin-kpi-value">12</span>
-            <span style="font-size:10.5px; color:var(--success); font-weight:600;">Ativos no plano Pro</span>
-          </div>
-          <div class="fin-kpi-card">
-            <span class="fin-kpi-label">Comissão Mensal</span>
-            <span class="fin-kpi-value" style="color:#ff5f8a;">R$ 320,40</span>
-            <span style="font-size:10.5px; color:var(--muted);">Cakto Split Recorrente</span>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;">
+            <div style="background:var(--canvas); border:1px solid var(--hairline-soft); border-radius:12px; padding:10px 12px;">
+              <span style="font-size:10.5px; color:var(--muted); display:block;">Estúdios Ativos</span>
+              <span style="font-size:18px; font-weight:800; color:var(--ink); font-family:'Poppins', sans-serif;">12</span>
+              <span style="font-size:10px; color:var(--success); font-weight:600;">Plano Pro</span>
+            </div>
+            <div style="background:var(--canvas); border:1px solid var(--hairline-soft); border-radius:12px; padding:10px 12px;">
+              <span style="font-size:10.5px; color:var(--muted); display:block;">Comissão Mensal</span>
+              <span style="font-size:18px; font-weight:800; color:#ff5f8a; font-family:'Poppins', sans-serif;">R$ 320,40</span>
+              <span style="font-size:10px; color:var(--muted);">Cakto Split</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- ESTADO 2: AFILIAÇÃO NÃO DISPONÍVEL / SOLICITAR ENTRADA NA FILA -->
       <div id="affiliate-status-locked">
-        <div style="background:var(--canvas-soft); border:1px solid rgba(255,176,32,0.3); border-radius:16px; padding:16px; margin-bottom:16px; text-align:center;">
-          <div style="width:44px; height:44px; border-radius:50%; background:rgba(255,176,32,0.15); color:#ffb020; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-size:20px;">
+        <div class="aff-card-clean" style="text-align:center; padding:22px 18px; border-color:rgba(255,176,32,0.3);">
+          <div style="width:48px; height:48px; border-radius:50%; background:rgba(255,176,32,0.12); color:#ffb020; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:22px;">
             ⏳
           </div>
-          <h2 style="font-size:17px; margin-bottom:6px;">Sua afiliação ainda não está disponível</h2>
-          <p style="font-size:12px; color:var(--muted); line-height:1.5; margin:0 0 14px;">
-            O programa de comissão recorrente de 30% está liberando vagas aos poucos para estúdios selecionados. Solicite sua entrada na fila de espera para que a administração aprove seu cadastro.
+          <h2 style="font-family:'Poppins', sans-serif; font-size:17px; font-weight:700; color:var(--ink); margin-bottom:6px;">
+            Sua afiliação aguarda liberação
+          </h2>
+          <p style="font-size:12px; color:var(--muted); line-height:1.5; margin:0 0 16px;">
+            O programa de comissão recorrente está liberando vagas para estúdios selecionados. Toque abaixo para solicitar sua vaga na fila.
           </p>
           <div id="affiliate-request-action-box">
-            <button type="button" class="btn btn-light" id="btn-request-affiliate" onclick="requestAffiliateAccess()" style="width:100%; justify-content:center; font-size:12.5px; height:42px;">
+            <button type="button" class="btn btn-light" id="btn-request-affiliate" onclick="requestAffiliateAccess()" style="width:100%; justify-content:center; font-size:12.5px; height:42px; font-weight:650;">
               Solicitar para entrar na fila de afiliados
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Regras e Termos Transparentes do Programa -->
-      <div class="section-head" style="margin-top:20px;">
-        <h2>Regras Oficiais do Programa</h2>
+      <!-- REGRAS CLARAS E TRANSPARENTES -->
+      <div style="margin-top:20px;">
+        <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); font-weight:700; display:block; margin-bottom:10px;">
+          Como funciona o programa
+        </span>
+
+        <div class="aff-card-clean" style="padding:14px 18px;">
+          <div class="aff-step-item">
+            <span class="aff-step-num is-pink">1</span>
+            <div class="aff-step-content">
+              <b>Até 50% de Comissão Recorrente</b>
+              <p>Receba 50% nas primeiras 15 assinaturas ativadas e 30% vitalício a partir da 16ª indicação.</p>
+            </div>
+          </div>
+
+          <div class="aff-step-item">
+            <span class="aff-step-num">2</span>
+            <div class="aff-step-content">
+              <b>Liquidação Automática via Pix</b>
+              <p>Os pagamentos são processados pela tecnologia Cakto Split diretamente na sua conta, sem taxas de saque.</p>
+            </div>
+          </div>
+
+          <div class="aff-step-item">
+            <span class="aff-step-num">3</span>
+            <div class="aff-step-content">
+              <b>Sem Teto de Indicações</b>
+              <p>Convide quantas clínicas, profissionais e estúdios quiser. Sua receita passiva escala a cada indicação.</p>
+            </div>
+          </div>
+
+          <div class="aff-step-item">
+            <span class="aff-step-num">4</span>
+            <div class="aff-step-content">
+              <b>Aprovação Segura no Super Admin</b>
+              <p>Cadastros passam por verificação para proteger a integridade dos estúdios parceiros da plataforma.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      
-      <!-- Super Regra de Fidelização e Aceleração: Até 50% de Comissão -->
-      <div class="affiliate-tier-card">
-        <div style="display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:9999px; background:rgba(255,95,138,0.2); color:#ff5f8a; font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px;">
-          🔥 Bônus de Fidelização Ativa
-        </div>
-        <h2 style="font-size:18px; line-height:1.25; margin-bottom:6px; font-family:'Poppins', sans-serif;">
-          Até 50% de comissão para os seus primeiros 15 clientes!
-        </h2>
-        <p style="font-size:12px; color:rgba(255,255,255,0.85); line-height:1.5; margin:0 0 12px;">
-          Acelere seus ganhos: nos seus primeiros 15 estúdios indicados, sua comissão salta para <b>50% recorrente</b>. A partir do 16º, a comissão padrão vitalícia de 30% permanece ativa em todas as mensalidades pagas.
-        </p>
-        <!-- Barra de Progresso dos 15 Clientes -->
-        <div style="background:var(--field); border-radius:9999px; height:8px; overflow:hidden; position:relative; margin-bottom:6px;">
-          <div style="width:80%; height:100%; background:linear-gradient(90deg, #ff5f8a, #ffb020); border-radius:9999px;"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted); font-weight:600;">
-          <span>Progresso: <b>12 / 15 estúdios</b></span>
-          <span style="color:#ff5f8a;">Faltam 3 estúdios p/ meta</span>
-        </div>
-      </div>
-
-      <div class="section-head" style="margin-top:20px;">
-        <h2>Regras Oficiais & Termos do Programa</h2>
-      </div>
-
-      <div class="qa-list" style="margin-bottom:20px;">
-        <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">1. Até 50% nos Primeiros 15 Clientes</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Para incentivar e premiar parceiros dedicados, as primeiras 15 assinaturas ativadas pagam <b>50% de comissão recorrente</b> direto na sua conta Cakto Split.</span>
-        </div>
-        <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">2. Comissão Recorrente Vitalícia de 30%</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Após a meta de 15 clientes, todos os novos estúdios geram 30% fixos todo mês, mantendo sua receita passiva em crescimento constante.</span>
-        </div>
-        <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">3. Repasse Automático via Cakto Split</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Sem burocracia de solicitação de saque: os valores são transferidos no mesmo instante para sua chave Pix cadastrada.</span>
-        </div>
-        <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">4. Retenção & Permanência</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">A comissão é creditada mensalmente enquanto o estúdio indicado continuar utilizando o plano do agendo.</span>
-        </div>
-        <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">5. Aprovação Prévia da Administração</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Para garantir qualidade e coibir abusos, novos afiliados passam pela fila de aprovação no painel Super Admin.</span>
-        </div>
-      </div>
     </div>
     <div class="spacer"></div>
   </div>
-  
+
   <!-- ================= PERFIL PÚBLICO (visão do cliente) ================= -->
   <div id="view-public" class="hidden">
     <div class="pub-bar">
