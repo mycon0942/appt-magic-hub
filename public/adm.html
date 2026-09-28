@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>agendo — Painel Super Admin SaaS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;650;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --canvas: #0c0b0e;
+    --canvas-soft: #141218;
+    --raised: #1c1922;
+    --field: #221f2b;
+    --hairline: #2e2a3b;
+    --hairline-soft: #23202e;
+    --ink: #f5f3f7;
+    --muted: #a39eb0;
+    --faint: #6e687e;
+    --cta-fill: #f5f3f7;
+    --cta-text: #0c0b0e;
+    --brand: #ff5f8a;
+    --brand-glow: rgba(255, 95, 138, 0.25);
+    --success: #34c281;
+    --purple: #a855f7;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: var(--canvas); color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px; line-height: 1.45; overflow-x: hidden;
+  }
+  .adm-app {
+    max-width: 520px; margin: 0 auto; min-height: 100vh; position: relative;
+    padding-bottom: 90px; background: var(--canvas);
+  }
+  @media(min-width: 768px){ .adm-app { max-width: 780px; } }
+  @media(min-width: 1200px){ .adm-app { max-width: 960px; } }
+
+  /* Topbar Super Admin */
+  .adm-topbar {
+    position: sticky; top: 0; z-index: 50; padding: 14px 18px;
+    background: rgba(12, 11, 14, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--hairline-soft); display: flex; align-items: center; justify-content: space-between;
+  }
+  .adm-brand { display: flex; align-items: center; gap: 10px; }
+  .adm-logo {
+    width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, #ff5f8a 0%, #e0245e 100%);
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #fff;
+    box-shadow: 0 4px 14px var(--brand-glow);
+  }
+  .adm-brand-text h1 { margin: 0; font-size: 16px; font-weight: 750; letter-spacing: -0.02em; }
+  .adm-brand-text span { font-size: 10.5px; color: var(--muted); }
+  .adm-status-chip {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
+    padding: 3px 9px; border-radius: 9999px; background: rgba(52, 194, 129, 0.12); color: var(--success);
+    border: 1px solid rgba(52, 194, 129, 0.25); text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  /* Seções e Cards */
+  .adm-section { padding: 16px 18px 0; }
+  .adm-section-title {
+    font-size: 14px; font-weight: 750; color: var(--ink); margin: 0 0 4px;
+  }
+  .adm-section-desc { font-size: 11.5px; color: var(--muted); margin: 0 0 14px; }
+
+  /* Grid de KPIs */
+  .adm-kpi-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px;
+  }
+  @media(min-width: 768px){ .adm-kpi-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
+  .adm-kpi-card {
+    background: var(--canvas-soft); border: 1px solid var(--hairline-soft); border-radius: 16px;
+    padding: 14px; display: flex; flex-direction: column; gap: 4px; transition: border-color .15s ease;
+  }
+  .adm-kpi-card:hover { border-color: var(--hairline); }
+  .adm-kpi-lbl { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+  .adm-kpi-val { font-size: 19px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+  .adm-kpi-tag { font-size: 10.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; }
+  .adm-kpi-tag.positive { color: var(--success); }
+  .adm-kpi-tag.neutral { color: var(--muted); }
+
+  /* Filtro de Período */
+  .adm-period-wrap {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+  }
+  .adm-pills {
+    display: inline-flex; gap: 3px; background: var(--canvas-soft); border: 1px solid var(--hairline-soft);
+    padding: 3px; border-radius: 9999px;
+  }
+  .adm-pill {
+    border: none; background: transparent; color: var(--muted); font-size: 11.5px; font-weight: 600;
+    padding: 5px 14px; border-radius: 9999px; cursor: pointer; transition: all .15s ease;
+  }
+  .adm-pill.is-active { background: var(--cta-fill); color: var(--cta-text); }
+
+  /* Gráfico Financeiro */
+  .adm-chart-card {
+    background: var(--canvas-soft); border: 1px solid var(--hairline-soft); border-radius: 20px;
+    padding: 18px; margin-bottom: 18px; position: relative; overflow: hidden;
+  }
+  .adm-chart-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .adm-chart-val { font-size: 24px; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; margin-top: 2px; }
+
+  /* Tabela de Assinaturas e Registros */
+  .adm-table-card {
+    background: var(--canvas-soft); border: 1px solid var(--hairline-soft); border-radius: 16px;
+    overflow: hidden; margin-bottom: 18px;
+  }
+  .adm-table-row {
+    display: flex; justify-content: space-between; align-items: center; padding: 12px 14px;
+    border-bottom: 1px solid var(--hairline-soft); transition: background .12s ease;
+  }
+  .adm-table-row:last-child { border-bottom: none; }
+  .adm-table-row:hover { background: var(--raised); }
+  .adm-badge {
+    font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .badge-pro { background: rgba(255, 95, 138, 0.16); color: #ff5f8a; border: 1px solid rgba(255, 95, 138, 0.3); }
+  .badge-studio { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+  .badge-basic { background: rgba(255, 255, 255, 0.08); color: var(--muted); border: 1px solid rgba(255, 255, 255, 0.12); }
+  .badge-enterprise { background: rgba(234, 179, 8, 0.16); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+
+  /* Listas e Linhas de Ação */
+  .adm-action-row {
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 13px 14px; border-radius: 14px; background: var(--canvas-soft); border: 1px solid var(--hairline-soft);
+    color: var(--ink); text-align: left; cursor: pointer; margin-bottom: 8px; font-family: inherit;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .adm-action-row:hover { background: var(--raised); border-color: var(--hairline); }
+  .adm-action-row .ic {
+    width: 34px; height: 34px; border-radius: 10px; background: var(--field); display: flex;
+    align-items: center; justify-content: center; color: var(--ink); flex-shrink: 0;
+  }
+  .adm-action-row .txt { flex: 1; min-width: 0; }
+  .adm-action-row .txt b { display: block; font-size: 13px; font-weight: 650; }
+  .adm-action-row .txt span { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  /* Botões */
+  .adm-btn {
+    border: none; padding: 10px 18px; border-radius: 12px; font-size: 12.5px; font-weight: 650;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+    transition: opacity .15s ease; font-family: inherit;
+  }
+  .adm-btn-dark { background: var(--cta-fill); color: var(--cta-text); }
+  .adm-btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--hairline); }
+  .adm-btn:hover { opacity: 0.9; }
+
+  /* ================= NAVBAR DO ADMINISTRADOR (4 ITENS SOLICITADOS) ================= */
+  /* [Início] [Financeiro] [Anúncios] [Configurações] */
+  .adm-bottom-nav {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    width: calc(100% - 32px); max-width: 440px; margin: 0;
+    background: rgba(20, 18, 24, 0.95); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--hairline); border-radius: 9999px; display: flex; align-items: center;
+    justify-content: space-between; padding: 6px 8px; z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+  .adm-nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--faint);
+    background: none; border: none; font-size: 10px; font-weight: 600; padding: 6px 12px;
+    border-radius: 9999px; flex: 1; cursor: pointer; transition: all .15s ease; font-family: inherit;
+  }
+  .adm-nav-item svg { width: 17px; height: 17px; }
+  .adm-nav-item.is-active { color: var(--ink); background: var(--field); }
+
+  /* Modais e Overlays */
+  .adm-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+    z-index: 90; display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .adm-modal-overlay.hidden { display: none; }
+  .adm-modal-card {
+    width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; background: #15131a;
+    border: 1px solid var(--hairline); border-radius: 20px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  }
+  .adm-modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .adm-modal-name { font-size: 16px; font-weight: 750; }
+  .adm-field-label { display: block; font-size: 11px; font-weight: 650; color: var(--muted); margin: 12px 0 5px; text-transform: uppercase; letter-spacing: 0.03em; }
+  .adm-input {
+    width: 100%; background: var(--field); border: 1px solid var(--hairline-soft); border-radius: 10px;
+    padding: 10px 12px; color: var(--ink); font-size: 13px; font-family: inherit; outline: none;
+  }
+  .adm-input:focus { border-color: var(--brand); }
+  .adm-textarea {
+    width: 100%; background: var(--field); border: 1px solid var(--hairline-soft); border-radius: 10px;
+    padding: 10px 12px; color: var(--ink); font-size: 13px; font-family: inherit; outline: none; resize: vertical;
+  }
+  .adm-textarea:focus { border-color: var(--brand); }
+
+  #adm-toast {
+    position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--canvas); padding: 8px 16px; border-radius: 9999px;
+    font-size: 12px; font-weight: 700; z-index: 99; opacity: 0; pointer-events: none; transition: opacity .2s ease;
+  }
+  #adm-toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="adm-app">
+  <!-- Topbar Super Admin -->
+  <header class="adm-topbar">
+    <div class="adm-brand">
+      <div class="adm-logo">ag</div>
+      <div class="adm-brand-text">
+        <h1>Super Admin</h1>
+        <span>Plataforma agendo.app</span>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span class="adm-status-chip">● SaaS Produção</span>
+      <a href="/" style="text-decoration:none;" class="adm-btn adm-btn-outline" style="padding:5px 10px; font-size:11px;">
+        Ver App ↗
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= TAB 1: INÍCIO ================= -->
+  <main id="pane-inicio" class="adm-pane">
+    <div class="adm-section">
+      <div class="adm-kpi-grid">
+        <div class="adm-kpi-card">
+          <span class="adm-kpi-lbl">MRR (Mensal)</span>
+          <span class="adm-kpi-val">R$ 58.420</span>
+          <span class="adm-kpi-tag positive">↑ +22.4% este mês</span>
+        </div>
+        <div class="adm-kpi-card">
+          <span class="adm-kpi-lbl">Estúdios Ativos</span>
+          <span class="adm-kpi-val">642 contas</span>
+          <span class="adm-kpi-tag neutral">Churn: 1.8%</span>
+        </div>
+        <div class="adm-kpi-card">
+          <span class="adm-kpi-lbl">GMV Transacionado</span>
+          <span class="adm-kpi-val">R$ 412.800</span>
+          <span class="adm-kpi-tag positive">Pix + InfinitePay</span>
+        </div>
+        <div class="adm-kpi-card">
+          <span class="adm-kpi-lbl">Agendamentos</span>
+          <span class="adm-kpi-val">18.940</span>
+          <span class="adm-kpi-tag neutral">Total do mês</span>
+        </div>
+      </div>
+
+      <!-- Atalho Gráfico Rápido -->
+      <div class="adm-chart-card">
+        <div class="adm-chart-head">
+          <div>
+            <span style="font-size:11.5px; color:var(--muted);">Faturamento da Plataforma (Assinaturas)</span>
+            <div class="adm-chart-val">R$ 318.900</div>
+          </div>
+          <button class="adm-btn adm-btn-outline" style="padding:5px 12px; font-size:11px;" onclick="switchTab('financeiro')">
+            Ver detalhes →
+          </button>
+        </div>
+        <div id="chart-mini-home" style="width:100%; height:110px;"></div>
+      </div>
+
+      <!-- Últimos Estúdios Cadastrados -->
+      <h2 class="adm-section-title">Últimos Estúdios Assinantes</h2>
+      <p class="adm-section-desc">Novas adesões registradas em tempo real na plataforma</p>
+      
+      <div class="adm-table-card" id="home-subs-list"></div>
+
+      <!-- Ações Rápidas -->
+      <h2 class="adm-section-title" style="margin-top:20px;">Ações Imediatas</h2>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button class="adm-action-row" onclick="openBroadcastModal()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
+          <span class="txt"><b>Notificar Todos os Estúdios</b><span>Disparar aviso para 642 painéis</span></span>
+          <span>›</span>
+        </button>
+        <button class="adm-action-row" onclick="switchTab('anuncios')">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4M14 4v4"/></svg></span>
+          <span class="txt"><b>Gerenciar Banners & Anúncios SaaS</b><span>Campanhas promocionais em destaque</span></span>
+          <span>›</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= TAB 2: FINANCEIRO ================= -->
+  <main id="pane-financeiro" class="adm-pane" style="display:none;">
+    <div class="adm-section">
+      <div class="adm-period-wrap">
+        <div>
+          <h2 class="adm-section-title" style="margin:0;">Receita & Faturamento</h2>
+          <span style="font-size:11.5px; color:var(--muted);">Demonstrativo detalhado de receitas da agendo</span>
+        </div>
+        <div class="adm-pills" id="fin-period-pills">
+          <button type="button" class="adm-pill" data-period="dia" onclick="setChartPeriod('dia')">Dia</button>
+          <button type="button" class="adm-pill" data-period="semana" onclick="setChartPeriod('semana')">Semana</button>
+          <button type="button" class="adm-pill is-active" data-period="mes" onclick="setChartPeriod('mes')">Mês</button>
+        </div>
+      </div>
+
+      <!-- Gráfico de Linhas Completo -->
+      <div class="adm-chart-card">
+        <div class="adm-chart-head">
+          <div>
+            <div style="font-size:11.5px; color:var(--muted);" id="fin-period-title">Período: Últimos 6 Meses</div>
+            <div class="adm-chart-val" id="fin-period-total">R$ 318.900</div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:11.5px; color:var(--success); font-weight:700;">+22.4% vs anterior</span>
+            <div style="font-size:10.5px; color:var(--muted); margin-top:2px;">Ticket médio: R$ 89/mês</div>
+          </div>
+        </div>
+        <div id="chart-fin-full" style="width:100%; height:160px;"></div>
+      </div>
+
+      <!-- Breakdown de Fontes de Receita -->
+      <h2 class="adm-section-title">Fontes de Receita</h2>
+      <div class="adm-table-card">
+        <div class="adm-table-row">
+          <div>
+            <b>Assinaturas Mensais dos Planos</b>
+            <div style="font-size:11px; color:var(--muted);">Planos Básico, Pro e Studio</div>
+          </div>
+          <b style="font-size:13.5px; color:var(--ink);">R$ 48.650 / mês</b>
+        </div>
+        <div class="adm-table-row">
+          <div>
+            <b>Taxas de Intermediação Checkout Pix</b>
+            <div style="font-size:11px; color:var(--muted);">0.99% sobre GMV transacionado</div>
+          </div>
+          <b style="font-size:13.5px; color:var(--ink);">R$ 4.086 / mês</b>
+        </div>
+        <div class="adm-table-row">
+          <div>
+            <b>Taxas de Gateway InfinitePay</b>
+            <div style="font-size:11px; color:var(--muted);">Revenue share de cartões</div>
+          </div>
+          <b style="font-size:13.5px; color:var(--ink);">R$ 5.684 / mês</b>
+        </div>
+      </div>
+
+      <!-- Exportação Financeira -->
+      <button class="adm-btn adm-btn-outline" style="width:100%; margin-top:10px;" onclick="exportAdminSaaSReport()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Exportar Demonstrativo Contábil (CSV)
+      </button>
+    </div>
+  </main>
+
+  <!-- ================= TAB 3: ANÚNCIOS ================= -->
+  <main id="pane-anuncios" class="adm-pane" style="display:none;">
+    <div class="adm-section">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <div>
+          <h2 class="adm-section-title" style="margin:0;">Campanhas & Anúncios SaaS</h2>
+          <span style="font-size:11.5px; color:var(--muted);">Banners exibidos aos estúdios e clientes</span>
+        </div>
+        <button class="adm-btn adm-btn-dark" style="font-size:11px; padding:6px 12px;" onclick="openNewAdModal()">
+          + Novo Anúncio
+        </button>
+      </div>
+
+      <!-- Lista de Campanhas e Banners Globais -->
+      <div id="adm-ads-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;"></div>
+
+      <div class="adm-kpi-card" style="margin-top:14px;">
+        <span class="adm-kpi-lbl">Engajamento dos Anúncios</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+          <div>
+            <div style="font-size:16px; font-weight:800; color:var(--ink);">48.210</div>
+            <span style="font-size:11px; color:var(--muted);">Impressões</span>
+          </div>
+          <div>
+            <div style="font-size:16px; font-weight:800; color:#ff5f8a;">3.490</div>
+            <span style="font-size:11px; color:var(--muted);">Cliques (CTR 7.2%)</span>
+          </div>
+          <div>
+            <div style="font-size:16px; font-weight:800; color:var(--success);">412</div>
+            <span style="font-size:11px; color:var(--muted);">Upgrades de Plano</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= TAB 4: CONFIGURAÇÕES ================= -->
+  <main id="pane-configuracoes" class="adm-pane" style="display:none;">
+    <div class="adm-section">
+      <h2 class="adm-section-title">Configurações Globais da Plataforma</h2>
+      <p class="adm-section-desc">Parâmetros essenciais do ecossistema agendo SaaS</p>
+
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button class="adm-action-row" onclick="openPlanManagerModal()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <span class="txt"><b>Planos & Mensalidades</b><span>Básico R$ 49 · Pro R$ 89 · Studio R$ 149</span></span>
+          <span>›</span>
+        </button>
+
+        <button class="adm-action-row" onclick="openGatewaySettingsModal()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="15" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></span>
+          <span class="txt"><b>Gateways & Taxas Globais</b><span>SyncPayments API Pix e InfinitePay</span></span>
+          <span>›</span>
+        </button>
+
+        <button class="adm-action-row" onclick="openServerHealthModal()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+          <span class="txt"><b>Infraestrutura & Uptime</b><span>Servidores em SP (99.98% uptime · 42ms)</span></span>
+          <span>›</span>
+        </button>
+
+        <button class="adm-action-row" onclick="openSecurityModal()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          <span class="txt"><b>Segurança & Políticas LGPD</b><span>Contratos de dados e criptografia ponta a ponta</span></span>
+          <span>›</span>
+        </button>
+      </div>
+
+      <div class="adm-table-card" style="margin-top:20px; padding:14px;">
+        <span class="adm-kpi-lbl">Versão da Plataforma</span>
+        <div style="font-size:13px; font-weight:700; color:var(--ink); margin-top:2px;">agendo Cloud v4.2.0-stable</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:4px;">Node.js 20 LTS · PostgreSQL Cloud · Vite SPA React</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= NAVBAR DO ADMINISTRADOR (4 ITENS) ================= -->
+  <!-- [ Início ] [ Financeiro ] [ Anúncios ] [ Configurações ] -->
+  <nav class="adm-bottom-nav">
+    <button type="button" class="adm-nav-item is-active" data-tab="inicio" onclick="switchTab('inicio')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg>
+      Início
+    </button>
+    <button type="button" class="adm-nav-item" data-tab="financeiro" onclick="switchTab('financeiro')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Financeiro
+    </button>
+    <button type="button" class="adm-nav-item" data-tab="anuncios" onclick="switchTab('anuncios')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4M14 4v4"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Anúncios
+    </button>
+    <button type="button" class="adm-nav-item" data-tab="configuracoes" onclick="switchTab('configuracoes')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Configurações
+    </button>
+  </nav>
+</div>
+
+<!-- ================= MODAIS DA PLATAFORMA ADMIN ================= -->
+<!-- Modal Broadcast -->
+<div id="adm-modal-broadcast" class="adm-modal-overlay hidden">
+  <div class="adm-modal-card">
+    <div class="adm-modal-head">
+      <div class="adm-modal-name">Transmitir Notificação Geral</div>
+      <button class="adm-btn adm-btn-outline" style="padding:4px 8px;" onclick="closeModal('adm-modal-broadcast')">✕</button>
+    </div>
+    <span class="adm-field-label">Título do Comunicado</span>
+    <input class="adm-input" id="bcast-title" placeholder="Ex: Manutenção Programada ou Nova Função">
+    <span class="adm-field-label">Corpo da Mensagem</span>
+    <textarea class="adm-textarea" id="bcast-body" rows="3" placeholder="Mensagem enviada a todos os estúdios conectados..."></textarea>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
+      <button class="adm-btn adm-btn-outline" onclick="closeModal('adm-modal-broadcast')">Cancelar</button>
+      <button class="adm-btn adm-btn-dark" onclick="sendBroadcastMsg()">Enviar para 642 estúdios</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Novo Anúncio -->
+<div id="adm-modal-new-ad" class="adm-modal-overlay hidden">
+  <div class="adm-modal-card">
+    <div class="adm-modal-head">
+      <div class="adm-modal-name">Criar Campanha de Anúncio</div>
+      <button class="adm-btn adm-btn-outline" style="padding:4px 8px;" onclick="closeModal('adm-modal-new-ad')">✕</button>
+    </div>
+    <span class="adm-field-label">Título da Campanha</span>
+    <input class="adm-input" id="ad-title" placeholder="Ex: Upgrade Black Friday — 30% OFF no Plano Studio">
+    <span class="adm-field-label">Texto de Apoio</span>
+    <input class="adm-input" id="ad-sub" placeholder="Ex: Aproveite checkout ilimitado e multi-salas">
+    <span class="adm-field-label">Público Alvo</span>
+    <select class="adm-input" id="ad-target">
+      <option value="all">Todos os Usuários e Visitantes</option>
+      <option value="basic">Apenas Assinantes do Plano Básico</option>
+      <option value="pro">Apenas Assinantes do Plano Pro</option>
+    </select>
+    <span class="adm-field-label">Link de Destino</span>
+    <input class="adm-input" id="ad-link" placeholder="Ex: https://agendo.app/upgrade">
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
+      <button class="adm-btn adm-btn-outline" onclick="closeModal('adm-modal-new-ad')">Cancelar</button>
+      <button class="adm-btn adm-btn-dark" onclick="saveNewAd()">Ativar Campanha</button>
+    </div>
+  </div>
+</div>
+
+<div id="adm-toast"></div>
+
+<script>
+  let currentTab = 'inicio';
+  let chartPeriod = 'mes';
+
+  const saasSubscriptions = [
+    { studio: 'Studio Marina Ravi', owner: 'Marina Ravi', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Hoje, 14:22', city: 'São Paulo — SP', badge: 'badge-pro' },
+    { studio: 'Bella Donna Estética', owner: 'Camila Fontana', plan: 'Studio', price: 'R$ 149/mês', status: 'Ativa', date: 'Hoje, 11:05', city: 'Curitiba — PR', badge: 'badge-studio' },
+    { studio: 'Espaço Glow & Spa', owner: 'Juliana Paes', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Ontem, 19:40', city: 'Rio de Janeiro — RJ', badge: 'badge-pro' },
+    { studio: 'Dermato & Harmonização', owner: 'Dra. Aline Torres', plan: 'Enterprise', price: 'R$ 299/mês', status: 'Ativa', date: 'Ontem, 15:10', city: 'Belo Horizonte — MG', badge: 'badge-enterprise' },
+    { studio: 'Studio Fio a Fio', owner: 'Beatriz Duarte', plan: 'Básico', price: 'R$ 49/mês', status: 'Ativa', date: '25/09/2026', city: 'Campinas — SP', badge: 'badge-basic' }
+  ];
+
+  let saasAds = [
+    { id: 'ad-1', title: 'Upgrade Plano Studio com 20% OFF', sub: 'Multi-profissionais e checkout sem taxas extras', clicks: 1420, active: true },
+    { id: 'ad-2', title: 'Conecte sua Máquina InfinitePay', sub: 'Receba na hora direto na sua conta PJ', clicks: 2070, active: true }
+  ];
+
+  const financialData = {
+    dia: {
+      title: 'Período: Hoje (Hora a Hora)',
+      total: 'R$ 3.840',
+      points: [
+        { label: '08h', val: 180 }, { label: '10h', val: 540 }, { label: '12h', val: 980 },
+        { label: '14h', val: 1450 }, { label: '16h', val: 2300 }, { label: '18h', val: 3200 }, { label: '20h', val: 3840 }
+      ]
+    },
+    semana: {
+      title: 'Período: Últimos 7 Dias',
+      total: 'R$ 21.650',
+      points: [
+        { label: 'Seg', val: 2400 }, { label: 'Ter', val: 2900 }, { label: 'Qua', val: 3200 },
+        { label: 'Qui', val: 3800 }, { label: 'Sex', val: 4600 }, { label: 'Sáb', val: 3100 }, { label: 'Dom', val: 1650 }
+      ]
+    },
+    mes: {
+      title: 'Período: Últimos 6 Meses',
+      total: 'R$ 318.900',
+      points: [
+        { label: 'Abr', val: 38000 }, { label: 'Mai', val: 44500 }, { label: 'Jun', val: 49000 },
+        { label: 'Jul', val: 53200 }, { label: 'Ago', val: 56800 }, { label: 'Set', val: 77400 }
+      ]
+    }
+  };
+
+  function switchTab(tabId){
+    currentTab = tabId;
+    document.querySelectorAll('.adm-pane').forEach(p => p.style.display = 'none');
+    const active = document.getElementById('pane-' + tabId);
+    if(active) active.style.display = 'block';
+
+    document.querySelectorAll('.adm-bottom-nav .adm-nav-item').forEach(b => {
+      b.classList.toggle('is-active', b.dataset.tab === tabId);
+    });
+
+    if(tabId === 'inicio') renderHome();
+    if(tabId === 'financeiro') renderFinancial();
+    if(tabId === 'anuncios') renderAds();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function drawSvgChart(containerId, pts, height = 140){
+    const container = document.getElementById(containerId);
+    if(!container) return;
+    const maxVal = Math.max(...pts.map(p => p.val)) * 1.15;
+    const minVal = Math.min(...pts.map(p => p.val)) * 0.85;
+    const w = 480;
+    const padX = 30;
+    const padY = 16;
+
+    const coords = pts.map((p, i) => {
+      const x = padX + (i / (pts.length - 1)) * (w - padX * 2);
+      const y = height - padY - ((p.val - minVal) / (maxVal - minVal)) * (height - padY * 2);
+      return { x, y, label: p.label };
+    });
+
+    const pathD = coords.reduce((acc, c, i) => i === 0 ? `M ${c.x} ${c.y}` : `${acc} L ${c.x} ${c.y}`, '');
+    const areaD = `${pathD} L ${coords[coords.length-1].x} ${height - padY} L ${coords[0].x} ${height - padY} Z`;
+
+    const svg = `
+      <svg viewBox="0 0 ${w} ${height}" style="width:100%; height:100%; overflow:visible;">
+        <defs>
+          <linearGradient id="g_${containerId}" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ff5f8a" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#ff5f8a" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+        <line x1="${padX}" y1="${padY}" x2="${w-padX}" y2="${padY}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3"/>
+        <line x1="${padX}" y1="${height-padY}" x2="${w-padX}" y2="${height-padY}" stroke="rgba(255,255,255,0.1)"/>
+        <path d="${areaD}" fill="url(#g_${containerId})"/>
+        <path d="${pathD}" fill="none" stroke="#ff5f8a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        ${coords.map(c => `
+          <circle cx="${c.x}" cy="${c.y}" r="3" fill="#fff" stroke="#ff5f8a" stroke-width="2"/>
+          <text x="${c.x}" y="${height - 2}" font-size="9" fill="var(--muted)" text-anchor="middle">${c.label}</text>
+        `).join('')}
+      </svg>
+    `;
+    container.innerHTML = svg;
+  }
+
+  function renderHome(){
+    const list = document.getElementById('home-subs-list');
+    if(list){
+      list.innerHTML = saasSubscriptions.slice(0, 4).map(s => `
+        <div class="adm-table-row">
+          <div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <b style="font-size:13px; color:var(--ink);">${s.studio}</b>
+              <span class="adm-badge ${s.badge}">${s.plan}</span>
+            </div>
+            <div style="font-size:11px; color:var(--muted); margin-top:2px;">${s.owner} · ${s.city}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:13px; font-weight:750; color:var(--ink);">${s.price}</div>
+            <span style="font-size:10.5px; color:var(--success); font-weight:600;">● ${s.status}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+    drawSvgChart('chart-mini-home', financialData.mes.points, 110);
+  }
+
+  function setChartPeriod(period){
+    chartPeriod = period;
+    document.querySelectorAll('#fin-period-pills .adm-pill').forEach(b => {
+      b.classList.toggle('is-active', b.dataset.period === period);
+    });
+    renderFinancial();
+  }
+
+  function renderFinancial(){
+    const data = financialData[chartPeriod] || financialData.mes;
+    const titleEl = document.getElementById('fin-period-title');
+    const totalEl = document.getElementById('fin-period-total');
+    if(titleEl) titleEl.textContent = data.title;
+    if(totalEl) totalEl.textContent = data.total;
+    drawSvgChart('chart-fin-full', data.points, 160);
+  }
+
+  function renderAds(){
+    const list = document.getElementById('adm-ads-list');
+    if(!list) return;
+    list.innerHTML = saasAds.map(ad => `
+      <div class="adm-table-card" style="padding:14px; margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <b style="font-size:13.5px; color:var(--ink);">${ad.title}</b>
+            <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">${ad.sub}</div>
+          </div>
+          <span style="font-size:10.5px; font-weight:700; color:var(--success); background:rgba(52,194,129,0.15); padding:2px 8px; border-radius:9999px;">Ativo</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; border-top:1px solid var(--hairline-soft); padding-top:8px;">
+          <span style="font-size:11px; color:var(--muted);">Engajamento: <b>${ad.clicks} cliques</b></span>
+          <button class="adm-btn adm-btn-outline" style="padding:4px 10px; font-size:11px;" onclick="toast('Campanha pausada')">Pausar</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function toast(msg){
+    const t = document.getElementById('adm-toast');
+    if(!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  function openModal(id){ const el = document.getElementById(id); if(el) el.classList.remove('hidden'); }
+  function closeModal(id){ const el = document.getElementById(id); if(el) el.classList.add('hidden'); }
+
+  function openBroadcastModal(){ openModal('adm-modal-broadcast'); }
+  function openNewAdModal(){ openModal('adm-modal-new-ad'); }
+
+  function sendBroadcastMsg(){
+    const title = document.getElementById('bcast-title')?.value.trim();
+    if(!title){ toast('Digite o título'); return; }
+    closeModal('adm-modal-broadcast');
+    toast('Notificação transmitida para 642 estúdios ✓');
+  }
+
+  function saveNewAd(){
+    const title = document.getElementById('ad-title')?.value.trim();
+    const sub = document.getElementById('ad-sub')?.value.trim();
+    if(!title){ toast('Preencha o título do anúncio'); return; }
+    saasAds.unshift({ id: 'ad-' + Date.now(), title, sub: sub || 'Promoção exclusiva agendo', clicks: 0, active: true });
+    closeModal('adm-modal-new-ad');
+    renderAds();
+    toast('Nova campanha de anúncio ativada com sucesso ✓');
+  }
+
+  function openPlanManagerModal(){ toast('Planos SaaS: Básico (R$ 49), Pro (R$ 89), Studio (R$ 149)'); }
+  function openGatewaySettingsModal(){ toast('Gateways: Pix API em 0.99% e InfinitePay em 2.49%'); }
+  function openServerHealthModal(){ toast('Infraestrutura: Servidores operando com 99.98% de Uptime'); }
+  function openSecurityModal(){ toast('Segurança: Criptografia ponta a ponta e Conformidade LGPD ✓'); }
+
+  function exportAdminSaaSReport(){
+    const csvContent = 'data:text/csv;charset=utf-8,Estudio,Responsavel,Plano,Valor,Cidade,Data,Status\\n'
+      + saasSubscriptions.map(s => `"${s.studio}","${s.owner}","${s.plan}","${s.price}","${s.city}","${s.date}","${s.status}"`).join('\\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'agendo_saas_relatorio_geral.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast('Relatório exportado em formato CSV ✓');
+  }
+
+  // Inicializar
+  renderHome();
+</script>
+</body>
+</html>

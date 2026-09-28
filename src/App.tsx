@@ -130,10 +130,10 @@ export default function App() {
 
   return (
     <div className="relative w-full h-full min-h-screen overflow-hidden bg-black font-sans flex flex-col">
-      {/* Embedded agendo panel */}
+      {/* Embedded agendo panel: rota /adm abre adm.html, caso contrário agenda.html */}
       <iframe
         ref={frameRef}
-        src="/agenda.html"
+        src={window.location.pathname.startsWith('/adm') || window.location.hash.includes('adm') ? '/adm.html' : '/agenda.html'}
         title="agendo — Painel de Agendamentos"
         className="w-full h-full flex-1 border-0 block"
         style={{ width: '100%', height: '100%', minHeight: '100vh', border: 0 }}
