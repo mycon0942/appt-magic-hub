@@ -3288,6 +3288,13 @@
 <div id="toast"></div>
 
 <script>
+  var pageCoverConfig = {
+    layout: localStorage.getItem('pageCoverLayout') || 'cinema', // 'standard' ou 'cinema'
+    videoUrl: localStorage.getItem('pageCoverVideo') || 'https://assets.mixkit.co/videos/preview/mixkit-woman-relaxing-in-a-spa-bath-42354-large.mp4',
+    title: localStorage.getItem('pageCoverTitle') || 'Studio Marina Ravi Estética Avançada & Spa',
+    sub: localStorage.getItem('pageCoverSub') || 'Transformando autoestima com tecnologia de ponta e acolhimento'
+  };
+
   // Variáveis Globais de Estado
   let bannerDisplayMode = localStorage.getItem('bannerDisplayMode') || 'list';
   let bannerPosition = localStorage.getItem('bannerPosition') || 'top';
@@ -6428,12 +6435,7 @@ async function sharePublicPage(){
 
   
   // Configuração do formato da capa pública e vídeo 9:10
-  let pageCoverConfig = {
-    layout: localStorage.getItem('pageCoverLayout') || 'cinema', // 'standard' ou 'cinema'
-    videoUrl: localStorage.getItem('pageCoverVideo') || 'https://assets.mixkit.co/videos/preview/mixkit-woman-relaxing-in-a-spa-bath-42354-large.mp4',
-    title: localStorage.getItem('pageCoverTitle') || 'Studio Marina Ravi Estética Avançada & Spa',
-    sub: localStorage.getItem('pageCoverSub') || 'Transformando autoestima com tecnologia de ponta e acolhimento'
-  };
+
 
   function openCoverConfigModal(){
     const m = document.getElementById('modal-cover-config');
