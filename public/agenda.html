@@ -306,10 +306,40 @@
 
   /* Formato da Página (Perfil) Redesenhado - UI Visual com Cards */
   .layout-cards-grid{
-    display:grid; grid-template-columns:1fr; gap:12px; width:100%;
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 2px 14px;
+    scrollbar-width: none;
   }
-  @media (min-width:480px){
-    .layout-cards-grid{ grid-template-columns:repeat(3, 1fr); }
+  .layout-cards-grid::-webkit-scrollbar{ display: none; }
+  .layout-option-card{
+    flex: 0 0 160px;
+    min-width: 160px;
+    scroll-snap-align: start;
+    background: var(--canvas-soft);
+    border: 1.5px solid var(--hairline-soft);
+    border-radius: 16px;
+    padding: 14px 12px;
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+    transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .layout-option-card:hover{
+    border-color: var(--hairline);
+    transform: translateY(-2px);
+  }
+  .layout-option-card.is-active{
+    border-color: #ff5f8a;
+    background: rgba(255, 95, 138, 0.05);
+    box-shadow: 0 4px 20px rgba(255, 95, 138, 0.12);
   }
   .layout-option-card{
     background:var(--canvas-soft); border:1.5px solid var(--hairline-soft);
@@ -768,6 +798,71 @@
   }
   .pub-map-frame{ width:100%; height:180px; border:none; display:block; filter:grayscale(0.2) contrast(1.1); }
 
+  
+  
+  /* Formatos da Página Pública (Visão do Cliente) */
+  #view-public.layout-classic .pub-id{
+    display: grid;
+    grid-template-columns: 82px minmax(0,1fr);
+    gap: 14px;
+    align-items: end;
+    margin: -42px 18px 0;
+    position: relative;
+    z-index: 2;
+    text-align: left;
+  }
+  #view-public.layout-classic .pub-avatar{
+    width: 82px; height: 82px; font-size: 30px; margin: 0;
+  }
+  #view-public.layout-classic .pub-cover.format-standard{
+    height: 170px;
+  }
+
+  /* Formato DESTAQUE no Site Público */
+  #view-public.layout-hero .pub-cover.format-standard{
+    height: 220px;
+  }
+  #view-public.layout-hero .pub-id{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: -50px 18px 0;
+    position: relative;
+    z-index: 2;
+  }
+  #view-public.layout-hero .pub-avatar{
+    width: 96px; height: 96px; font-size: 36px; border: 4px solid var(--canvas);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    margin-bottom: 8px;
+  }
+  #view-public.layout-hero .pub-id .meta{
+    justify-content: center;
+  }
+  #view-public.layout-hero .pub-bio{
+    text-align: center;
+  }
+
+  /* Formato CINEMA 9:10 no Site Público */
+  #view-public.layout-cinema .pub-cover{
+    width: 100%;
+    aspect-ratio: 9 / 10;
+    height: auto !important;
+    max-height: 80vh;
+    border-radius: 0 0 24px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  #view-public.layout-cinema .pub-id{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 16px 18px 0;
+    text-align: left;
+  }
+  #view-public.layout-cinema .pub-avatar{
+    width: 64px; height: 64px; font-size: 24px; border: 2px solid var(--hairline);
+  }
   
   /* Formato Capa 9:10 com Vídeo e Poppins */
   .pub-cover.format-cinema{
@@ -4033,6 +4128,15 @@
       el.classList.toggle('is-active', el.dataset.nav === view);
     });
 
+    // Se estiver navegando para a visualização pública ou perfil, renderiza o perfil imediatamente
+    if(view === 'public'){
+      renderPublicProfile();
+    } else if(view === 'profile'){
+      renderProfile();
+    } else if(view === 'affiliates'){
+      updateAffiliatePageStatus();
+    }
+
     // Rola para o topo suavemente
     const appEl = document.querySelector('.app');
     if(appEl && appEl.scrollTo) appEl.scrollTo({ top: 0, behavior: 'smooth' });
@@ -4525,11 +4629,13 @@
   document.getElementById('layout-toggle').addEventListener('click', e => {
     const b = e.target.closest('[data-layout]');
     if(!b) return;
-    profile.layout = b.dataset.layout;
-    pageCoverConfig.layout = b.dataset.layout;
-    localStorage.setItem('pageCoverLayout', profile.layout);
+    const chosenLayout = b.dataset.layout;
+    profile.layout = chosenLayout;
+    pageCoverConfig.layout = chosenLayout;
+    localStorage.setItem('pageCoverLayout', chosenLayout);
     renderProfile();
-    const msg = profile.layout === 'cinema' ? 'Formato "Cinema 9:10" aplicado' : profile.layout === 'hero' ? 'Formato "Destaque" aplicado' : 'Formato "Clássico" aplicado';
+    renderPublicProfile();
+    const msg = chosenLayout === 'cinema' ? 'Formato "Cinema 9:10" aplicado com sucesso ✓' : chosenLayout === 'hero' ? 'Formato "Destaque" aplicado com sucesso ✓' : 'Formato "Clássico" aplicado com sucesso ✓';
     toast(msg);
   });
 
@@ -5158,6 +5264,13 @@
   ========================================================= */
   
     function renderPublicProfile(){
+    const currentLayout = profile.layout || localStorage.getItem('pageCoverLayout') || 'classic';
+    const viewPubEl = document.getElementById('view-public');
+    if(viewPubEl){
+      viewPubEl.classList.remove('layout-classic', 'layout-hero', 'layout-cinema');
+      viewPubEl.classList.add('layout-' + currentLayout);
+    }
+
     const grad = coverPresets[profile.coverIndex];
     const pubCover = document.getElementById('pub-cover');
     const pubCoverVideo = document.getElementById('pub-cover-video');
@@ -5166,10 +5279,10 @@
     const pubCinemaSub = document.getElementById('pub-cinema-sub');
 
     if(pubCover){
-      if(pageCoverConfig.layout === 'cinema' && pageCoverConfig.videoUrl){
+      if(currentLayout === 'cinema'){
         pubCover.className = 'pub-cover format-cinema';
         pubCover.style.background = '#0a0a0a';
-        if(pubCoverVideo){
+        if(pubCoverVideo && pageCoverConfig.videoUrl){
           pubCoverVideo.classList.remove('hidden');
           if(pubCoverVideo.src !== pageCoverConfig.videoUrl){
             pubCoverVideo.src = pageCoverConfig.videoUrl;
@@ -5181,7 +5294,13 @@
           if(pubCinemaTitle) pubCinemaTitle.textContent = pageCoverConfig.title || profile.name;
           if(pubCinemaSub) pubCinemaSub.textContent = pageCoverConfig.sub || profile.bio;
         }
+      } else if(currentLayout === 'hero'){
+        pubCover.className = 'pub-cover format-standard';
+        pubCover.style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
+        if(pubCoverVideo) pubCoverVideo.classList.add('hidden');
+        if(pubCoverCaption) pubCoverCaption.classList.add('hidden');
       } else {
+        // Classic
         pubCover.className = 'pub-cover format-standard';
         pubCover.style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
         if(pubCoverVideo) pubCoverVideo.classList.add('hidden');
