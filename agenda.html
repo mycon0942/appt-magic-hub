@@ -765,6 +765,65 @@
   }
   .pub-map-frame{ width:100%; height:180px; border:none; display:block; filter:grayscale(0.2) contrast(1.1); }
 
+  
+  /* Formato Capa 9:10 com Vídeo e Poppins */
+  .pub-cover.format-cinema{
+    width:100%;
+    aspect-ratio: 9 / 10;
+    height: auto !important;
+    max-height: 85vh;
+    border-radius: 0 0 24px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pub-cover.format-standard{
+    height: 170px;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width:768px){
+    .pub-cover.format-standard{ height:210px; }
+    .pub-cover.format-cinema{ max-width:480px; margin:0 auto; border-radius:24px; }
+  }
+  .pub-cover video.cover-video-media, .pub-cover img.cover-image-media{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;
+  }
+  .pub-cover .pub-cinema-caption{
+    position:absolute; bottom:20px; left:20px; right:20px; z-index:4;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .pub-cover .pub-cinema-h1{
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #ffffff;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    letter-spacing: -0.02em;
+  }
+  .pub-cover .pub-cinema-sub{
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.92);
+    margin: 0;
+    line-height: 1.4;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+  }
+  /* Estilos das regras gamificadas de afiliação */
+  .affiliate-tier-card{
+    background: linear-gradient(135deg, rgba(255,95,138,0.12) 0%, rgba(255,176,32,0.08) 100%);
+    border: 1px solid rgba(255,95,138,0.3);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
   /* ---------- Bottom pill nav ---------- */
   .bottom-nav{
     position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
@@ -1163,6 +1222,9 @@
   @media(min-width:1280px){ .app{ max-width:960px; } .bottom-nav{ max-width:880px; } .section{ padding-left:28px; padding-right:28px; } .topbar,.page-head{ padding-left:28px; padding-right:28px; } }
   @media(max-width:370px){ .fin-kpi-grid{ gap:5px; } .fin-kpi-card{ padding:9px 6px; } .fin-kpi-value{ font-size:12px; } .profile-meta{ gap:6px; } }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -1639,22 +1701,52 @@
         <h2>Regras Oficiais do Programa</h2>
       </div>
 
+      
+      <!-- Super Regra de Fidelização e Aceleração: Até 50% de Comissão -->
+      <div class="affiliate-tier-card">
+        <div style="display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:9999px; background:rgba(255,95,138,0.2); color:#ff5f8a; font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px;">
+          🔥 Bônus de Fidelização Ativa
+        </div>
+        <h2 style="font-size:18px; line-height:1.25; margin-bottom:6px; font-family:'Poppins', sans-serif;">
+          Até 50% de comissão para os seus primeiros 15 clientes!
+        </h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.85); line-height:1.5; margin:0 0 12px;">
+          Acelere seus ganhos: nos seus primeiros 15 estúdios indicados, sua comissão salta para <b>50% recorrente</b>. A partir do 16º, a comissão padrão vitalícia de 30% permanece ativa em todas as mensalidades pagas.
+        </p>
+        <!-- Barra de Progresso dos 15 Clientes -->
+        <div style="background:var(--field); border-radius:9999px; height:8px; overflow:hidden; position:relative; margin-bottom:6px;">
+          <div style="width:80%; height:100%; background:linear-gradient(90deg, #ff5f8a, #ffb020); border-radius:9999px;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted); font-weight:600;">
+          <span>Progresso: <b>12 / 15 estúdios</b></span>
+          <span style="color:#ff5f8a;">Faltam 3 estúdios p/ meta</span>
+        </div>
+      </div>
+
+      <div class="section-head" style="margin-top:20px;">
+        <h2>Regras Oficiais & Termos do Programa</h2>
+      </div>
+
       <div class="qa-list" style="margin-bottom:20px;">
         <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">1. Comissão de 30% Todo Mês</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Você recebe 30% de comissão sobre cada mensalidade paga pelo estúdio indicado, enquanto a assinatura dele permanecer ativa.</span>
+          <b style="font-size:13px; color:var(--ink);">1. Até 50% nos Primeiros 15 Clientes</b>
+          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Para incentivar e premiar parceiros dedicados, as primeiras 15 assinaturas ativadas pagam <b>50% de comissão recorrente</b> direto na sua conta Cakto Split.</span>
         </div>
         <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">2. Repasse Automático via Cakto Split</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Os pagamentos são liquidados automaticamente pela infraestrutura Cakto diretamente na sua chave Pix ou conta bancária cadastrada.</span>
+          <b style="font-size:13px; color:var(--ink);">2. Comissão Recorrente Vitalícia de 30%</b>
+          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Após a meta de 15 clientes, todos os novos estúdios geram 30% fixos todo mês, mantendo sua receita passiva em crescimento constante.</span>
         </div>
         <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">3. Sem Limite de Indicações</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Quanto mais estúdios e clínicas de estética você convidar com seu link, maior sua renda recorrente mensal.</span>
+          <b style="font-size:13px; color:var(--ink);">3. Repasse Automático via Cakto Split</b>
+          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Sem burocracia de solicitação de saque: os valores são transferidos no mesmo instante para sua chave Pix cadastrada.</span>
         </div>
         <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
-          <b style="font-size:13px; color:var(--ink);">4. Aprovação Manual do Administrador</b>
-          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Para garantir a qualidade da rede, todas as solicitações passam por verificação prévia no painel de administração da plataforma.</span>
+          <b style="font-size:13px; color:var(--ink);">4. Retenção & Permanência</b>
+          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">A comissão é creditada mensalmente enquanto o estúdio indicado continuar utilizando o plano do agendo.</span>
+        </div>
+        <div class="qa-row" style="flex-direction:column; align-items:flex-start; gap:4px; padding:14px;">
+          <b style="font-size:13px; color:var(--ink);">5. Aprovação Prévia da Administração</b>
+          <span style="font-size:11.5px; color:var(--muted); line-height:1.45;">Para garantir qualidade e coibir abusos, novos afiliados passam pela fila de aprovação no painel Super Admin.</span>
         </div>
       </div>
     </div>
@@ -1671,11 +1763,24 @@
       <span class="tag">Visão do cliente</span>
     </div>
     
-    <div class="pub-cover" id="pub-cover" style="position:relative; overflow:hidden;">
-      <div class="pub-cover-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.92) 100%); pointer-events:none; z-index:1;"></div>
+    <div class="pub-cover format-standard" id="pub-cover">
+      <!-- Mídia de Vídeo ou Imagem de Fundo (Auto Layout Proporção 9:10 ou Padrão) -->
+      <video id="pub-cover-video" class="cover-video-media hidden" autoplay muted loop playsinline></video>
+      <img id="pub-cover-img" class="cover-image-media hidden" alt="Capa">
+
+      <!-- Camada Escura Degradê Suave -->
+      <div class="pub-cover-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 60%, rgba(0,0,0,0.95) 100%); pointer-events:none; z-index:2;"></div>
+      
+      <!-- Botão Compartilhar -->
       <button class="pub-share" onclick="sharePublicPage()" aria-label="Compartilhar" title="Compartilhar" style="position:absolute; right:16px; top:16px; z-index:5;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.6 6.6-4.2m-6.6 7 6.6 4.2"/></svg>
       </button>
+
+      <!-- Tipografia Poppins no Banner Capa Cinema 9:10 (Título H1 de 2 linhas + Subtítulo) -->
+      <div class="pub-cinema-caption hidden" id="pub-cinema-caption">
+        <h1 class="pub-cinema-h1" id="pub-cinema-title">Studio Marina Ravi Estética Avançada & Spa</h1>
+        <p class="pub-cinema-sub" id="pub-cinema-sub">Transformando autoestima com tecnologia de ponta e acolhimento</p>
+      </div>
     </div>
 
     <!-- Componente de Identificação do Perfil -->
@@ -4980,7 +5085,34 @@
     function renderPublicProfile(){
     const grad = coverPresets[profile.coverIndex];
     const pubCover = document.getElementById('pub-cover');
-    if(pubCover) pubCover.style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
+    const pubCoverVideo = document.getElementById('pub-cover-video');
+    const pubCoverCaption = document.getElementById('pub-cinema-caption');
+    const pubCinemaTitle = document.getElementById('pub-cinema-title');
+    const pubCinemaSub = document.getElementById('pub-cinema-sub');
+
+    if(pubCover){
+      if(pageCoverConfig.layout === 'cinema' && pageCoverConfig.videoUrl){
+        pubCover.className = 'pub-cover format-cinema';
+        pubCover.style.background = '#0a0a0a';
+        if(pubCoverVideo){
+          pubCoverVideo.classList.remove('hidden');
+          if(pubCoverVideo.src !== pageCoverConfig.videoUrl){
+            pubCoverVideo.src = pageCoverConfig.videoUrl;
+          }
+          pubCoverVideo.play().catch(()=>{});
+        }
+        if(pubCoverCaption){
+          pubCoverCaption.classList.remove('hidden');
+          if(pubCinemaTitle) pubCinemaTitle.textContent = pageCoverConfig.title || profile.name;
+          if(pubCinemaSub) pubCinemaSub.textContent = pageCoverConfig.sub || profile.bio;
+        }
+      } else {
+        pubCover.className = 'pub-cover format-standard';
+        pubCover.style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
+        if(pubCoverVideo) pubCoverVideo.classList.add('hidden');
+        if(pubCoverCaption) pubCoverCaption.classList.add('hidden');
+      }
+    }
     const pubAvatar = document.getElementById('pub-avatar');
     if(pubAvatar) pubAvatar.textContent = profile.avatarEmoji;
     const pubName = document.getElementById('pub-name');
@@ -5932,6 +6064,70 @@ async function sharePublicPage(){
     toast('Solicitação enviada para a fila de afiliados do Admin ✓');
   }
 
+  
+  // Configuração do formato da capa pública e vídeo 9:10
+  let pageCoverConfig = {
+    layout: localStorage.getItem('pageCoverLayout') || 'cinema', // 'standard' ou 'cinema'
+    videoUrl: localStorage.getItem('pageCoverVideo') || 'https://assets.mixkit.co/videos/preview/mixkit-woman-relaxing-in-a-spa-bath-42354-large.mp4',
+    title: localStorage.getItem('pageCoverTitle') || 'Studio Marina Ravi Estética Avançada & Spa',
+    sub: localStorage.getItem('pageCoverSub') || 'Transformando autoestima com tecnologia de ponta e acolhimento'
+  };
+
+  function openCoverConfigModal(){
+    const m = document.getElementById('modal-cover-config');
+    if(!m) return;
+    document.getElementById('cover-video-url-input').value = pageCoverConfig.videoUrl;
+    document.getElementById('cover-h1-title-input').value = pageCoverConfig.title;
+    document.getElementById('cover-sub-title-input').value = pageCoverConfig.sub;
+    selectPageLayout(pageCoverConfig.layout);
+    m.classList.remove('hidden');
+  }
+
+  function closeCoverConfigModal(){
+    const m = document.getElementById('modal-cover-config');
+    if(m) m.classList.add('hidden');
+  }
+
+  function selectPageLayout(mode){
+    pageCoverConfig.layout = mode;
+    const btnStd = document.getElementById('btn-layout-standard');
+    const btnCin = document.getElementById('btn-layout-cinema');
+    const cinOpts = document.getElementById('cover-cinema-options');
+    if(btnStd && btnCin){
+      btnStd.className = mode === 'standard' ? 'btn btn-dark' : 'btn btn-outline';
+      btnCin.className = mode === 'cinema' ? 'btn btn-dark' : 'btn btn-outline';
+    }
+    if(cinOpts){
+      cinOpts.style.opacity = mode === 'cinema' ? '1' : '0.4';
+      cinOpts.style.pointerEvents = mode === 'cinema' ? 'auto' : 'none';
+    }
+  }
+
+  function saveCoverConfig(){
+    pageCoverConfig.videoUrl = document.getElementById('cover-video-url-input').value.trim();
+    pageCoverConfig.title = document.getElementById('cover-h1-title-input').value.trim() || profile.name;
+    pageCoverConfig.sub = document.getElementById('cover-sub-title-input').value.trim();
+
+    localStorage.setItem('pageCoverLayout', pageCoverConfig.layout);
+    localStorage.setItem('pageCoverVideo', pageCoverConfig.videoUrl);
+    localStorage.setItem('pageCoverTitle', pageCoverConfig.title);
+    localStorage.setItem('pageCoverSub', pageCoverConfig.sub);
+
+    const descEl = document.getElementById('profile-cover-format-desc');
+    if(descEl){
+      descEl.textContent = pageCoverConfig.layout === 'cinema' ? 'Formato 9:10 com vídeo e título Poppins ativo' : 'Capa clássica em degradê ativo';
+    }
+
+    closeCoverConfigModal();
+    renderPublicProfile();
+    toast('Formato de capa salvo com sucesso ✓');
+  }
+
+  window.openCoverConfigModal = openCoverConfigModal;
+  window.closeCoverConfigModal = closeCoverConfigModal;
+  window.selectPageLayout = selectPageLayout;
+  window.saveCoverConfig = saveCoverConfig;
+  
   window.openAffiliatePage = openAffiliatePage;
   window.requestAffiliateAccess = requestAffiliateAccess;
   window.updateAffiliatePageStatus = updateAffiliatePageStatus;
