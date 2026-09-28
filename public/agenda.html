@@ -306,7 +306,10 @@
 
   /* Formato da Página (Perfil) Redesenhado - UI Visual com Cards */
   .layout-cards-grid{
-    display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%;
+    display:grid; grid-template-columns:1fr; gap:12px; width:100%;
+  }
+  @media (min-width:480px){
+    .layout-cards-grid{ grid-template-columns:repeat(3, 1fr); }
   }
   .layout-option-card{
     background:var(--canvas-soft); border:1.5px solid var(--hairline-soft);
@@ -1546,6 +1549,46 @@
             <span class="layout-card-label">Destaque</span>
             <span class="layout-card-desc">Avatar centralizado, selo e presença visual marcante</span>
           </div>
+        </div>
+
+        <div class="layout-option-card" data-layout="cinema">
+          <div class="layout-card-badge">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="layout-card-preview" style="aspect-ratio:9/10; height:64px; border-radius:8px; overflow:hidden; position:relative; background:linear-gradient(180deg, rgba(255,95,138,0.3) 0%, rgba(0,0,0,0.85) 100%); display:flex; flex-direction:column; justify-content:flex-end; padding:6px; box-sizing:border-box;">
+            <div style="font-size:8px; font-weight:800; color:#ff5f8a; font-family:'Poppins',sans-serif; text-transform:uppercase;">▶ 9:10 Vídeo</div>
+            <div class="preview-line" style="width:85%; background:#fff; height:4px; border-radius:2px; margin-top:2px;"></div>
+            <div class="preview-line" style="width:60%; opacity:0.7; height:3px; border-radius:2px; margin-top:2px;"></div>
+          </div>
+          <div>
+            <span class="layout-card-label" style="display:flex; align-items:center; gap:4px;">
+              Cinema 9:10
+              <span style="font-size:9px; background:#ff5f8a; color:#fff; padding:1px 5px; border-radius:999px; font-weight:750;">NOVO</span>
+            </span>
+            <span class="layout-card-desc">Capa 9:10 c/ vídeo, auto-layout e título Poppins de 2 linhas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Configurações do Formato Cinema 9:10 (exibido quando Cinema está ativo) -->
+      <div id="cinema-format-customizer" class="hidden" style="margin-top:14px; background:var(--canvas-soft); border:1px solid rgba(255,95,138,0.3); border-radius:16px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <b style="font-size:13px; color:var(--ink); font-family:'Poppins', sans-serif;">Configurar Capa Vídeo (9:10) & Poppins</b>
+          <span style="font-size:10.5px; color:#ff5f8a; font-weight:700; background:rgba(255,95,138,0.15); padding:2px 8px; border-radius:999px;">Auto Layout</span>
+        </div>
+
+        <span class="field-label" style="margin-top:0;">URL do Vídeo de Fundo (MP4/WebM)</span>
+        <input class="field-input" id="profile-video-url-input" placeholder="https://exemplo.com/video.mp4" value="https://assets.mixkit.co/videos/preview/mixkit-woman-relaxing-in-a-spa-bath-42354-large.mp4" style="font-size:12px; margin-bottom:10px;" onchange="saveCinemaFromProfile()">
+
+        <span class="field-label">Título H1 (Até 2 Linhas — Fonte Poppins)</span>
+        <input class="field-input" id="profile-h1-title-input" placeholder="Título em até 2 linhas" value="Studio Marina Ravi Estética Avançada & Spa" style="font-family:'Poppins',sans-serif; font-weight:600; font-size:12.5px; margin-bottom:10px;" onchange="saveCinemaFromProfile()">
+
+        <span class="field-label">Subtítulo (Fonte Poppins)</span>
+        <input class="field-input" id="profile-sub-title-input" placeholder="Subtítulo da capa" value="Transformando autoestima com tecnologia de ponta e acolhimento" style="font-family:'Poppins',sans-serif; font-size:12px; margin-bottom:10px;" onchange="saveCinemaFromProfile()">
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+          <span style="font-size:11px; color:var(--muted);">Proporção sugerida 9:10 para exibição mobile perfeita.</span>
+          <button type="button" class="btn btn-dark" style="height:32px; padding:0 12px; font-size:11.5px;" onclick="saveCinemaFromProfile()">Salvar Ajustes</button>
         </div>
       </div>
     </div>
@@ -3922,7 +3965,8 @@
     editOverlay.dataset.mode = 'edit';
     closeEdit();
     renderServices(svcFilter);
-    renderProfile();
+    profile.layout = localStorage.getItem('pageCoverLayout') || profile.layout;
+  renderProfile();
 
     if(s.type === 'produto'){
       toast(isCreate ? 'Produto adicionado ao catálogo de checkout ✨' : 'Produto de checkout atualizado ✨');
@@ -4430,6 +4474,16 @@
     document.getElementById('verified-badge').classList.toggle('hidden', profile.layout !== 'hero');
     document.getElementById('view-profile').classList.toggle('layout-hero', profile.layout === 'hero');
     document.querySelectorAll('#layout-toggle [data-layout]').forEach(b => b.classList.toggle('is-active', b.dataset.layout === profile.layout));
+    const cinemaCustomizer = document.getElementById('cinema-format-customizer');
+    if(cinemaCustomizer){
+      cinemaCustomizer.classList.toggle('hidden', profile.layout !== 'cinema');
+    }
+    const cinVideoInp = document.getElementById('profile-video-url-input');
+    const cinTitleInp = document.getElementById('profile-h1-title-input');
+    const cinSubInp = document.getElementById('profile-sub-title-input');
+    if(cinVideoInp && pageCoverConfig.videoUrl) cinVideoInp.value = pageCoverConfig.videoUrl;
+    if(cinTitleInp && pageCoverConfig.title) cinTitleInp.value = pageCoverConfig.title;
+    if(cinSubInp && pageCoverConfig.sub) cinSubInp.value = pageCoverConfig.sub;
 
     if(document.getElementById('pub-name')) renderPublicProfile();
     const bWrap = document.getElementById('banner-list');
@@ -4472,9 +4526,30 @@
     const b = e.target.closest('[data-layout]');
     if(!b) return;
     profile.layout = b.dataset.layout;
+    pageCoverConfig.layout = b.dataset.layout;
+    localStorage.setItem('pageCoverLayout', profile.layout);
     renderProfile();
-    toast(profile.layout === 'hero' ? 'Formato "Destaque" aplicado' : 'Formato "Clássico" aplicado');
+    const msg = profile.layout === 'cinema' ? 'Formato "Cinema 9:10" aplicado' : profile.layout === 'hero' ? 'Formato "Destaque" aplicado' : 'Formato "Clássico" aplicado';
+    toast(msg);
   });
+
+  function saveCinemaFromProfile(){
+    const vUrl = document.getElementById('profile-video-url-input')?.value.trim();
+    const vTitle = document.getElementById('profile-h1-title-input')?.value.trim();
+    const vSub = document.getElementById('profile-sub-title-input')?.value.trim();
+
+    if(vUrl) pageCoverConfig.videoUrl = vUrl;
+    if(vTitle) pageCoverConfig.title = vTitle;
+    if(vSub !== undefined) pageCoverConfig.sub = vSub;
+
+    localStorage.setItem('pageCoverVideo', pageCoverConfig.videoUrl);
+    localStorage.setItem('pageCoverTitle', pageCoverConfig.title);
+    localStorage.setItem('pageCoverSub', pageCoverConfig.sub);
+
+    renderPublicProfile();
+    toast('Configurações do Formato Cinema 9:10 salvas ✓');
+  }
+  window.saveCinemaFromProfile = saveCinemaFromProfile;
   document.getElementById('banner-list').addEventListener('click', e => {
     const btn = e.target.closest('[data-remove]');
     if(!btn) return;
