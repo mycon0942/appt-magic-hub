@@ -714,6 +714,26 @@
     justify-content:center; font-size:12px; cursor:pointer;
   }
 
+  
+  /* Painel Administrativo */
+  .admin-kpi-grid{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin-bottom:18px;
+  }
+  @media(min-width:768px){ .admin-kpi-grid{ grid-template-columns:repeat(4, 1fr); } }
+  .admin-kpi-card{
+    background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px;
+    padding:14px; display:flex; flex-direction:column; gap:4px;
+  }
+  .admin-kpi-card .val{ font-size:18px; font-weight:800; color:var(--ink); }
+  .admin-kpi-card .lbl{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; }
+
+  /* Map card */
+  .pub-map-card{
+    margin-top:12px; border-radius:14px; overflow:hidden; border:1px solid var(--hairline-soft);
+    background:var(--field);
+  }
+  .pub-map-frame{ width:100%; height:180px; border:none; display:block; filter:grayscale(0.2) contrast(1.1); }
+
   /* ---------- Bottom pill nav ---------- */
   .bottom-nav{
     position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
@@ -1122,6 +1142,11 @@
 
     <div class="section" style="margin-top:20px;">
       <div class="qa-list">
+            <button class="qa-row" onclick="goTo('admin')" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
+        <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+        <span class="txt"><b>Painel do Administrador</b><span class="desc">Controle geral, métricas e faturamento</span></span>
+        <span class="chev">›</span>
+      </button>
       <button class="qa-row" onclick="goTo('dashboard')">
         <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></span>
         <span class="txt"><b>Dashboard financeiro</b><span class="desc">Faturamento, previsão e desempenho</span></span>
@@ -1387,10 +1412,10 @@
 
     <div class="profile-section">
       <div class="profile-section-head">
-        <h3>Sobre mim</h3>
+        <h3>Sobre mim & Clínica</h3>
         <span class="profile-edit-link" onclick="openProfileEdit('about')">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-          Editar
+          Editar Completo
         </span>
       </div>
       <div class="profile-about-card" id="profile-about-display" onclick="openProfileEdit('about')"></div>
@@ -1519,17 +1544,35 @@
         <div class="pub-about" id="pub-about" style="font-size:13px; line-height:1.6; color:var(--muted); margin-bottom:16px;"></div>
         
         <h4>Diferenciais & Formação</h4>
-        <p>Atendimento exclusivo e humanizado, unindo tecnologia de ponta, cosmetologia avançada e protocolos personalizados.</p>
-        <div class="pub-badge-pills">
+        <p id="pub-diff-desc">Atendimento exclusivo e humanizado, unindo tecnologia de ponta, cosmetologia avançada e protocolos personalizados.</p>
+        <div class="pub-badge-pills" id="pub-badges-list">
           <span class="pub-badge-pill">✓ Estética Avançada</span>
           <span class="pub-badge-pill">✓ Biossegurança Rigorosa</span>
           <span class="pub-badge-pill">✓ Protocolos Personalizados</span>
           <span class="pub-badge-pill">✓ Cosméticos de Alta Performance</span>
         </div>
 
+        <!-- Localização & Atendimento com Card Embedado -->
         <div style="margin-top:18px; border-top:1px solid var(--hairline-soft); padding-top:14px;">
           <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">📍 Localização & Atendimento</div>
-          <div style="font-size:13px; font-weight:600; color:var(--ink);">São Paulo — SP · Atendimento individual com hora marcada</div>
+          <div style="font-size:13.5px; font-weight:700; color:var(--ink);" id="pub-location-address">
+            Av. Paulista, 1000 · Bela Vista, São Paulo — SP
+          </div>
+          <div style="font-size:11.5px; color:var(--muted); margin-top:2px;" id="pub-location-note">
+            Atendimento individual com hora marcada · Próximo ao Metrô Trianon-Masp
+          </div>
+          
+          <div class="pub-map-card">
+            <iframe class="pub-map-frame" id="pub-map-frame" src="https://maps.google.com/maps?q=Av.+Paulista,+1000,+Sao+Paulo&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+            <a href="https://maps.google.com/?q=Av.+Paulista,+1000,+Sao+Paulo" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:11.5px; padding:6px 12px; border-radius:9999px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+              Abrir no Google Maps ↗
+            </a>
+            <span style="font-size:11px; color:#34c281; font-weight:600;">✓ Estacionamento no local</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1562,6 +1605,90 @@
     <div class="spacer"></div>
   </div>
   <div class="spacer"></div>
+  
+  <!-- ================= PAINEL ADMINISTRADOR ================= -->
+  <div id="view-admin" class="hidden">
+    <div class="topbar">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button class="icon-btn" style="width:36px; height:36px;" onclick="goTo('home')" aria-label="Voltar">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div>
+          <span style="font-size:10px; font-weight:800; color:var(--grad-a); text-transform:uppercase; letter-spacing:0.06em;">Administração</span>
+          <h2 style="margin:0; font-size:19px; font-weight:750;">Painel de Gestão Master</h2>
+        </div>
+      </div>
+      <span class="agenda-status-badge" style="background:rgba(52,194,129,0.15); color:#34c281;">Sistema Ativo</span>
+    </div>
+
+    <div class="section" style="margin-top:14px;">
+      <!-- KPIs Administrativos Gerais -->
+      <div class="admin-kpi-grid">
+        <div class="admin-kpi-card">
+          <span class="lbl">Faturamento Total</span>
+          <span class="val" id="adm-kpi-revenue">R$ 18.420</span>
+          <span style="font-size:10.5px; color:#34c281; font-weight:600;">↑ +18% este mês</span>
+        </div>
+        <div class="admin-kpi-card">
+          <span class="lbl">Atendimentos</span>
+          <span class="val" id="adm-kpi-appts">142</span>
+          <span style="font-size:10.5px; color:var(--muted);">98% de presença</span>
+        </div>
+        <div class="admin-kpi-card">
+          <span class="lbl">Vendas de Produtos</span>
+          <span class="val" id="adm-kpi-prods">R$ 4.890</span>
+          <span style="font-size:10.5px; color:#34c281; font-weight:600;">38 pedidos no checkout</span>
+        </div>
+        <div class="admin-kpi-card">
+          <span class="lbl">Clientes Ativos</span>
+          <span class="val" id="adm-kpi-clients">68</span>
+          <span style="font-size:10.5px; color:var(--muted);">24 recorrentes VIP</span>
+        </div>
+      </div>
+
+      <!-- Atalhos de Gestão e Configurações Master -->
+      <div class="section-head">
+        <h2>Controles Rápidos do Administrador</h2>
+      </div>
+      <div class="qa-list" style="margin-bottom:20px;">
+        <button class="qa-row" onclick="openPaymentConfig()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="15" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></span>
+          <span class="txt"><b>Gateway de Pagamentos & Checkout</b><span class="desc">Pix API, InfinitePay e pedidos via WhatsApp</span></span>
+          <span class="chev">›</span>
+        </button>
+        <button class="qa-row" onclick="openBookingConfig()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span>
+          <span class="txt"><b>Regras do Fluxo de Agendamento</b><span class="desc">Etapas, sinal de pagamento e cupons de desconto</span></span>
+          <span class="chev">›</span>
+        </button>
+        <button class="qa-row" onclick="openHoursConfig()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+          <span class="txt"><b>Horários de Funcionamento & Bloqueios</b><span class="desc">Dias da semana e intervalos de atendimento</span></span>
+          <span class="chev">›</span>
+        </button>
+        <button class="qa-row" onclick="openTemplateEditor()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></span>
+          <span class="txt"><b>Ficha de Anamnese Master</b><span class="desc">Personalizar campos clínicos e termos de consentimento</span></span>
+          <span class="chev">›</span>
+        </button>
+      </div>
+
+      <!-- Tabela / Lista de Transações Recentes -->
+      <div class="section-head" style="margin-top:20px;">
+        <h2>Últimas Transações & Pedidos</h2>
+      </div>
+      <div id="adm-trans-list" style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; overflow:hidden;"></div>
+
+      <div class="modal-actions" style="margin-top:20px;">
+        <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="exportAdminData()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Exportar Relatório Completo (CSV)
+        </button>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
   <nav class="bottom-nav">
     <button class="nav-item is-active" data-nav="home">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg>
@@ -3370,7 +3497,8 @@
     agenda: document.getElementById('view-agenda'),
     profile: document.getElementById('view-profile'),
     dashboard: document.getElementById('view-dashboard'),
-    public: document.getElementById('view-public')
+    public: document.getElementById('view-public'),
+    admin: document.getElementById('view-admin')
   };
 
   function closeAllModals(){
@@ -3394,7 +3522,7 @@
 
     // Rola para o topo suavemente
     const appEl = document.querySelector('.app');
-    if(appEl) appEl.scrollTo({ top: 0, behavior: 'smooth' });
+    if(appEl && appEl.scrollTo) appEl.scrollTo({ top: 0, behavior: 'smooth' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -3765,6 +3893,11 @@
     name: 'Marina Ravi',
     bio: 'Especialista em estética facial e corporal',
     about: 'Trabalho há mais de 8 anos com estética facial e corporal em São Paulo. Meu foco é criar experiências de autocuidado personalizadas, sempre com escuta atenta e cuidado técnico em cada procedimento.',
+    diffDesc: 'Atendimento exclusivo e humanizado, unindo tecnologia de ponta, cosmetologia avançada e protocolos personalizados.',
+    badges: ['Estética Avançada', 'Biossegurança Rigorosa', 'Protocolos Personalizados', 'Cosméticos de Alta Performance'],
+    locationAddress: 'Av. Paulista, 1000 · Bela Vista, São Paulo — SP',
+    locationNote: 'Atendimento individual com hora marcada · Próximo ao Metrô Trianon-Masp',
+    mapQuery: 'Av.+Paulista,+1000,+Sao+Paulo',
     layout: 'classic'
   };
   const publicMediaGallery = [
@@ -3804,10 +3937,25 @@
 
   function renderProfile(){
     const grad = coverPresets[profile.coverIndex];
-    document.getElementById('profile-cover').style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
-    document.getElementById('profile-avatar-emoji').textContent = profile.avatarEmoji;
-    document.getElementById('profile-name-display').textContent = profile.name;
-    document.getElementById('profile-about-display').textContent = profile.about;
+    const pCover = document.getElementById('profile-cover');
+    if(pCover) pCover.style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
+    const pEmoji = document.getElementById('profile-avatar-emoji');
+    if(pEmoji) pEmoji.textContent = profile.avatarEmoji;
+    const pName = document.getElementById('profile-name-display');
+    if(pName) pName.textContent = profile.name;
+    const pAbout = document.getElementById('profile-about-display');
+    if(pAbout){
+      pAbout.innerHTML = `
+        <div style="font-size:12.5px; line-height:1.55; color:var(--muted); margin-bottom:8px;">${profile.about}</div>
+        <div style="font-size:11px; font-weight:700; color:var(--ink); margin-bottom:4px;">DIFERENCIAIS & FORMAÇÃO:</div>
+        <div style="font-size:11.5px; color:var(--muted); margin-bottom:8px;">${profile.diffDesc || ''}</div>
+        <div class="pub-badge-pills" style="margin-bottom:10px;">
+          ${(profile.badges || []).map(b => `<span class="pub-badge-pill">✓ ${b}</span>`).join('')}
+        </div>
+        <div style="font-size:11px; font-weight:700; color:var(--ink); margin-bottom:2px;">📍 LOCALIZAÇÃO:</div>
+        <div style="font-size:12px; color:var(--muted);">${profile.locationAddress || ''}</div>
+      `;
+    }
     document.getElementById('profile-bio-display').textContent = profile.bio;
     document.getElementById('profile-stat-services').textContent = services.length + ' serviços';
     document.getElementById('verified-badge').classList.toggle('hidden', profile.layout !== 'hero');
@@ -3907,7 +4055,25 @@
       body.innerHTML = `<span class="field-label">Nome</span><input class="field-input" id="p-name" value="${profile.name}">
         <span class="field-label">Bio curta</span><input class="field-input" id="p-bio" value="${profile.bio}">`;
     }else if(field === 'about'){
-      body.innerHTML = `<span class="field-label">Sobre mim</span><textarea class="field-textarea" id="p-about" style="min-height:120px;">${profile.about}</textarea>`;
+      body.innerHTML = `
+        <span class="field-label">Sobre a Especialista</span>
+        <textarea class="field-textarea" id="p-about" style="min-height:90px;" placeholder="Conte sobre sua trajetória, formação e dedicação...">${profile.about}</textarea>
+        
+        <span class="field-label">Diferenciais & Formação</span>
+        <textarea class="field-textarea" id="p-diff-desc" style="min-height:70px;" placeholder="Seus métodos e diferenciais de atendimento...">${profile.diffDesc || ''}</textarea>
+
+        <span class="field-label">Destaques / Selos (separados por vírgula)</span>
+        <input class="field-input" id="p-badges" value="${(profile.badges || []).join(', ')}" placeholder="Estética Avançada, Biossegurança, Protocolos Personalizados">
+
+        <span class="field-label">Endereço do Consultório / Estúdio</span>
+        <input class="field-input" id="p-address" value="${profile.locationAddress || ''}" placeholder="Ex: Av. Paulista, 1000 · Bela Vista, São Paulo — SP">
+
+        <span class="field-label">Informação de Referência / Acesso</span>
+        <input class="field-input" id="p-note" value="${profile.locationNote || ''}" placeholder="Ex: Próximo ao Metrô · Estacionamento no local">
+
+        <span class="field-label">Termo de busca para o Mapa Google</span>
+        <input class="field-input" id="p-map" value="${profile.mapQuery || ''}" placeholder="Ex: Av.+Paulista,+1000,+Sao+Paulo">
+      `;
     }
     profileEditOverlay.classList.remove('hidden');
   }
@@ -3924,6 +4090,20 @@
       profile.bio = document.getElementById('p-bio').value.trim();
     }else if(profileEditField === 'about'){
       profile.about = document.getElementById('p-about').value.trim();
+      const pDiff = document.getElementById('p-diff-desc');
+      if(pDiff) profile.diffDesc = pDiff.value.trim();
+      const pBadges = document.getElementById('p-badges');
+      if(pBadges){
+        profile.badges = pBadges.value.split(',').map(x => x.trim()).filter(Boolean);
+      }
+      const pAddr = document.getElementById('p-address');
+      if(pAddr) profile.locationAddress = pAddr.value.trim();
+      const pNote = document.getElementById('p-note');
+      if(pNote) profile.locationNote = pNote.value.trim();
+      const pMap = document.getElementById('p-map');
+      if(pMap){
+        profile.mapQuery = pMap.value.trim() || 'Av.+Paulista,+1000,+Sao+Paulo';
+      }
     }
     renderProfile();
     closeProfileEdit();
@@ -4445,6 +4625,20 @@
     if(pubBio) pubBio.textContent = profile.bio || 'Especialista em estética facial e corporal';
     const pubAbout = document.getElementById('pub-about');
     if(pubAbout) pubAbout.textContent = profile.about;
+    const pubDiff = document.getElementById('pub-diff-desc');
+    if(pubDiff) pubDiff.textContent = profile.diffDesc || 'Atendimento exclusivo e humanizado, unindo tecnologia de ponta, cosmetologia avançada e protocolos personalizados.';
+    const pubBadgesList = document.getElementById('pub-badges-list');
+    if(pubBadgesList && profile.badges){
+      pubBadgesList.innerHTML = profile.badges.map(b => `<span class="pub-badge-pill">✓ ${b}</span>`).join('');
+    }
+    const pubAddr = document.getElementById('pub-location-address');
+    if(pubAddr) pubAddr.textContent = profile.locationAddress || 'São Paulo — SP';
+    const pubNote = document.getElementById('pub-location-note');
+    if(pubNote) pubNote.textContent = profile.locationNote || 'Atendimento com hora marcada';
+    const pubMapFrame = document.getElementById('pub-map-frame');
+    if(pubMapFrame && profile.mapQuery){
+      pubMapFrame.src = `https://maps.google.com/maps?q=${encodeURIComponent(profile.mapQuery)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+    }
     const pubServices = document.getElementById('pub-services');
     if(pubServices) pubServices.textContent = services.length + ' serviços';
     const bkprevName = document.getElementById('bkprev-name');
@@ -5088,6 +5282,58 @@ async function sharePublicPage(){
     });
   }
 
+  
+  // -------------------------------------------------------------
+  // LÓGICA DO PAINEL ADMINISTRADOR MASTER
+  // -------------------------------------------------------------
+  function renderAdminDashboard(){
+    const list = document.getElementById('adm-trans-list');
+    if(!list) return;
+    const sampleTransactions = [
+      { id: 'TRX-9481', client: 'Beatriz Lima', type: 'Serviço', item: 'Limpeza de pele profunda', val: 'R$ 180', status: 'Aprovado', date: 'Hoje, 14:30' },
+      { id: 'TRX-9480', client: 'Camila Rocha', type: 'Produto', item: 'Sérum Vitamina C 15% (2x)', val: 'R$ 238', status: 'Aprovado', date: 'Hoje, 11:15' },
+      { id: 'TRX-9479', client: 'Fernanda Alves', type: 'Serviço', item: 'Peeling de diamante', val: 'R$ 150', status: 'Concluído', date: 'Ontem, 16:00' },
+      { id: 'TRX-9478', client: 'Juliana Costa', type: 'Produto', item: 'Home Care Hidratante', val: 'R$ 95', status: 'Aprovado', date: 'Ontem, 10:20' }
+    ];
+    list.innerHTML = sampleTransactions.map(t => `
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--hairline-soft);">
+        <div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <b style="font-size:13px; color:var(--ink);">${t.client}</b>
+            <span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:9999px; background:rgba(255,255,255,0.06); color:var(--muted);">${t.type}</span>
+          </div>
+          <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">${t.item} · ${t.date}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:13.5px; font-weight:750; color:var(--ink);">${t.val}</div>
+          <span style="font-size:10.5px; color:#34c281; font-weight:600;">✓ ${t.status}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function exportAdminData(){
+    const csvContent = 'data:text/csv;charset=utf-8,ID,Cliente,Tipo,Item,Valor,Data,Status\n'
+      + 'TRX-9481,Beatriz Lima,Serviço,Limpeza de pele profunda,180.00,2026-09-27,Aprovado\n'
+      + 'TRX-9480,Camila Rocha,Produto,Serum Vitamina C 15%,238.00,2026-09-27,Aprovado\n'
+      + 'TRX-9479,Fernanda Alves,Serviço,Peeling de diamante,150.00,2026-09-26,Concluído\n';
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'relatorio_agendo_admin.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast('Relatório exportado em formato CSV ✓');
+  }
+
+  // Chamar renderAdminDashboard ao mudar para view admin
+  const origGoTo = goTo;
+  goTo = function(view){
+    origGoTo(view);
+    if(view === 'admin') renderAdminDashboard();
+  };
+
   // Expor funções essenciais para chamadas inline (onclick) com verificação segura
   window.goTo = typeof goTo !== 'undefined' ? goTo : null;
   window.closeAllModals = typeof closeAllModals !== 'undefined' ? closeAllModals : null;
@@ -5141,6 +5387,8 @@ async function sharePublicPage(){
   window.removeMedia = typeof removeMedia !== 'undefined' ? removeMedia : null;
   window.toggleBannerActive = typeof toggleBannerActive !== 'undefined' ? toggleBannerActive : null;
   window.changeBannerPos = typeof changeBannerPos !== 'undefined' ? changeBannerPos : null;
+  window.renderAdminDashboard = typeof renderAdminDashboard !== 'undefined' ? renderAdminDashboard : null;
+  window.exportAdminData = typeof exportAdminData !== 'undefined' ? exportAdminData : null;
 
 </script>
 </body>
