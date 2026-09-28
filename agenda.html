@@ -667,6 +667,53 @@
     border-radius:9999px;
   }
 
+  
+  /* Banner com overlay degrade refinado */
+  .pub-promo{
+    width:100%; max-width:440px; min-height:94px; border-radius:18px; padding:16px 20px;
+    position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:center;
+    background:linear-gradient(135deg, rgba(255,95,138,0.18) 0%, rgba(32,24,36,0.96) 50%, rgba(14,12,18,0.98) 100%);
+    border:1px solid rgba(255,255,255,0.16);
+    box-shadow:0 12px 28px -6px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.2);
+    text-decoration:none; color:inherit; box-sizing:border-box; margin:12px auto 16px;
+    transition:transform .18s ease, border-color .18s ease;
+  }
+  .pub-promo::before{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.58) 60%, rgba(0,0,0,0.2) 100%);
+    z-index:1; pointer-events:none;
+  }
+  .pub-promo.has-image::before{
+    background:linear-gradient(90deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.25) 100%);
+  }
+
+  /* Carrinho flutuante publico */
+  .pub-floating-cart-wrap{
+    position:fixed; bottom:74px; left:50%; transform:translateX(-50%); z-index:45;
+    width:calc(100% - 32px); max-width:440px; pointer-events:none;
+  }
+  .pub-floating-cart-btn{
+    pointer-events:auto; width:100%; display:flex; align-items:center; justify-content:space-between;
+    background:var(--ink); color:var(--canvas); padding:12px 18px; border-radius:9999px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.55); border:1px solid rgba(255,255,255,0.18);
+    font-size:13px; font-weight:700; cursor:pointer;
+  }
+
+  /* Gestor de midias no perfil */
+  .prof-media-strip{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:12px;
+  }
+  .prof-media-item{
+    position:relative; aspect-ratio:1/1; border-radius:10px; overflow:hidden;
+    background:var(--field); border:1px solid var(--hairline-soft);
+  }
+  .prof-media-item img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .prof-media-del{
+    position:absolute; top:4px; right:4px; width:20px; height:20px; border-radius:50%;
+    background:rgba(0,0,0,0.7); color:#fff; border:none; display:flex; align-items:center;
+    justify-content:center; font-size:12px; cursor:pointer;
+  }
+
   /* ---------- Bottom pill nav ---------- */
   .bottom-nav{
     position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
@@ -1375,6 +1422,22 @@
       <button class="add-banner-btn" onclick="openBannerForm()" style="margin-top:6px;">+ Adicionar banner com foto ou link</button>
     </div>
 
+    
+    <!-- GESTÃO DE MÍDIAS DA GALERIA PÚBLICA -->
+    <div class="profile-section">
+      <div class="profile-section-head">
+        <h3>Galeria de mídias públicas</h3>
+        <span style="font-size:11px; color:var(--muted);"><span id="prof-media-count">27</span> fotos (Grid 3×9)</span>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin:0 0 10px; line-height:1.4;">
+        Estas fotos são exibidas na aba Mídias da sua página pública. Você pode adicionar novas fotos da galeria ou remover.
+      </p>
+      <div class="prof-media-strip" id="prof-media-strip"></div>
+      <button type="button" class="add-banner-btn" onclick="openAddMediaModal()" style="margin-top:4px;">
+        + Adicionar nova foto à galeria pública
+      </button>
+    </div>
+
     <div class="profile-section">
       <div class="profile-section-head"><h3>Página pública</h3></div>
       <button class="qa-row" style="width:100%; text-align:left;" data-nav="public">
@@ -1479,6 +1542,21 @@
       </div>
       <p style="font-size:11.5px; color:var(--muted); margin:0 0 10px; line-height:1.4;">Toque em qualquer foto para ampliar os detalhes em alta definição.</p>
       <div class="pub-media-grid-3x9" id="pub-media-grid-container"></div>
+    </div>
+
+    
+    <!-- BOTÃO FLUTUANTE DE CARRINHO DE PRODUTOS -->
+    <div class="pub-floating-cart-wrap" id="pub-floating-cart-wrap">
+      <button type="button" class="pub-floating-cart-btn hidden" id="pub-floating-cart-btn" onclick="openCart()">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--grad-a); color:#fff; font-size:11.5px; font-weight:800;" id="cart-qty-badge">0</span>
+          <span>Ver Carrinho de Compras</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span id="cart-total-badge" style="font-size:13.5px; font-weight:800;">R$ 0</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </button>
     </div>
 
     <div class="spacer"></div>
@@ -2065,6 +2143,22 @@
 
     <div id="payment-fields"></div>
 
+    
+    <!-- CONFIGURAÇÃO DA COBRANÇA DO CATÁLOGO DE PRODUTOS (CARRINHO) -->
+    <div style="margin-top:18px; border-top:1px solid var(--hairline-soft); padding-top:14px;">
+      <span class="field-label" style="font-size:12px; font-weight:700; color:var(--ink);">Cobrança de Produtos (Carrinho)</span>
+      <p style="font-size:11.5px; color:var(--muted); margin:0 0 10px; line-height:1.4;">
+        Escolha como os clientes finalizam os pedidos dos produtos do catálogo:
+      </p>
+      <div class="link-toggle" id="prod-pay-method-toggle" style="margin-bottom:8px;">
+        <button type="button" data-prodpay="whatsapp" class="is-active">WhatsApp</button>
+        <button type="button" data-prodpay="infinite">InfinitePay</button>
+        <button type="button" data-prodpay="sync">Pix API</button>
+      </div>
+      <p id="prod-pay-note" style="font-size:11px; color:var(--muted); margin-bottom:12px;">
+        Envio automático do pedido detalhado direto para o seu WhatsApp.
+      </p>
+    </div>
     <div class="modal-actions">
       <button class="btn btn-outline" onclick="closePaymentConfig()">Cancelar</button>
       <button class="btn btn-dark" onclick="savePaymentConfig()">Salvar configuração</button>
@@ -2167,6 +2261,102 @@
   </div>
 </div>
 
+
+<!-- ================= MODAL : CARRINHO DE COMPRAS ================= -->
+<div id="cart-overlay" class="modal-overlay hidden" style="z-index:95;">
+  <div class="modal-card" style="max-height:92vh; overflow-y:auto;">
+    <div class="modal-head">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="modal-name">Seu Carrinho</div>
+        <span class="p-badge" id="cart-count-header">0 itens</span>
+      </div>
+      <button class="modal-close" onclick="closeCart()" aria-label="Fechar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <!-- Lista de Itens do Carrinho -->
+    <div id="cart-items-list" style="margin-bottom:14px;"></div>
+
+    <!-- Resumo de Valores -->
+    <div class="cart-summary-box" style="background:var(--field); border-radius:14px; padding:14px; margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--muted); margin-bottom:6px;">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">R$ 0</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:12.5px; color:var(--muted); margin-bottom:8px;">
+        <span>Entrega / Retirada</span>
+        <span style="color:#34c281; font-weight:600;">Disponível no estúdio</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:15.5px; font-weight:800; color:var(--ink); border-top:1px solid var(--hairline-soft); padding-top:8px;">
+        <span>Total do Pedido</span>
+        <span id="cart-total-final">R$ 0</span>
+      </div>
+    </div>
+
+    <!-- Dados do Cliente -->
+    <div style="margin-bottom:14px;">
+      <span class="field-label">Seu Nome</span>
+      <input class="field-input" id="cart-cust-name" placeholder="Seu nome completo">
+      <span class="field-label">WhatsApp para contato</span>
+      <input class="field-input" id="cart-cust-phone" placeholder="Seu WhatsApp (Ex: 11 98888-7777)">
+      <span class="field-label">Observações</span>
+      <textarea class="field-textarea" id="cart-cust-notes" placeholder="Preferência de entrega, endereço ou retirada..." rows="2"></textarea>
+    </div>
+
+    <!-- Forma de Pagamento Configurada pelo Profissional -->
+    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--hairline-soft); border-radius:14px; padding:12px; margin-bottom:14px;">
+      <div style="font-size:10.5px; text-transform:uppercase; letter-spacing:0.04em; color:var(--faint); font-weight:700; margin-bottom:4px;">
+        Forma de Pagamento
+      </div>
+      <div id="cart-payment-method-desc" style="font-size:12.5px; font-weight:650; color:var(--ink); line-height:1.4;">
+        WhatsApp (Pedido direto)
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeCart()">Continuar comprando</button>
+      <button class="btn btn-dark" id="cart-checkout-btn" onclick="checkoutCart()">Finalizar compra</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL : ADICIONAR MÍDIA À GALERIA ================= -->
+<div id="add-media-overlay" class="modal-overlay hidden" style="z-index:92;">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-name">Nova foto na galeria pública</div>
+      <button class="modal-close" onclick="closeAddMediaModal()" aria-label="Fechar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div id="add-media-preview" style="height:140px; border-radius:12px; background:var(--field); display:flex; align-items:center; justify-content:center; margin-bottom:12px; overflow:hidden; border:1px dashed var(--hairline);">
+      <span style="color:var(--muted); font-size:12px;">Prévia da foto</span>
+    </div>
+    <label class="btn btn-outline" for="add-media-file-input" style="width:100%; justify-content:center; margin-bottom:12px; cursor:pointer; font-size:12px; padding:9px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      Upload foto da galeria
+    </label>
+    <input type="file" id="add-media-file-input" accept="image/*" class="hidden">
+    <span class="field-label">Título / Procedimento</span>
+    <input class="field-input" id="add-media-title" placeholder="Ex: Limpeza de Pele Glow">
+    <span class="field-label">Categoria</span>
+    <select class="field-select" id="add-media-cat">
+      <option value="Facial">Facial</option>
+      <option value="Corporal">Corporal</option>
+      <option value="Sobrancelha">Sobrancelha</option>
+      <option value="Cílios">Cílios</option>
+      <option value="Cosméticos">Cosméticos</option>
+      <option value="Clínica">Clínica</option>
+      <option value="Antes/Depois">Antes/Depois</option>
+    </select>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn btn-outline" onclick="closeAddMediaModal()">Cancelar</button>
+      <button class="btn btn-dark" onclick="saveNewMedia()">Salvar na galeria pública</button>
+    </div>
+  </div>
+</div>
+
 <!-- ================= MODAL : LIGHTBOX MÍDIA ================= -->
 <div id="lightbox-overlay" class="modal-overlay hidden" style="z-index:90;">
   <div class="lightbox-card">
@@ -2220,6 +2410,9 @@
   let publicCurrentTab = 'servicos';
   let currentEditingProductId = null;
   let isProductInEditMode = false;
+  let productPaymentMethod = localStorage.getItem('productPaymentMethod') || 'whatsapp';
+  let cart = JSON.parse(localStorage.getItem('agendo_cart') || '[]');
+  let mediaUploadedImage = '';
 
   const clients = [
     {
@@ -3574,9 +3767,39 @@
     about: 'Trabalho há mais de 8 anos com estética facial e corporal em São Paulo. Meu foco é criar experiências de autocuidado personalizadas, sempre com escuta atenta e cuidado técnico em cada procedimento.',
     layout: 'classic'
   };
+  const publicMediaGallery = [
+    { title: 'Limpeza Facial Profunda', cat: 'Facial', img: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Peeling de Diamante', cat: 'Facial', img: 'https://images.unsplash.com/photo-1512290900672-1f55b9a4c000?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Microagulhamento Glow', cat: 'Facial', img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Design de Sobrancelhas', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Henna Definida', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Lash Lifting Curvatura', cat: 'Cílios', img: 'https://images.unsplash.com/photo-1583001809873-a128495da465?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Massagem Relaxante', cat: 'Corporal', img: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Drenagem Linfática', cat: 'Corporal', img: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Pedras Quentes Spa', cat: 'Spa', img: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Revitalização Labial', cat: 'Facial', img: 'https://images.unsplash.com/photo-1588515724527-074a7a56616c?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Argiloterapia Detox', cat: 'Facial', img: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Higienização de Poros', cat: 'Facial', img: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Sérum Vitamina C 15%', cat: 'Cosméticos', img: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Cosméticos Home Care', cat: 'Home Care', img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Ambiente do Consultório', cat: 'Clínica', img: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Maca e Aconchego', cat: 'Clínica', img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Aromaterapia Floral', cat: 'Spa', img: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Glow Skin Dourado', cat: 'Resultado', img: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Antes & Depois Pele', cat: 'Antes/Depois', img: 'https://images.unsplash.com/photo-1576426863848-c21f53c60b19?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Uniformização Facial', cat: 'Resultado', img: 'https://images.unsplash.com/photo-1516914943479-89db7d9ae7f2?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Hidratação Intensiva', cat: 'Facial', img: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Alinhamento Fio a Fio', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Extensão Clássica', cat: 'Cílios', img: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Óleo Reparador Argan', cat: 'Capilar', img: 'https://images.unsplash.com/photo-1608248597359-5980a3794b15?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Vela Terapêutica Lavanda', cat: 'Home Care', img: 'https://images.unsplash.com/photo-1508759073847-9ca702cec7d2?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Máscara Rosa Detox', cat: 'Skincare', img: 'https://images.unsplash.com/photo-1567928815104-b67c42707418?auto=format&fit=crop&w=600&q=80' },
+    { title: 'Manteiga Karité & Amêndoas', cat: 'Corpo', img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80' }
+  ];
+
   let banners = [
-    { id:'b1', kicker:'Promoção', title:'20% off em Limpeza de pele', sub:'Válido até domingo', emoji:'🎁' },
-    { id:'b2', kicker:'Novidade', title:'Novo horário aos sábados', sub:'Agende já o seu horário', emoji:'📅' }
+    { id:'b1', kicker:'Promoção', title:'20% off em Limpeza de pele', sub:'Válido até domingo', emoji:'🎁', active:true, position:'top' },
+    { id:'b2', kicker:'Novidade', title:'Novo horário aos sábados', sub:'Agende já o seu horário', emoji:'📅', active:true, position:'top' }
   ];
 
   function renderProfile(){
@@ -3598,20 +3821,34 @@
       bWrap.innerHTML = banners.map(b => {
         const bgStyle = b.image ? `background-image:url('${b.image}');` : '';
         const hasImgClass = b.image ? 'has-image' : '';
-        const tag = b.link ? 'a' : 'div';
-        const hrefAttr = b.link ? `href="${b.link}" target="_blank" rel="noopener"` : '';
+        const isActive = b.active !== false;
         return `
-        <${tag} ${hrefAttr} class="banner-card ${hasImgClass}" style="${bgStyle}">
-          <div class="banner-kicker">${b.emoji ? `<span>${b.emoji}</span>` : ''}${b.kicker || 'Destaque'}</div>
+        <div class="banner-card ${hasImgClass}" style="${bgStyle}; position:relative; overflow:visible;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+            <div class="banner-kicker">${b.emoji ? `<span>${b.emoji}</span> ` : ''}${b.kicker || 'Destaque'}</div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <label style="font-size:10px; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:4px; background:rgba(0,0,0,0.6); padding:3px 8px; border-radius:9999px;">
+                <input type="checkbox" ${isActive?'checked':''} onchange="toggleBannerActive('${b.id}', this.checked)"> Ativo
+              </label>
+              <button type="button" class="banner-remove" data-remove="${b.id}" aria-label="Remover banner" style="position:static; width:22px; height:22px;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
+            </div>
+          </div>
           <div class="banner-title">${b.title}</div>
           <div class="banner-sub">${b.sub || ''}</div>
-          ${b.link ? `<span class="banner-link-icon" title="Abrir link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg></span>` : ''}
-          <button type="button" class="banner-remove" data-remove="${b.id}" aria-label="Remover banner">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
-          </button>
-        </${tag}>`;
+          <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:6px; border-top:1px solid rgba(255,255,255,0.1); padding-top:6px;">
+            <span style="font-size:10.5px; color:var(--muted);">Posição na página:</span>
+            <select style="background:rgba(0,0,0,0.7); color:#fff; border:1px solid var(--hairline-soft); border-radius:6px; font-size:10.5px; padding:2px 6px;" onchange="changeBannerPos('${b.id}', this.value)">
+              <option value="top" ${(b.position||'top')==='top'?'selected':''}>Abaixo do perfil (Topo)</option>
+              <option value="middle" ${b.position==='middle'?'selected':''}>Entre abas e catálogo</option>
+              <option value="bottom" ${b.position==='bottom'?'selected':''}>Rodapé da página</option>
+            </select>
+          </div>
+        </div>`;
       }).join('');
     }
+    renderProfileMediaManager();
   }
   renderProfile();
   document.getElementById('layout-toggle').addEventListener('click', e => {
@@ -4196,37 +4433,7 @@
      PERFIL PÚBLICO (visão do cliente) + AGENDAR
   ========================================================= */
   
-  const publicMediaGallery = [
-    { title: 'Limpeza Facial Profunda', cat: 'Facial', img: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Peeling de Diamante', cat: 'Facial', img: 'https://images.unsplash.com/photo-1512290900672-1f55b9a4c000?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Microagulhamento Glow', cat: 'Facial', img: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Design de Sobrancelhas', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Henna Definida', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Lash Lifting Curvatura', cat: 'Cílios', img: 'https://images.unsplash.com/photo-1583001809873-a128495da465?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Massagem Relaxante', cat: 'Corporal', img: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Drenagem Linfática', cat: 'Corporal', img: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Pedras Quentes Spa', cat: 'Spa', img: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Revitalização Labial', cat: 'Facial', img: 'https://images.unsplash.com/photo-1588515724527-074a7a56616c?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Argiloterapia Detox', cat: 'Facial', img: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Higienização de Poros', cat: 'Facial', img: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Sérum Vitamina C 15%', cat: 'Cosméticos', img: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Cosméticos Home Care', cat: 'Home Care', img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Ambiente do Consultório', cat: 'Clínica', img: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Maca e Aconchego', cat: 'Clínica', img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Aromaterapia Floral', cat: 'Spa', img: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Glow Skin Dourado', cat: 'Resultado', img: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Antes & Depois Pele', cat: 'Antes/Depois', img: 'https://images.unsplash.com/photo-1576426863848-c21f53c60b19?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Uniformização Facial', cat: 'Resultado', img: 'https://images.unsplash.com/photo-1516914943479-89db7d9ae7f2?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Hidratação Intensiva', cat: 'Facial', img: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Alinhamento Fio a Fio', cat: 'Sobrancelha', img: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Extensão Clássica', cat: 'Cílios', img: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Óleo Reparador Argan', cat: 'Capilar', img: 'https://images.unsplash.com/photo-1608248597359-5980a3794b15?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Vela Terapêutica Lavanda', cat: 'Home Care', img: 'https://images.unsplash.com/photo-1508759073847-9ca702cec7d2?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Máscara Rosa Detox', cat: 'Skincare', img: 'https://images.unsplash.com/photo-1567928815104-b67c42707418?auto=format&fit=crop&w=600&q=80' },
-    { title: 'Manteiga Karité & Amêndoas', cat: 'Corpo', img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80' }
-  ];
-
-  function renderPublicProfile(){
+    function renderPublicProfile(){
     const grad = coverPresets[profile.coverIndex];
     const pubCover = document.getElementById('pub-cover');
     if(pubCover) pubCover.style.background = `linear-gradient(135deg, ${grad[0]}, ${grad[1]}, ${grad[2]})`;
@@ -4245,13 +4452,14 @@
     const pubHandle = document.getElementById('pub-handle');
     if(pubHandle) pubHandle.textContent = profile.name.toLowerCase().replace(/[^a-z]/g,'');
 
-    // Banners promocionais com overlay degradê posicionado logo abaixo da bio
+    // Banners promocionais com overlay degradê e posicionamento dinâmico
+    const activeBanners = banners.filter(b => b.active !== false);
     const promosSec = document.getElementById('pub-promos-sec');
     const promos = document.getElementById('pub-promos');
     if(promosSec && promos){
-      promosSec.classList.toggle('hidden', banners.length === 0);
+      promosSec.classList.toggle('hidden', activeBanners.length === 0);
       promos.className = 'pub-promo-wrap mode-' + bannerDisplayMode;
-      promos.innerHTML = banners.map(b => {
+      promos.innerHTML = activeBanners.map(b => {
         const bgStyle = b.image ? `background-image:url('${b.image}');` : '';
         const hasImgClass = b.image ? 'has-image' : '';
         const tag = b.link ? 'a' : 'div';
@@ -4264,8 +4472,25 @@
           ${b.link ? `<span class="pub-promo-link-ic" title="Abrir link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg></span>` : ''}
         </${tag}>`;
       }).join('');
+
+      // Posicionamento dinâmico (Topo abaixo do perfil | Meio entre abas e catálogo | Rodapé)
+      const targetPos = activeBanners[0]?.position || bannerPosition || 'top';
+      const viewPub = document.getElementById('view-public');
+      const tabsWrap = document.getElementById('pub-main-tabs');
+      if(viewPub && tabsWrap){
+        if(targetPos === 'top'){
+          tabsWrap.parentNode.insertBefore(promosSec, tabsWrap);
+        } else if(targetPos === 'middle'){
+          const activePane = document.getElementById('pub-tab-' + publicCurrentTab);
+          if(activePane) activePane.parentNode.insertBefore(promosSec, activePane);
+        } else if(targetPos === 'bottom'){
+          const spacer = viewPub.querySelector('.spacer');
+          if(spacer) viewPub.insertBefore(promosSec, spacer);
+        }
+      }
     }
 
+    updateFloatingCart();
     renderPublicTabContent();
   }
 
@@ -4284,44 +4509,93 @@
       const groups = [...new Set(svcItems.map(s => s.cat))];
       const container = document.getElementById('pub-services-list');
       if(container){
-        container.innerHTML = groups.length ? groups.map(catKey => `
-          <h3 style="font-size:13px; font-weight:700; color:var(--ink); margin:18px 0 8px;">${themeFor(catKey).label}</h3>
-          <div class="pub-offer-row">
-            ${svcItems.filter(s => s.cat === catKey).map(s => `
-              <article class="pub-offer-card">
-                <div class="pub-offer-art">${s.emoji || themeFor(s.cat).emoji}</div>
-                <div class="pub-offer-details">
-                  <div class="nm">${s.name}</div>
-                  <div class="dt">${s.duration} · ${s.price}</div>
-                  <button class="go" onclick="openBookingPreview('${s.id}')">Agendar</button>
+        container.innerHTML = groups.length ? groups.map(catKey => {
+          const cat = themeFor(catKey);
+          const count = svcItems.filter(s => s.cat === catKey).length;
+          return `
+            <div class="svc-cat-header">
+              <h3>${cat.label}</h3>
+              <span>${count} ${count===1?'serviço':'serviços'}</span>
+            </div>
+            <div class="svc-cards-row">
+              ${svcItems.filter(s => s.cat === catKey).map(s => `
+                <div class="svc-card-visual" data-id="${s.id}" onclick="openBookingPreview('${s.id}')">
+                  <div class="svc-card-image" style="${s.image ? `background:url('${s.image}') center/cover no-repeat;` : `background:linear-gradient(180deg, ${cat.soft} 0%, ${cat.soft} 40%, rgba(0,0,0,0.55) 78%, var(--canvas-soft) 100%);`}">
+                    ${s.badge ? `<span class="svc-card-badge">${s.badge}</span>` : ''}
+                    ${s.image ? '' : `<span>${s.emoji || cat.emoji}</span>`}
+                  </div>
+                  <div class="svc-card-body">
+                    <div class="svc-card-cat">${cat.label}</div>
+                    <div class="svc-card-name">${s.name}</div>
+                    <div class="svc-card-desc">${s.desc || ''}</div>
+                    <div style="font-size:11.5px; color:var(--muted); display:flex; align-items:center; gap:5px; margin-bottom:10px;">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                      ${s.duration || '60 min'}
+                    </div>
+                    <div class="svc-card-bottom" style="margin-top:8px;">
+                      <span class="svc-card-price">${s.price}</span>
+                      <button type="button" class="svc-card-btn" onclick="event.stopPropagation(); openBookingPreview('${s.id}')">Agendar</button>
+                    </div>
+                  </div>
                 </div>
-              </article>
-            `).join('')}
-          </div>
-        `).join('') : '<p class="bk-note">Nenhum serviço disponível.</p>';
+              `).join('')}
+            </div>
+          `;
+        }).join('') : '<p class="bk-note">Nenhum serviço disponível.</p>';
       }
     } else if(publicCurrentTab === 'produtos'){
       const prodItems = services.filter(s => s.type === 'produto');
       const groups = [...new Set(prodItems.map(s => s.cat))];
       const container = document.getElementById('pub-products-list');
       if(container){
-        container.innerHTML = groups.length ? groups.map(catKey => `
-          <h3 style="font-size:13px; font-weight:700; color:var(--ink); margin:18px 0 8px;">${themeFor(catKey).label}</h3>
-          <div class="pub-offer-row">
-            ${prodItems.filter(s => s.cat === catKey).map(s => `
-              <article class="pub-offer-card">
-                <div class="pub-offer-art" style="${s.image ? `background:url('${s.image}') center/cover no-repeat;` : ''}">
-                  ${s.image ? '' : (s.emoji || themeFor(s.cat).emoji)}
-                </div>
-                <div class="pub-offer-details">
-                  <div class="nm">${s.name}</div>
-                  <div class="dt">${s.originalPrice ? `<span style="text-decoration:line-through; opacity:0.6; margin-right:4px;">De ${s.originalPrice}</span>` : ''}<b>Por ${s.price}</b></div>
-                  <button class="go" onclick="openProductModal('${s.id}', false)">Ver detalhes</button>
-                </div>
-              </article>
-            `).join('')}
-          </div>
-        `).join('') : '<p class="bk-note">Nenhum produto cadastrado no catálogo.</p>';
+        container.innerHTML = groups.length ? groups.map(catKey => {
+          const cat = themeFor(catKey);
+          const count = prodItems.filter(s => s.cat === catKey).length;
+          return `
+            <div class="svc-cat-header">
+              <h3>${cat.label}</h3>
+              <span>${count} ${count===1?'produto':'produtos'}</span>
+            </div>
+            <div class="svc-cards-row">
+              ${prodItems.filter(s => s.cat === catKey).map(s => {
+                let priceBlock;
+                if(s.originalPrice && s.originalPrice !== s.price){
+                  priceBlock = `
+                    <div class="price-promo-row">
+                      <span class="price-old">${s.originalPrice}</span>
+                      <span class="price-current">${s.price}</span>
+                      <span class="price-discount-tag">OFERTA</span>
+                    </div>`;
+                } else {
+                  priceBlock = `<span class="svc-card-price">${s.price}</span>`;
+                }
+                return `
+                  <div class="svc-card-visual" data-id="${s.id}" onclick="openProductModal('${s.id}', false)">
+                    <div class="svc-card-image" style="${s.image ? `background:url('${s.image}') center/cover no-repeat;` : `background:linear-gradient(180deg, ${cat.soft} 0%, ${cat.soft} 40%, rgba(0,0,0,0.55) 78%, var(--canvas-soft) 100%);`}">
+                      ${s.badge ? `<span class="svc-card-badge">${s.badge}</span>` : ''}
+                      ${s.image ? '' : `<span>${s.emoji || cat.emoji || '🧴'}</span>`}
+                    </div>
+                    <div class="svc-card-body">
+                      <div class="svc-card-cat">${cat.label}</div>
+                      <div class="svc-card-name">${s.name}</div>
+                      <div class="svc-card-desc">${s.desc || ''}</div>
+                      <div class="product-checkout-tag" style="margin-bottom:10px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+                        Venda direta · Checkout
+                      </div>
+                      <div class="svc-card-bottom" style="margin-top:8px;">
+                        ${priceBlock}
+                        <button type="button" class="svc-card-btn" style="background:var(--ink); color:var(--canvas);" onclick="event.stopPropagation(); addToCart('${s.id}')">
+                          Adicionar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+        }).join('') : '<p class="bk-note">Nenhum produto cadastrado no catálogo.</p>';
       }
     } else if(publicCurrentTab === 'midia'){
       const gridContainer = document.getElementById('pub-media-grid-container');
@@ -4349,90 +4623,201 @@
     });
   }
 
+  // -------------------------------------------------------------
+  // MODAL DE AGENDAMENTO APRIMORADO (visão do cliente)
+  // -------------------------------------------------------------
   const bkPrevOverlay = document.getElementById('bkprev-overlay');
+  let previewSelectedService = null;
+  let previewSelectedTime = '09:00';
+
   function openBookingPreview(serviceId){
     renderPublicProfile();
-    const on = k => bookingConfig.steps.find(s => s.key === k)?.on;
+    const serviceList = services.filter(s => (s.type || 'servico') === 'servico');
+    previewSelectedService = serviceList.find(s => s.id === serviceId) || serviceList[0];
     const contact = bookingConfig.contact.filter(f => f.on);
     const times = ['09:00','10:30','13:00','14:30','16:00','17:30'];
-    let html = '';
-    if(on('service')){
-      html += `<div class="pub-step"><div class="h">Serviço</div>
-        <select class="field-select" id="bkprev-service">
-          ${services.map(s => `<option value="${s.id}" ${s.id===serviceId?'selected':''}>${s.name} — ${s.price}</option>`).join('')}
-        </select></div>`;
-    }
-    if(on('datetime')){
-      html += `<div class="pub-step"><div class="h">Data e horário</div>
-        <input class="field-input" type="date" id="bkprev-date">
-        <div class="time-pill-grid" style="margin-top:10px;">
-          ${times.map((t,i)=>`<button type="button" class="chip bkprev-time ${i===0?'is-active':''}" onclick="pickPreviewTime(this)">${t}</button>`).join('')}
-        </div></div>`;
-    }
-    if(contact.length){
-      html += `<div class="pub-step"><div class="h">Seus dados</div>
-        ${contact.map(f => `<span class="field-label">${f.label}${f.required?' *':''}</span>
-          <input class="field-input" data-contact="${f.key}" placeholder="${f.label}">`).join('')}
-      </div>`;
-    }
-    if(on('anamnese')){
-      html += `<div class="pub-step"><div class="h">Ficha de anamnese <em>obrigatória</em></div>
-        <span class="field-label">Alergias ou restrições</span>
-        <input class="field-input" placeholder="Ex: nenhuma">
-        <span class="field-label">Medicamentos em uso</span>
-        <input class="field-input" placeholder="Ex: nenhum">
-      </div>`;
-    }
-    if(on('consent')){
-      html += `<div class="pub-step"><div class="h">Termo de consentimento</div>
-        <label style="display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted);">
-          <input type="checkbox" id="bkprev-consent"> Li e aceito o termo de consentimento.
-        </label></div>`;
-    }
-    if(on('notes')){
-      html += `<div class="pub-step"><div class="h">Observações</div>
-        <textarea class="field-textarea" placeholder="Algo que eu precise saber?"></textarea></div>`;
-    }
-    if(bookingConfig.couponsEnabled){
-      html += `<div class="pub-step"><div class="h">Resgatar promoção</div>
-        <input class="field-input" id="bkprev-coupon" placeholder="Digite seu cupom">
-        <p class="bk-note" style="margin-bottom:0;">Cupons ativos: ${bookingConfig.coupons.filter(c=>c.code).map(c=>`${c.code} (${c.discount})`).join(', ') || 'nenhum'}</p>
-      </div>`;
-    }
-    const labels = { sync:'Pix via API (SyncPayments)', infinite:'InfinitePay' };
-    const chargeLabel = { none:'Pagamento no atendimento', deposit:`Sinal de ${bookingConfig.depositPercent}% no agendamento`, full:'Pagamento integral no agendamento' }[bookingConfig.charge];
-    html += `<div class="pub-step"><div class="h">Pagamento</div>
-      <div style="font-size:12.5px;">${chargeLabel}</div>
-      <div class="bk-note" style="margin-bottom:0;">${paymentConfig.method ? labels[paymentConfig.method] : 'Método definido pelo profissional'}</div>
-    </div>`;
+    previewSelectedTime = '09:00';
+
+    let html = `
+      <!-- ETAPA 1: SERVIÇO & HORÁRIO -->
+      <div class="pub-step" data-step="1">
+        <div class="h">Serviço Selecionado</div>
+        <div style="background:var(--field); border-radius:14px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+          <div>
+            <div style="font-size:14px; font-weight:700; color:var(--ink);" id="bkprev-selected-name">${previewSelectedService.name}</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:2px;">${previewSelectedService.duration || '60 min'} · ${previewSelectedService.price}</div>
+          </div>
+          <select class="field-select" style="width:auto; padding:6px 10px; font-size:11.5px;" onchange="changePreviewService(this.value)">
+            ${serviceList.map(s => `<option value="${s.id}" ${s.id === previewSelectedService.id ? 'selected' : ''}>${s.name}</option>`).join('')}
+          </select>
+        </div>
+
+        <div class="h" style="margin-top:14px;">Escolha a Data</div>
+        <input class="field-input" type="date" id="bkprev-date" value="${new Date().toISOString().slice(0,10)}">
+
+        <div class="h" style="margin-top:14px;">Horários Disponíveis</div>
+        <div class="time-pill-grid" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+          ${times.map((t, i) => `
+            <button type="button" class="chip bkprev-time ${i === 0 ? 'is-active' : ''}" style="justify-content:center; padding:8px 0; font-weight:600;" onclick="pickPreviewTime(this, '${t}')">${t}</button>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- ETAPA 2: SEUS DADOS & ANAMNESE -->
+      <div class="pub-step hidden" data-step="2">
+        <div class="h">Seus Dados de Contato</div>
+        ${contact.map(f => `
+          <span class="field-label">${f.label}${f.required ? ' *' : ''}</span>
+          <input class="field-input" data-contact="${f.key}" placeholder="${f.label}">
+        `).join('')}
+
+        ${bookingConfig.steps.find(s => s.key === 'anamnese')?.on ? `
+          <div class="h" style="margin-top:14px;">Ficha Rápida de Saúde</div>
+          <span class="field-label">Alergias ou sensibilidades na pele</span>
+          <input class="field-input" id="bkprev-allergies" placeholder="Ex: Nenhuma ou sensibilidade a ácidos">
+          <span class="field-label">Procedimentos recentes</span>
+          <input class="field-input" id="bkprev-recent" placeholder="Ex: Peeling há 1 mês">
+        ` : ''}
+
+        ${bookingConfig.steps.find(s => s.key === 'consent')?.on ? `
+          <label style="display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted); margin-top:14px; cursor:pointer;">
+            <input type="checkbox" id="bkprev-consent"> Declaro que li e aceito as orientações do atendimento.
+          </label>
+        ` : ''}
+
+        <span class="field-label" style="margin-top:12px;">Observações para a Especialista</span>
+        <textarea class="field-textarea" id="bkprev-notes" placeholder="Algo que você queira destacar sobre seu horário?" rows="2"></textarea>
+      </div>
+
+      <!-- ETAPA 3: CONFIRMAÇÃO & FORMA DE PAGAMENTO -->
+      <div class="pub-step hidden" data-step="3">
+        <div class="h">Resumo do Agendamento</div>
+        <div style="background:var(--field); border-radius:14px; padding:14px; margin-bottom:14px; line-height:1.5;">
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:var(--ink);">
+            <span id="bkprev-summary-svc">${previewSelectedService.name}</span>
+            <span>${previewSelectedService.price}</span>
+          </div>
+          <div style="font-size:12px; color:var(--muted); margin-top:4px;" id="bkprev-summary-datetime">
+            Hoje às ${previewSelectedTime}
+          </div>
+          <div style="font-size:11.5px; color:var(--faint); margin-top:4px;">
+            📍 Studio Marina Ravi · São Paulo — SP
+          </div>
+        </div>
+
+        ${bookingConfig.couponsEnabled ? `
+          <span class="field-label">Cupom de Desconto</span>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <input class="field-input" id="bkprev-coupon" placeholder="Digite seu cupom" style="margin:0;">
+            <button type="button" class="btn btn-outline" style="font-size:11.5px; padding:8px 14px;" onclick="applyPreviewCoupon()">Aplicar</button>
+          </div>
+        ` : ''}
+
+        <div class="h" style="margin-top:8px;">Forma de Pagamento</div>
+        <div style="font-size:12.5px; color:var(--ink); font-weight:600; margin-bottom:4px;">
+          ${bookingConfig.charge === 'deposit' ? `Sinal de ${bookingConfig.depositPercent}% no agendamento` : bookingConfig.charge === 'full' ? 'Pagamento total antecipado' : 'Pagamento presencial no atendimento'}
+        </div>
+        <div class="bk-note" style="margin-bottom:0;">
+          Aceitamos Pix, cartão de crédito e débito no estúdio.
+        </div>
+      </div>
+    `;
+
     document.getElementById('bkprev-body').innerHTML = html;
     bookingStep = 1;
-    document.getElementById('bkprev-date')?.setAttribute('min', new Date().toISOString().slice(0,10));
     showBookingStep();
     bkPrevOverlay.classList.remove('hidden');
   }
-  function pickPreviewTime(btn){
+
+  function changePreviewService(id){
+    const s = services.find(x => x.id === id);
+    if(s){
+      previewSelectedService = s;
+      const nameEl = document.getElementById('bkprev-selected-name');
+      if(nameEl) nameEl.textContent = s.name;
+    }
+  }
+
+  function pickPreviewTime(btn, time){
+    previewSelectedTime = time;
     document.querySelectorAll('.bkprev-time').forEach(b => b.classList.toggle('is-active', b === btn));
   }
+
   let bookingStep = 1;
   function showBookingStep(){
-    document.querySelectorAll('#bkprev-progress span').forEach((span,i)=>span.classList.toggle('is-active',i===bookingStep-1));
-    const groups = {1:['Serviço','Data e horário'],2:['Seus dados','Ficha de anamnese','Termo de consentimento','Observações'],3:['Resgatar promoção','Pagamento']};
-    document.querySelectorAll('#bkprev-body .pub-step').forEach(el=>el.classList.toggle('hidden',!groups[bookingStep].includes(el.querySelector('.h')?.textContent.trim().replace('obrigatória','').trim())));
-    document.getElementById('bkprev-back').textContent = bookingStep===1?'Cancelar':'Voltar';
-    document.getElementById('bkprev-next').textContent = bookingStep===3?'Confirmar agendamento':'Continuar';
-  }
-  function previousBookingStep(){ if(bookingStep===1) closeBookingPreview(); else { bookingStep--; showBookingStep(); } }
-  function nextBookingStep(){
-    if(bookingStep===1 && document.getElementById('bkprev-date') && !document.getElementById('bkprev-date').value){ toast('Escolha uma data'); return; }
-    if(bookingStep===2){
-      const missing=bookingConfig.contact.filter(f=>f.on&&f.required).filter(f=>!(document.querySelector(`[data-contact="${f.key}"]`)?.value||'').trim());
-      if(missing.length){ toast(`Preencha: ${missing.map(f=>f.label).join(', ')}`); return; }
-      const consent=document.getElementById('bkprev-consent'); if(consent&&!consent.checked){toast('Aceite o termo de consentimento');return;}
+    document.querySelectorAll('#bkprev-progress span').forEach((span, i) => {
+      span.classList.toggle('is-active', i === bookingStep - 1);
+    });
+    document.querySelectorAll('#bkprev-body .pub-step').forEach(stepEl => {
+      stepEl.classList.toggle('hidden', parseInt(stepEl.dataset.step) !== bookingStep);
+    });
+    const backBtn = document.getElementById('bkprev-back');
+    const nextBtn = document.getElementById('bkprev-next');
+    if(backBtn) backBtn.textContent = bookingStep === 1 ? 'Cancelar' : 'Voltar';
+    if(nextBtn) nextBtn.textContent = bookingStep === 3 ? 'Confirmar agendamento' : 'Continuar';
+
+    if(bookingStep === 3){
+      const dateVal = document.getElementById('bkprev-date')?.value || '';
+      const summaryDt = document.getElementById('bkprev-summary-datetime');
+      if(summaryDt){
+        summaryDt.textContent = `Data: ${dateVal} às ${previewSelectedTime}`;
+      }
+      const summarySvc = document.getElementById('bkprev-summary-svc');
+      if(summarySvc && previewSelectedService){
+        summarySvc.textContent = previewSelectedService.name;
+      }
     }
-    if(bookingStep<3){bookingStep++;showBookingStep();}else confirmBookingPreview();
   }
-    async function sharePublicPage(){
+
+  function previousBookingStep(){
+    if(bookingStep === 1) closeBookingPreview();
+    else { bookingStep--; showBookingStep(); }
+  }
+
+  function nextBookingStep(){
+    if(bookingStep === 1){
+      const dateInput = document.getElementById('bkprev-date');
+      if(dateInput && !dateInput.value){ toast('Por favor escolha uma data'); return; }
+      bookingStep = 2;
+      showBookingStep();
+    } else if(bookingStep === 2){
+      const missing = bookingConfig.contact
+        .filter(f => f.on && f.required)
+        .filter(f => !(document.querySelector(`[data-contact="${f.key}"]`)?.value || '').trim());
+      if(missing.length){
+        toast(`Preencha o campo: ${missing.map(f => f.label).join(', ')}`);
+        return;
+      }
+      const consent = document.getElementById('bkprev-consent');
+      if(consent && !consent.checked){
+        toast('Por favor aceite o termo para continuar');
+        return;
+      }
+      bookingStep = 3;
+      showBookingStep();
+    } else {
+      confirmBookingPreview();
+    }
+  }
+
+  function applyPreviewCoupon(){
+    const input = document.getElementById('bkprev-coupon');
+    const val = (input?.value || '').trim().toUpperCase();
+    if(!val){ toast('Digite o código do cupom'); return; }
+    const match = bookingConfig.coupons.find(c => c.code.toUpperCase() === val);
+    if(match){
+      toast(`Cupom ${match.code} aplicado com sucesso! (${match.discount} OFF) ✓`);
+    } else {
+      toast('Cupom inválido ou expirado');
+    }
+  }
+
+  function confirmBookingPreview(){
+    closeBookingPreview();
+    toast('Agendamento confirmado com sucesso! Entraremos em contato via WhatsApp ✓');
+  }
+
+async function sharePublicPage(){
     try {
       if(navigator.share) await navigator.share({ title: profile.name, url: location.href });
       else { await navigator.clipboard.writeText(location.href); toast('Link copiado ✓'); }
@@ -4457,6 +4842,250 @@
     }
     closeBookingPreview();
     toast('Agendamento enviado ✓');
+  }
+
+
+  // Funções de Banners
+  function toggleBannerActive(id, active){
+    const b = banners.find(x => x.id === id);
+    if(b){ b.active = active; renderProfile(); renderPublicProfile(); }
+  }
+  function changeBannerPos(id, pos){
+    const b = banners.find(x => x.id === id);
+    if(b){ b.position = pos; renderProfile(); renderPublicProfile(); }
+  }
+
+  // Gestor de Mídias no Perfil
+  function renderProfileMediaManager(){
+    const strip = document.getElementById('prof-media-strip');
+    const countEl = document.getElementById('prof-media-count');
+    if(countEl) countEl.textContent = publicMediaGallery.length + ' fotos';
+    if(!strip) return;
+    strip.innerHTML = publicMediaGallery.slice(0, 12).map((m, idx) => `
+      <div class="prof-media-item" title="${m.title}">
+        <img src="${m.img}" alt="${m.title}">
+        <button type="button" class="prof-media-del" onclick="removeMedia(${idx})" title="Remover mídia">×</button>
+      </div>
+    `).join('');
+  }
+
+  const addMediaOverlay = document.getElementById('add-media-overlay');
+  function openAddMediaModal(){
+    mediaUploadedImage = '';
+    const prev = document.getElementById('add-media-preview');
+    if(prev) prev.innerHTML = '<span style="color:var(--muted); font-size:12px;">Prévia da foto</span>';
+    const titleInput = document.getElementById('add-media-title');
+    if(titleInput) titleInput.value = '';
+    if(addMediaOverlay) addMediaOverlay.classList.remove('hidden');
+  }
+  function closeAddMediaModal(){ if(addMediaOverlay) addMediaOverlay.classList.add('hidden'); }
+
+  const addMediaFileInput = document.getElementById('add-media-file-input');
+  if(addMediaFileInput){
+    addMediaFileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        mediaUploadedImage = ev.target.result;
+        const prev = document.getElementById('add-media-preview');
+        if(prev) prev.innerHTML = `<img src="${mediaUploadedImage}" style="width:100%; height:100%; object-fit:cover;">`;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function saveNewMedia(){
+    const title = document.getElementById('add-media-title')?.value.trim() || 'Procedimento Estético';
+    const cat = document.getElementById('add-media-cat')?.value || 'Facial';
+    const imgUrl = mediaUploadedImage || 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80';
+    publicMediaGallery.unshift({ title, cat, img: imgUrl });
+    closeAddMediaModal();
+    renderProfileMediaManager();
+    renderPublicProfile();
+    toast('Nova mídia adicionada à galeria pública ✓');
+  }
+
+  function removeMedia(idx){
+    publicMediaGallery.splice(idx, 1);
+    renderProfileMediaManager();
+    renderPublicProfile();
+    toast('Mídia removida da galeria');
+  }
+
+  // -------------------------------------------------------------
+  // CARRINHO DE COMPRAS DE PRODUTOS
+  // -------------------------------------------------------------
+  function saveCart(){ localStorage.setItem('agendo_cart', JSON.stringify(cart)); updateFloatingCart(); }
+  
+  function addToCart(productId, qty = 1){
+    const s = services.find(x => x.id === productId);
+    if(!s) return;
+    const existing = cart.find(x => x.id === productId);
+    if(existing) existing.qty += qty;
+    else cart.push({ id: productId, qty });
+    saveCart();
+    toast(`"${s.name}" adicionado ao carrinho 🛍️`);
+  }
+
+  function updateCartQty(productId, delta){
+    const item = cart.find(x => x.id === productId);
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty <= 0) cart = cart.filter(x => x.id !== productId);
+    saveCart();
+    renderCart();
+  }
+
+  function removeFromCart(productId){
+    cart = cart.filter(x => x.id !== productId);
+    saveCart();
+    renderCart();
+    toast('Item removido do carrinho');
+  }
+
+  function updateFloatingCart(){
+    const btn = document.getElementById('pub-floating-cart-btn');
+    const badge = document.getElementById('cart-qty-badge');
+    const totalEl = document.getElementById('cart-total-badge');
+    if(!btn) return;
+    const totalItems = cart.reduce((acc, it) => acc + it.qty, 0);
+    if(totalItems === 0){
+      btn.classList.add('hidden');
+      return;
+    }
+    btn.classList.remove('hidden');
+    if(badge) badge.textContent = totalItems;
+    let totalVal = 0;
+    cart.forEach(it => {
+      const s = services.find(x => x.id === it.id);
+      if(s) totalVal += parsePrice(s.price) * it.qty;
+    });
+    if(totalEl) totalEl.textContent = 'R$ ' + totalVal.toLocaleString('pt-BR');
+  }
+
+  const cartOverlay = document.getElementById('cart-overlay');
+  function openCart(){
+    renderCart();
+    if(cartOverlay) cartOverlay.classList.remove('hidden');
+  }
+  function closeCart(){ if(cartOverlay) cartOverlay.classList.add('hidden'); }
+
+  function renderCart(){
+    const list = document.getElementById('cart-items-list');
+    const countHead = document.getElementById('cart-count-header');
+    const subtotalEl = document.getElementById('cart-subtotal');
+    const totalEl = document.getElementById('cart-total-final');
+    const descEl = document.getElementById('cart-payment-method-desc');
+    const checkoutBtn = document.getElementById('cart-checkout-btn');
+
+    const methodLabels = {
+      whatsapp: 'WhatsApp (Envio automático do pedido detalhado)',
+      infinite: 'InfinitePay (Checkout integrado)',
+      sync: 'Pix via API (Chave Pix instantânea)'
+    };
+    if(descEl) descEl.textContent = methodLabels[productPaymentMethod] || 'WhatsApp';
+    if(checkoutBtn){
+      checkoutBtn.textContent = productPaymentMethod === 'whatsapp' ? 'Finalizar via WhatsApp' : productPaymentMethod === 'infinite' ? 'Pagar com InfinitePay' : 'Gerar Chave Pix';
+    }
+
+    const totalItems = cart.reduce((acc, it) => acc + it.qty, 0);
+    if(countHead) countHead.textContent = totalItems + (totalItems === 1 ? ' item' : ' itens');
+
+    if(!list) return;
+    if(cart.length === 0){
+      list.innerHTML = '<p class="bk-note" style="text-align:center; padding:24px 0;">Seu carrinho está vazio.</p>';
+      if(subtotalEl) subtotalEl.textContent = 'R$ 0';
+      if(totalEl) totalEl.textContent = 'R$ 0';
+      return;
+    }
+
+    let sum = 0;
+    list.innerHTML = cart.map(it => {
+      const s = services.find(x => x.id === it.id);
+      if(!s) return '';
+      const unit = parsePrice(s.price);
+      const itemTotal = unit * it.qty;
+      sum += itemTotal;
+      const cat = themeFor(s.cat);
+      return `
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px solid var(--hairline-soft);">
+          <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
+            <div style="width:42px; height:42px; border-radius:10px; background:var(--field); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">
+              ${s.image ? `<img src="${s.image}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">` : (s.emoji || cat.emoji || '🧴')}
+            </div>
+            <div style="min-width:0;">
+              <div style="font-size:13px; font-weight:700; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${s.name}</div>
+              <div style="font-size:11px; color:var(--muted);">${s.price} cada</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="product-qty" style="height:28px;">
+              <button onclick="updateCartQty('${s.id}', -1)">−</button>
+              <span>${it.qty}</span>
+              <button onclick="updateCartQty('${s.id}', 1)">+</button>
+            </div>
+            <b style="font-size:13px; color:var(--ink); min-width:55px; text-align:right;">R$ ${itemTotal.toLocaleString('pt-BR')}</b>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if(subtotalEl) subtotalEl.textContent = 'R$ ' + sum.toLocaleString('pt-BR');
+    if(totalEl) totalEl.textContent = 'R$ ' + sum.toLocaleString('pt-BR');
+  }
+
+  function checkoutCart(){
+    if(cart.length === 0){ toast('Seu carrinho está vazio'); return; }
+    const name = document.getElementById('cart-cust-name')?.value.trim() || 'Cliente';
+    const phone = document.getElementById('cart-cust-phone')?.value.trim() || '';
+    const notes = document.getElementById('cart-cust-notes')?.value.trim() || '';
+
+    let sum = 0;
+    const itemsText = cart.map(it => {
+      const s = services.find(x => x.id === it.id);
+      if(!s) return '';
+      const unit = parsePrice(s.price);
+      sum += unit * it.qty;
+      return `- ${it.qty}x ${s.name} (${s.price})`;
+    }).filter(Boolean).join('\n');
+
+    if(productPaymentMethod === 'whatsapp'){
+      const text = `🛍️ Olá ${profile.name}! Gostaria de finalizar meu pedido no catálogo:\n\n${itemsText}\n\n💰 Total: R$ ${sum.toLocaleString('pt-BR')}\n👤 Cliente: ${name}\n📱 WhatsApp: ${phone || 'Não informado'}${notes ? `\n📝 Obs: ${notes}` : ''}`;
+      const cleanPhone = (clients[0]?.phone || '11982214470').replace(/\D/g, '');
+      window.open(`https://wa.me/55${cleanPhone}?text=${encodeURIComponent(text)}`, '_blank');
+      closeCart();
+      toast('Pedido gerado! Abrindo WhatsApp... ✓');
+    } else if(productPaymentMethod === 'infinite'){
+      const text = `Link de pagamento InfinitePay no valor de R$ ${sum.toLocaleString('pt-BR')} gerado para ${name}.`;
+      toast(text);
+      closeCart();
+    } else {
+      toast(`Chave Pix Copia e Cola gerada: R$ ${sum.toLocaleString('pt-BR')} ✓`);
+      closeCart();
+    }
+    cart = [];
+    saveCart();
+  }
+
+  // Toggle de forma de pagamento de produtos
+  const prodPayToggle = document.getElementById('prod-pay-method-toggle');
+  if(prodPayToggle){
+    document.querySelectorAll('#prod-pay-method-toggle button').forEach(b => {
+      b.classList.toggle('is-active', b.dataset.prodpay === productPaymentMethod);
+    });
+    prodPayToggle.addEventListener('click', e => {
+      const btn = e.target.closest('[data-prodpay]');
+      if(!btn) return;
+      productPaymentMethod = btn.dataset.prodpay;
+      localStorage.setItem('productPaymentMethod', productPaymentMethod);
+      document.querySelectorAll('#prod-pay-method-toggle button').forEach(b => b.classList.toggle('is-active', b === btn));
+      const note = document.getElementById('prod-pay-note');
+      if(note){
+        note.textContent = productPaymentMethod === 'whatsapp' ? 'Envio automático do pedido detalhado direto para o seu WhatsApp.' : productPaymentMethod === 'infinite' ? 'Checkout online da InfinitePay com cartão e Pix.' : 'Geração de código Pix via API com liquidação direta.';
+      }
+      toast('Cobrança de produtos atualizada: ' + btn.textContent);
+    });
   }
 
   // Expor funções essenciais para chamadas inline (onclick) com verificação segura
@@ -4499,6 +5128,20 @@
   window.closeBookingConfig = typeof closeBookingConfig !== 'undefined' ? closeBookingConfig : null;
   window.openProfileEdit = typeof openProfileEdit !== 'undefined' ? openProfileEdit : null;
   window.closeProfileEdit = typeof closeProfileEdit !== 'undefined' ? closeProfileEdit : null;
+
+  window.addToCart = typeof addToCart !== 'undefined' ? addToCart : null;
+  window.openCart = typeof openCart !== 'undefined' ? openCart : null;
+  window.closeCart = typeof closeCart !== 'undefined' ? closeCart : null;
+  window.updateCartQty = typeof updateCartQty !== 'undefined' ? updateCartQty : null;
+  window.removeFromCart = typeof removeFromCart !== 'undefined' ? removeFromCart : null;
+  window.checkoutCart = typeof checkoutCart !== 'undefined' ? checkoutCart : null;
+  window.openAddMediaModal = typeof openAddMediaModal !== 'undefined' ? openAddMediaModal : null;
+  window.closeAddMediaModal = typeof closeAddMediaModal !== 'undefined' ? closeAddMediaModal : null;
+  window.saveNewMedia = typeof saveNewMedia !== 'undefined' ? saveNewMedia : null;
+  window.removeMedia = typeof removeMedia !== 'undefined' ? removeMedia : null;
+  window.toggleBannerActive = typeof toggleBannerActive !== 'undefined' ? toggleBannerActive : null;
+  window.changeBannerPos = typeof changeBannerPos !== 'undefined' ? changeBannerPos : null;
+
 </script>
 </body>
 </html>
