@@ -1,0 +1,2 @@
+- [ ] Finalizar e verificar ajustes de categorias, financeiro, perfil, vitrine pública, reserva e pagamentos.
+- [ ] Trazer atualizações do GitHub para este projeto. Bloqueio: identificar o repositório GitHub; os remotos locais apontam somente para o armazenamento do Lovable.
