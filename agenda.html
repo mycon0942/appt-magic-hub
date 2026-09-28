@@ -1210,7 +1210,7 @@
           </p>
         </div>
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;">
-          <button type="button" class="btn btn-light" onclick="openAffiliatePage()" style="font-size:12px; height:36px; padding:0 14px;">
+          <button type="button" class="btn btn-light" data-nav="affiliates" onclick="openAffiliatePage(event)" style="font-size:12px; height:36px; padding:0 14px; cursor:pointer;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
             Ver meu link & comissões
           </button>
@@ -1234,13 +1234,7 @@
         <span class="txt"><b>Configurar pagamentos</b><span class="desc" id="payment-status">Nenhum método configurado</span></span>
         <span class="chev">›</span>
       </button>
-      <button class="qa-row" onclick="openAffiliatePage()">
-        <span class="ic" style="background:rgba(255,95,138,0.12); color:#ff5f8a;">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
-        </span>
-        <span class="txt"><b>Programa de Afiliados</b><span class="desc" id="home-affiliate-status-desc">Ganhe 30% recorrente indicando estúdios</span></span>
-        <span class="chev">›</span>
-      </button>
+
       </div>
     </div>
 
@@ -3058,7 +3052,8 @@
     { key:'anamnese', label:'Anamnese', icon:'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2 M9 5a2 2 0 002 2h2a2 2 0 002-2 M9 5a2 2 0 012-2h2a2 2 0 012 2', action: () => openTemplateEditor() },
     { key:'dashboard', label:'Financeiro', icon:'M3 3v18h18 M7 15l4-5 3 3 5-7', action: () => goTo('dashboard') },
     { key:'payments', label:'Pagamentos', icon:'M2 5h20v14H2z M2 10h20 M6 15h4', action: () => openPaymentConfig() },
-    { key:'public', label:'Site público', icon:'M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71 M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71', action: () => goTo('public') }
+    { key:'public', label:'Site público', icon:'M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71 M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71', action: () => goTo('public') },
+    { key:'affiliates', label:'Afiliados', icon:'M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M8.5 7a4 4 0 100-8 4 4 0 000 8z M17 11l2 2 4-4', action: () => openAffiliatePage() }
   ];
 
   function renderHomeCategories(){
@@ -5888,6 +5883,58 @@ async function sharePublicPage(){
     origGoTo(view);
     if(view === 'admin') renderAdminDashboard();
   };
+
+  
+  // Navegação e Lógica da Página de Afiliados do Usuário
+  function openAffiliatePage(e){
+    if(e && e.preventDefault) e.preventDefault();
+    if(e && e.stopPropagation) e.stopPropagation();
+    updateAffiliatePageStatus();
+    goTo('affiliates');
+  }
+
+  function updateAffiliatePageStatus(){
+    // Verifica no localStorage ou estado padrão se a afiliação está aprovada ou solicitada
+    const status = localStorage.getItem('userAffiliateStatus') || 'not_requested'; // 'not_requested', 'pending', 'approved'
+    const activeBox = document.getElementById('affiliate-status-active');
+    const lockedBox = document.getElementById('affiliate-status-locked');
+    const actionBox = document.getElementById('affiliate-request-action-box');
+
+    if(status === 'approved'){
+      if(activeBox) activeBox.classList.remove('hidden');
+      if(lockedBox) lockedBox.classList.add('hidden');
+    } else {
+      if(activeBox) activeBox.classList.add('hidden');
+      if(lockedBox) lockedBox.classList.remove('hidden');
+
+      if(actionBox){
+        if(status === 'pending'){
+          actionBox.innerHTML = `
+            <div style="background:rgba(255,176,32,0.12); border:1px solid rgba(255,176,32,0.3); border-radius:10px; padding:12px; font-size:12px; color:#ffb020; font-weight:600; text-align:center;">
+              ✓ Sua solicitação está na fila de espera do Super Admin. Aguardando liberação.
+            </div>
+          `;
+        } else {
+          actionBox.innerHTML = `
+            <button type="button" class="btn btn-light" id="btn-request-affiliate" onclick="requestAffiliateAccess()" style="width:100%; justify-content:center; font-size:12.5px; height:42px;">
+              Solicitar para entrar na fila de afiliados
+            </button>
+          `;
+        }
+      }
+    }
+  }
+
+  function requestAffiliateAccess(){
+    localStorage.setItem('userAffiliateStatus', 'pending');
+    localStorage.setItem('userAffiliateRequestedTime', new Date().toISOString());
+    updateAffiliatePageStatus();
+    toast('Solicitação enviada para a fila de afiliados do Admin ✓');
+  }
+
+  window.openAffiliatePage = openAffiliatePage;
+  window.requestAffiliateAccess = requestAffiliateAccess;
+  window.updateAffiliatePageStatus = updateAffiliatePageStatus;
 
   window.renderAdminDashboard = typeof renderAdminDashboard !== 'undefined' ? renderAdminDashboard : null;
   window.exportAdminData = typeof exportAdminData !== 'undefined' ? exportAdminData : null;
