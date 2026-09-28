@@ -211,13 +211,7 @@
     </a>
   </div>
 
-  <div class="meta-row">
-    <div class="location">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-      Cloud São Paulo · Cakto API Split Ativo
-    </div>
-    <span class="tag"><span class="dot"></span>Produção Ativa</span>
-  </div>
+
 
   <!-- ================= TELA 1: INÍCIO ================= -->
   <div id="view-inicio">
@@ -360,16 +354,24 @@
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
         <div>
           <h2>Campanhas & Anúncios SaaS</h2>
-          <span style="font-size:12px; color:var(--muted);">Banners exibidos aos estúdios e clientes</span>
+          <span style="font-size:12px; color:var(--muted);">Banners com imagem, texto e auto-programação</span>
         </div>
         <button type="button" class="btn btn-dark" style="height:36px; padding:0 14px; font-size:12px;" onclick="openNewAdModal()">
-          + Novo Anúncio
+          + Criar / Agendar Anúncio
         </button>
+      </div>
+
+      <!-- Barra de Filtros de Agenda de Anúncios -->
+      <div style="display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; padding-bottom:8px;" id="ad-filter-bar">
+        <button type="button" class="seg-btn is-active" data-adfilter="all" onclick="filterAds('all')">Todos (<span id="count-ads-all">3</span>)</button>
+        <button type="button" class="seg-btn" data-adfilter="active" onclick="filterAds('active')">● No Ar</button>
+        <button type="button" class="seg-btn" data-adfilter="scheduled" onclick="filterAds('scheduled')">⏳ Agendados</button>
+        <button type="button" class="seg-btn" data-adfilter="paused" onclick="filterAds('paused')">⏸ Pausados</button>
       </div>
     </div>
 
     <div class="section" style="margin-top:10px;">
-      <div id="ads-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;"></div>
+      <div id="ads-list" style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;"></div>
 
       <div class="chart-box" style="margin-top:14px;">
         <span style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em;">Engajamento Geral das Campanhas</span>
@@ -458,6 +460,15 @@
       <span style="font-size:12px; color:var(--muted);">Parâmetros master do ecossistema agendo SaaS</span>
     </div>
 
+    <!-- Informações de Infraestrutura exclusiva da página de configurações -->
+    <div class="meta-row" style="margin:12px 18px 0;">
+      <div class="location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        Cloud São Paulo · Cakto API Split Ativo
+      </div>
+      <span class="tag"><span class="dot"></span>Produção Ativa</span>
+    </div>
+
     <div class="section" style="margin-top:16px;">
       <div class="qa-list">
         <!-- Configuração de Cobrança (Pix API & Cakto) -->
@@ -509,6 +520,145 @@
   </div>
 
   <div class="spacer"></div>
+
+
+  <!-- ================= MODAL : DETALHES DO ESTÚDIO / USUÁRIO SAAS ================= -->
+  <div id="modal-studio-detail" class="modal-overlay hidden" style="z-index:95;">
+    <div class="modal-card" style="max-height:90vh; overflow-y:auto;">
+      <div class="modal-head">
+        <div>
+          <div class="modal-name" id="user-detail-studio-name">Studio Marina Ravi</div>
+          <div style="font-size:11px; color:var(--muted);" id="user-detail-owner-info">Marina Ravi · São Paulo — SP</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-studio-detail')" aria-label="Fechar">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <!-- Card do Plano Ativo & Troca Manual -->
+      <div style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; padding:14px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span style="font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:700;">Plano Atual</span>
+            <div style="display:flex; align-items:center; gap:8px; margin-top:2px;">
+              <b style="font-size:17px; color:var(--ink);" id="user-detail-plan-name">Pro</b>
+              <span class="sub-badge b-pro" id="user-detail-plan-badge">R$ 89/mês</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:10.5px; color:var(--success); font-weight:600;">● Assinatura Ativa</span>
+            <div style="font-size:11px; color:var(--muted); margin-top:2px;">Cakto Split 30%</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; border-top:1px solid var(--hairline-soft); padding-top:10px;">
+          <label style="font-size:11px; color:var(--muted); display:block; margin-bottom:4px;">Alterar Plano Manualmente:</label>
+          <div style="display:flex; gap:6px;">
+            <select class="field-select" id="user-change-plan-select" style="margin:0; padding:6px 10px; font-size:12px; flex:1;">
+              <option value="Básico">Básico (R$ 49/mês)</option>
+              <option value="Pro" selected>Pro (R$ 89/mês)</option>
+              <option value="Studio">Studio (R$ 149/mês)</option>
+              <option value="Enterprise">Enterprise (R$ 299/mês)</option>
+            </select>
+            <button type="button" class="btn btn-dark" style="height:38px; font-size:11.5px; padding:0 12px;" onclick="applyUserPlanChange()">Atualizar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estimativa de Uso do Usuário -->
+      <div style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; padding:12px; margin-bottom:12px;">
+        <span style="font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:700; letter-spacing:0.04em;">Estimativa de Uso da Plataforma</span>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-top:8px; text-align:center;">
+          <div style="background:var(--field); padding:8px 6px; border-radius:8px;">
+            <b style="font-size:14px; color:var(--ink);" id="user-detail-usage-appts">142</b>
+            <span style="font-size:10px; color:var(--muted); display:block; margin-top:2px;">Agendamentos/mês</span>
+          </div>
+          <div style="background:var(--field); padding:8px 6px; border-radius:8px;">
+            <b style="font-size:14px; color:var(--grad-a);" id="user-detail-usage-revenue">R$ 14.800</b>
+            <span style="font-size:10px; color:var(--muted); display:block; margin-top:2px;">Volume Transacionado</span>
+          </div>
+          <div style="background:var(--field); padding:8px 6px; border-radius:8px;">
+            <b style="font-size:14px; color:var(--success);" id="user-detail-usage-clients">98%</b>
+            <span style="font-size:10px; color:var(--muted); display:block; margin-top:2px;">Taxa de Retenção</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Criar Promoção / Cupom de Desconto Exclusivo para Este Usuário -->
+      <div style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; padding:12px; margin-bottom:12px;">
+        <span style="font-size:11.5px; color:var(--ink); font-weight:700; display:block; margin-bottom:8px;">🎟 Criar Promoção ou Cupom Exclusivo</span>
+        <div style="display:flex; gap:6px; margin-bottom:8px;">
+          <input class="field-input" id="user-custom-coupon-code" placeholder="Código (ex: MARINA50OFF)" style="margin:0; text-transform:uppercase; font-weight:700; font-size:12px;">
+          <select class="field-select" id="user-custom-discount-type" style="margin:0; width:130px; font-size:11.5px;">
+            <option value="50% OFF (3 meses)">50% OFF</option>
+            <option value="20% OFF Vitalício">20% OFF Vitalício</option>
+            <option value="30 dias Grátis">30 dias Free</option>
+            <option value="R$ 30 de desconto">R$ 30 OFF</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-outline" style="width:100%; justify-content:center; font-size:11.5px; height:34px;" onclick="applyUserDiscountCoupon()">
+          Liberar Cupom Exclusivo para Este Estúdio
+        </button>
+      </div>
+
+      <!-- Criar Anúncio Personalizado Exclusivo para o Estúdio -->
+      <div style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; padding:12px; margin-bottom:14px;">
+        <span style="font-size:11.5px; color:var(--ink); font-weight:700; display:block; margin-bottom:8px;">📢 Anúncio Personalizado para o Painel Deste Usuário</span>
+        <input class="field-input" id="user-custom-ad-title" placeholder="Título (ex: Destaque seu catálogo no Google)" style="margin-bottom:6px; font-size:12px;">
+        <input class="field-input" id="user-custom-ad-sub" placeholder="Subtítulo ou benefício exclusivo para este estúdio" style="margin-bottom:8px; font-size:12px;">
+        <button type="button" class="btn btn-dark" style="width:100%; justify-content:center; font-size:11.5px; height:34px;" onclick="createAdForSpecificUser()">
+          Disparar Anúncio no Painel Deste Estúdio
+        </button>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" style="width:100%; justify-content:center;" onclick="closeModal('modal-studio-detail')">Fechar Detalhes</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL : GESTÃO E CRIAÇÃO DE PLANOS & MENSALIDADES SAAS ================= -->
+  <div id="modal-plans-manager" class="modal-overlay hidden" style="z-index:96;">
+    <div class="modal-card" style="max-height:88vh; overflow-y:auto;">
+      <div class="modal-head">
+        <div>
+          <div class="modal-name">Planos & Mensalidades SaaS</div>
+          <div style="font-size:11px; color:var(--muted);">Estrutura de planos recorrentes via Cakto Pagamentos</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-plans-manager')" aria-label="Fechar">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <!-- Lista de Planos Atuais -->
+      <div id="plans-list-container" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
+
+      <!-- Formulário de Criar Novo Plano -->
+      <div style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; padding:12px; margin-bottom:14px;">
+        <span style="font-size:11.5px; font-weight:700; color:var(--ink); display:block; margin-bottom:8px;">+ Criar Novo Plano da Plataforma</span>
+        <div style="display:grid; grid-template-columns:1fr 100px; gap:8px; margin-bottom:8px;">
+          <div>
+            <label style="font-size:10.5px; color:var(--muted);">Nome do Plano</label>
+            <input class="field-input" id="new-plan-name" placeholder="Ex: Black Gold" style="margin:0; font-size:11.5px; padding:7px 9px;">
+          </div>
+          <div>
+            <label style="font-size:10.5px; color:var(--muted);">Valor Mensal (R$)</label>
+            <input class="field-input" id="new-plan-price" type="number" placeholder="199" style="margin:0; font-size:11.5px; padding:7px 9px;">
+          </div>
+        </div>
+        <label style="font-size:10.5px; color:var(--muted);">Taxa por Agendamento</label>
+        <input class="field-input" id="new-plan-fee" placeholder="Ex: 0.99% ou Isento de taxas" style="margin-bottom:8px; font-size:11.5px; padding:7px 9px;">
+        <button type="button" class="btn btn-dark" style="width:100%; justify-content:center; height:34px; font-size:11.5px;" onclick="createNewPlan()">
+          Cadastrar Novo Plano na Cakto
+        </button>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" style="width:100%; justify-content:center;" onclick="closeModal('modal-plans-manager')">Concluir</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ================= NAVBAR DO ADMINISTRADOR (5 ITENS: Início, Financeiro, Anúncios, Afiliados, Configurações) ================= -->
   <nav class="bottom-nav">
@@ -670,6 +820,14 @@
     pixKey: 'financeiro@agendo.app'
   };
 
+  
+  let saasPlatformPlans = [
+    { id: 'plan-basic', name: 'Básico', price: 49, period: 'mês', fee: '2.5% por agendamento', features: ['Até 1 profissional', 'Catálogo online', 'Pix e Cartão Cakto', 'Suporte padrão'], active: true },
+    { id: 'plan-pro', name: 'Pro', price: 89, period: 'mês', fee: '1.2% por agendamento', features: ['Até 3 profissionais', 'Ficha de Anamnese digital', 'Split automático Cakto', 'Banners na bio'], active: true },
+    { id: 'plan-studio', name: 'Studio', price: 149, period: 'mês', fee: 'Zero taxas extras', features: ['Equipe ilimitada', 'Multi-unidades', 'Taxa zero na plataforma', 'Afiliados com 30%'], active: true },
+    { id: 'plan-enterprise', name: 'Enterprise', price: 299, period: 'mês', fee: 'Zero taxas extras', features: ['Franquias e Redes', 'Gerente de contas dedicado', 'API customizada', 'Treinamento de equipe'], active: true }
+  ];
+
   let affiliateConfig = {
     commissionRate: 30,
     splitMode: 'automatic',
@@ -691,10 +849,44 @@
     { name: 'Dra. Beatriz Santos', role: 'Biomédica Esteta', subs: 18, earned: 'R$ 690/mês', link: 'https://agendo.app/convite?ref=drabeatriz', status: 'Ativo' }
   ];
 
+  let adCurrentFilter = 'all';
   let saasAds = [
-    { id: 'ad-1', title: 'Upgrade Plano Studio com 20% OFF', sub: 'Multi-profissionais e checkout sem taxas extras', clicks: 1420, active: true },
-    { id: 'ad-2', title: 'Conecte sua Máquina InfinitePay', sub: 'Receba na hora direto na sua conta PJ', clicks: 2070, active: true },
-    { id: 'ad-3', title: 'Indique e Ganhe 30% Recorrente', sub: 'Afilie-se ao agendo e fature comissões mensais na Cakto', clicks: 890, active: true }
+    {
+      id: 'ad-1',
+      title: 'Upgrade Plano Studio com 20% OFF',
+      sub: 'Multi-profissionais, equipe ilimitada e checkout sem taxas extras',
+      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80',
+      scheduleStart: '2026-09-01',
+      scheduleEnd: '2026-10-31',
+      autoProgrammed: true,
+      status: 'active',
+      clicks: 1420,
+      active: true
+    },
+    {
+      id: 'ad-2',
+      title: 'Conecte sua Máquina de Cartão InfinitePay & Cakto',
+      sub: 'Receba no mesmo instante com split automático direto na sua conta PJ',
+      image: 'https://images.unsplash.com/photo-1556742049-0a67e557224e?auto=format&fit=crop&w=600&q=80',
+      scheduleStart: '2026-09-15',
+      scheduleEnd: '2026-11-30',
+      autoProgrammed: true,
+      status: 'active',
+      clicks: 2070,
+      active: true
+    },
+    {
+      id: 'ad-3',
+      title: 'Indique Outros Estúdios e Ganhe 30% Recorrente',
+      sub: 'Afilie-se ao agendo e receba comissão todo mês sobre as mensalidades',
+      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80',
+      scheduleStart: '2026-10-01',
+      scheduleEnd: '2026-12-31',
+      autoProgrammed: true,
+      status: 'scheduled',
+      clicks: 890,
+      active: true
+    }
   ];
 
   const financialData = {
@@ -792,19 +984,21 @@
   function renderHome(){
     const list = document.getElementById('home-subs-list');
     if(list){
-      list.innerHTML = saasSubscriptions.slice(0, 4).map(s => `
-        <div class="qa-row">
-          <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      list.innerHTML = saasSubscriptions.map((s, idx) => `
+        <div class="qa-row" onclick="openStudioDetailModal(${idx})" style="cursor:pointer;" title="Clique para gerenciar este estúdio">
+          <span class="ic" style="background:rgba(255,95,138,0.12); color:#ff5f8a;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
           <div class="txt">
             <div style="display:flex; align-items:center; gap:6px;">
               <b>${s.studio}</b>
               <span class="sub-badge ${s.badge}">${s.plan}</span>
             </div>
-            <span class="desc">${s.owner} · ${s.city} (Ref: ${s.affiliate})</span>
+            <span class="desc">${s.owner} · ${s.city} · ${s.plan} (${s.price})</span>
           </div>
-          <div style="text-align:right;">
-            <b style="font-size:13px; color:var(--ink);">${s.price}</b>
+          <div style="text-align:right; flex-shrink:0;">
             <div style="font-size:10.5px; color:var(--success); font-weight:600;">● ${s.status}</div>
+            <span class="chev" style="font-size:14px; color:var(--muted); margin-top:2px;">›</span>
           </div>
         </div>
       `).join('');
@@ -828,25 +1022,109 @@
     drawSvgChart('chart-svg-container', data.points, 150);
   }
 
+  function filterAds(filter){
+    adCurrentFilter = filter;
+    document.querySelectorAll('#ad-filter-bar .seg-btn').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.adfilter === filter);
+    });
+    renderAds();
+  }
+
   function renderAds(){
     const list = document.getElementById('ads-list');
+    const countAll = document.getElementById('count-ads-all');
+    if(countAll) countAll.textContent = saasAds.length;
     if(!list) return;
-    list.innerHTML = saasAds.map(ad => `
-      <div class="qa-row" style="flex-direction:column; align-items:stretch; gap:10px;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div>
-            <b>${ad.title}</b>
-            <div class="desc" style="margin-top:2px;">${ad.sub}</div>
+
+    let filtered = saasAds;
+    if(adCurrentFilter === 'active') filtered = saasAds.filter(a => a.status === 'active' && a.active !== false);
+    if(adCurrentFilter === 'scheduled') filtered = saasAds.filter(a => a.status === 'scheduled');
+    if(adCurrentFilter === 'paused') filtered = saasAds.filter(a => a.status === 'paused' || a.active === false);
+
+    if(filtered.length === 0){
+      list.innerHTML = '<div style="padding:24px; text-align:center; color:var(--muted); font-size:12.5px;">Nenhum anúncio encontrado neste filtro de agenda.</div>';
+      return;
+    }
+
+    list.innerHTML = filtered.map((ad, idx) => {
+      const isScheduled = ad.status === 'scheduled';
+      const isPaused = ad.status === 'paused' || ad.active === false;
+      const statusBadge = isPaused
+        ? '<span style="font-size:10px; font-weight:700; color:var(--muted); background:rgba(255,255,255,0.08); padding:2px 8px; border-radius:9999px;">⏸ Pausado</span>'
+        : (isScheduled
+          ? '<span style="font-size:10px; font-weight:700; color:#ffb020; background:rgba(255,176,32,0.15); padding:2px 8px; border-radius:9999px;">⏳ Agendado (' + (ad.scheduleStart || 'Em breve') + ')</span>'
+          : '<span style="font-size:10px; font-weight:700; color:var(--success); background:rgba(52,194,129,0.15); padding:2px 8px; border-radius:9999px;">● No Ar</span>');
+
+      return `
+        <div class="qa-row" style="flex-direction:column; align-items:stretch; gap:10px; padding:14px; background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px;">
+          <!-- Visualização da Imagem do Anúncio (Foto + Overlay Degradê) -->
+          ${ad.image ? `
+            <div style="width:100%; height:110px; border-radius:10px; overflow:hidden; position:relative; background:#111;">
+              <img src="${ad.image}" alt="${ad.title}" style="width:100%; height:100%; object-fit:cover;">
+              <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);"></div>
+              <span style="position:absolute; bottom:8px; left:10px; font-size:10.5px; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,0.8);">Prévia do Criativo</span>
+              <button type="button" onclick="previewAdImage('${ad.image}', '${ad.title}')" style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.65); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:11px; padding:3px 8px; border-radius:6px; cursor:pointer;">🔍 Ver imagem</button>
+            </div>
+          ` : ''}
+
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+            <div>
+              <b style="font-size:13.5px; color:var(--ink);">${ad.title}</b>
+              <div class="desc" style="margin-top:3px; font-size:12px; line-height:1.4;">${ad.sub}</div>
+            </div>
+            ${statusBadge}
           </div>
-          <span style="font-size:10.5px; font-weight:700; color:var(--success); background:rgba(52,194,129,0.15); padding:2px 8px; border-radius:9999px;">Ativo</span>
+
+          <!-- Cronograma / Auto Programação -->
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; background:var(--field); border-radius:8px; padding:8px 10px; font-size:11px; color:var(--muted); gap:6px;">
+            <span>🗓 <b>Agenda:</b> ${ad.scheduleStart || 'Imediato'} até ${ad.scheduleEnd || 'Indeterminado'}</span>
+            <span>⚡ <b>Auto-programado:</b> ${ad.autoProgrammed ? 'Sim (Cakto Broadcast)' : 'Manual'}</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--hairline-soft); padding-top:8px;">
+            <span style="font-size:11px; color:var(--muted);">Engajamento: <b style="color:var(--ink);">${ad.clicks} cliques</b></span>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-outline" style="height:28px; padding:0 10px; font-size:11px;" onclick="toggleAdStatus(${idx})">
+                ${isPaused ? '▶ Ativar' : '⏸ Pausar'}
+              </button>
+              <button class="btn btn-outline" style="height:28px; padding:0 8px; font-size:11px; color:#ff5f8a;" onclick="deleteAd(${idx})" title="Excluir campanha">✕</button>
+            </div>
+          </div>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--hairline-soft); padding-top:8px;">
-          <span style="font-size:11px; color:var(--muted);">Engajamento: <b>${ad.clicks} cliques</b></span>
-          <button class="btn btn-outline" style="height:28px; padding:0 10px; font-size:11px;" onclick="toast('Campanha pausada')">Pausar</button>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
+
+  function toggleAdStatus(idx){
+    const ad = saasAds[idx];
+    if(!ad) return;
+    if(ad.status === 'paused' || ad.active === false){
+      ad.status = 'active';
+      ad.active = true;
+      toast('Campanha ativada no ar ✓');
+    } else {
+      ad.status = 'paused';
+      ad.active = false;
+      toast('Campanha pausada com sucesso');
+    }
+    renderAds();
+  }
+
+  function deleteAd(idx){
+    saasAds.splice(idx, 1);
+    renderAds();
+    toast('Anúncio removido da plataforma');
+  }
+
+  function previewAdImage(imgUrl, title){
+    const win = window.open('', '_blank');
+    if(win){
+      win.document.write(`<body style="margin:0;background:#050505;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${imgUrl}" style="max-width:90%;max-height:90%;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.8);"><title>${title}</title></body>`);
+    } else {
+      toast('Imagem: ' + imgUrl);
+    }
+  }
+
 
   function renderAffiliates(){
     const list = document.getElementById('affiliates-list');
@@ -930,14 +1208,97 @@
   function saveNewAd(){
     const title = document.getElementById('ad-title')?.value.trim();
     const sub = document.getElementById('ad-sub')?.value.trim();
-    if(!title){ toast('Preencha o título'); return; }
-    saasAds.unshift({ id: 'ad-' + Date.now(), title, sub: sub || 'Promoção exclusiva agendo', clicks: 0, active: true });
+    const image = document.getElementById('ad-image-url')?.value.trim() || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80';
+    const scheduleStart = document.getElementById('ad-schedule-start')?.value || '2026-10-01';
+    const scheduleEnd = document.getElementById('ad-schedule-end')?.value || '2026-10-31';
+    const autoProgrammed = document.getElementById('ad-auto-program')?.checked ?? true;
+
+    if(!title){ toast('Preencha o título do anúncio'); return; }
+
+    const isFuture = new Date(scheduleStart + 'T00:00:00') > new Date();
+    const status = isFuture ? 'scheduled' : 'active';
+
+    saasAds.unshift({
+      id: 'ad-' + Date.now(),
+      title,
+      sub: sub || 'Campanha oficial da plataforma agendo',
+      image,
+      scheduleStart,
+      scheduleEnd,
+      autoProgrammed,
+      status,
+      clicks: 0,
+      active: true
+    });
+
     closeModal('modal-new-ad');
     renderAds();
-    toast('Nova campanha de anúncio ativada ✓');
+    toast(isFuture ? 'Campanha agendada com sucesso ⏳' : 'Nova campanha de anúncio ativada no ar ✓');
   }
 
-  function openPlanManagerModal(){ toast('Planos: Básico (R$ 49), Pro (R$ 89), Studio (R$ 149)'); }
+  
+  function openPlanManagerModal(){
+    renderPlansList();
+    const m = document.getElementById('modal-plans-manager');
+    if(m) m.classList.remove('hidden');
+  }
+
+  function renderPlansList(){
+    const cont = document.getElementById('plans-list-container');
+    if(!cont) return;
+    cont.innerHTML = saasPlatformPlans.map((p, idx) => `
+      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--field); border:1px solid var(--hairline-soft); border-radius:10px; padding:10px 12px;">
+        <div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <b style="font-size:13px; color:var(--ink);">${p.name}</b>
+            <span style="font-size:11px; color:var(--muted);">· R$ ${p.price}/${p.period}</span>
+          </div>
+          <span style="font-size:10.5px; color:var(--muted); display:block; margin-top:2px;">${p.fee}</span>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:10px; font-weight:700; color:var(--success); background:rgba(52,194,129,0.15); padding:2px 7px; border-radius:9999px;">Ativo Cakto</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function createNewPlan(){
+    const name = document.getElementById('new-plan-name').value.trim();
+    const price = Number(document.getElementById('new-plan-price').value);
+    const fee = document.getElementById('new-plan-fee').value.trim() || 'Zero taxas extras';
+    if(!name || !price){ toast('Informe o nome e o valor do novo plano'); return; }
+
+    saasPlatformPlans.push({
+      id: 'plan-' + Date.now(),
+      name,
+      price,
+      period: 'mês',
+      fee,
+      features: ['Plano personalizado', 'Cakto Split configurado'],
+      active: true
+    });
+
+    // Atualizar também o select do modal de detalhes do usuário
+    const sel = document.getElementById('user-change-plan-select');
+    if(sel){
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name + ' (R$ ' + price + '/mês)';
+      sel.appendChild(opt);
+    }
+
+    document.getElementById('new-plan-name').value = '';
+    document.getElementById('new-plan-price').value = '';
+    document.getElementById('new-plan-fee').value = '';
+
+    renderPlansList();
+    toast('Novo plano "' + name + '" criado com sucesso para cobrança de mensalidades ✓');
+  }
+
+  window.openPlanManagerModal = openPlanManagerModal;
+  window.renderPlansList = renderPlansList;
+  window.createNewPlan = createNewPlan;
+
   function openServerHealthModal(){ toast('Status: Servidores operando com 99.98% de Uptime ✓'); }
   function openSecurityModal(){ toast('Segurança: Criptografia AES-256 e LGPD ativa ✓'); }
 
@@ -966,6 +1327,98 @@
   window.openNewAdModal = typeof openNewAdModal !== "undefined" ? openNewAdModal : null;
   window.closeModal = typeof closeModal !== "undefined" ? closeModal : null;
   
+  
+  let selectedStudioIdx = 0;
+
+  function openStudioDetailModal(idx){
+    selectedStudioIdx = idx;
+    const s = saasSubscriptions[idx];
+    if(!s) return;
+
+    document.getElementById('user-detail-studio-name').textContent = s.studio;
+    document.getElementById('user-detail-owner-info').textContent = s.owner + ' · ' + s.city + ' (Ref: ' + (s.affiliate || 'Direto') + ')';
+    document.getElementById('user-detail-plan-name').textContent = s.plan;
+    document.getElementById('user-detail-plan-badge').textContent = s.price;
+    document.getElementById('user-change-plan-select').value = s.plan;
+
+    // Métricas dinâmicas estimadas de uso
+    const usageEstimates = [
+      { appts: '142', rev: 'R$ 14.800', ret: '98%' },
+      { appts: '210', rev: 'R$ 28.500', ret: '99%' },
+      { appts: '96', rev: 'R$ 9.200', ret: '94%' },
+      { appts: '320', rev: 'R$ 46.000', ret: '99.5%' },
+      { appts: '64', rev: 'R$ 5.900', ret: '91%' }
+    ];
+    const u = usageEstimates[idx % usageEstimates.length];
+    document.getElementById('user-detail-usage-appts').textContent = u.appts;
+    document.getElementById('user-detail-usage-revenue').textContent = u.rev;
+    document.getElementById('user-detail-usage-clients').textContent = u.ret;
+
+    document.getElementById('user-custom-coupon-code').value = s.owner.split(' ')[0].toUpperCase() + 'PROMO';
+    document.getElementById('user-custom-ad-title').value = 'Parabéns ' + s.owner.split(' ')[0] + '! Você atingiu ' + u.appts + ' agendamentos';
+
+    const modal = document.getElementById('modal-studio-detail');
+    if(modal) modal.classList.remove('hidden');
+  }
+
+  function applyUserPlanChange(){
+    const s = saasSubscriptions[selectedStudioIdx];
+    if(!s) return;
+    const newPlan = document.getElementById('user-change-plan-select').value;
+    const planPrices = { 'Básico': 'R$ 49/mês', 'Pro': 'R$ 89/mês', 'Studio': 'R$ 149/mês', 'Enterprise': 'R$ 299/mês' };
+    const planBadges = { 'Básico': 'b-basic', 'Pro': 'b-pro', 'Studio': 'b-studio', 'Enterprise': 'b-enterprise' };
+
+    s.plan = newPlan;
+    s.price = planPrices[newPlan] || 'R$ 89/mês';
+    s.badge = planBadges[newPlan] || 'b-pro';
+
+    document.getElementById('user-detail-plan-name').textContent = s.plan;
+    document.getElementById('user-detail-plan-badge').textContent = s.price;
+
+    renderHome();
+    toast('Plano do estúdio ' + s.studio + ' alterado com sucesso para ' + newPlan + ' (' + s.price + ') ✓');
+  }
+
+  function applyUserDiscountCoupon(){
+    const s = saasSubscriptions[selectedStudioIdx];
+    const code = document.getElementById('user-custom-coupon-code').value.trim();
+    const type = document.getElementById('user-custom-discount-type').value;
+    if(!code){ toast('Digite um código de cupom'); return; }
+    toast('Cupom ' + code + ' (' + type + ') ativado exclusivamente para ' + (s ? s.studio : 'o estúdio') + ' ✓');
+  }
+
+  function createAdForSpecificUser(){
+    const s = saasSubscriptions[selectedStudioIdx];
+    const title = document.getElementById('user-custom-ad-title').value.trim();
+    const sub = document.getElementById('user-custom-ad-sub').value.trim() || 'Oferta especial disponibilizada pela administração agendo';
+    if(!title){ toast('Digite o título do anúncio'); return; }
+
+    saasAds.unshift({
+      id: 'ad-user-' + Date.now(),
+      title: title + ' [' + (s ? s.studio : 'Estúdio') + ']',
+      sub: sub,
+      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80',
+      scheduleStart: 'Hoje',
+      scheduleEnd: '30 dias',
+      autoProgrammed: true,
+      status: 'active',
+      clicks: 0,
+      active: true
+    });
+
+    renderAds();
+    toast('Anúncio direcionado com sucesso para ' + (s ? s.studio : 'o estúdio') + ' ✓');
+  }
+
+  window.openStudioDetailModal = openStudioDetailModal;
+  window.applyUserPlanChange = applyUserPlanChange;
+  window.applyUserDiscountCoupon = applyUserDiscountCoupon;
+  window.createAdForSpecificUser = createAdForSpecificUser;
+  window.filterAds = filterAds;
+  window.toggleAdStatus = toggleAdStatus;
+  window.deleteAd = deleteAd;
+  window.previewAdImage = previewAdImage;
+
   // Inicializar
   renderHome();
 </script>

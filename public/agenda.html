@@ -1109,6 +1109,28 @@
   .price-discount-tag{ font-size:9.5px; font-weight:700; padding:1px 5px; border-radius:4px; background:rgba(239,31,77,0.18); color:#ff5f8a; }
   .product-checkout-tag{ font-size:10px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:4px; margin-top:2px; }
 
+  
+  /* Home Banners Horizontal Scroll */
+  .home-banners-scroll{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x mandatory;
+    padding:4px 0 14px;
+    margin-top:12px;
+  }
+  .home-banners-scroll::-webkit-scrollbar{ display:none; }
+  .home-banners-scroll .hero{
+    flex:0 0 min(84vw, 360px);
+    scroll-snap-align:start;
+    margin:0 !important;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+
   /* Lightbox */
   .lightbox-card{ width:100%; max-width:440px; background:var(--canvas-soft); border-radius:18px; border:1px solid var(--hairline); padding:16px; }
   .lightbox-img-wrap{ width:100%; max-height:65vh; border-radius:12px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#000; margin-bottom:12px; }
@@ -1161,35 +1183,42 @@
       </button>
     </div>
 
-    <div class="hero">
-      <p class="hero-eyebrow">Seu perfil está no ar</p>
-      <h1>Um link só, com todos os seus serviços.</h1>
-      <p>Monte seu catálogo, compartilhe o link e receba agendamentos direto na sua agenda.</p>
-      <a href="#" class="btn btn-light" data-nav="public">
-        Ver meu site público
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M7 7h10v10"/></svg>
-      </a>
-    </div>
-
-    <!-- Banner Programa de Afiliados (Logo após o primeiro banner "Seu perfil está no ar") -->
-    <div class="hero" style="background:linear-gradient(135deg, #1f1b2e 0%, #171520 60%, #0d0c12 100%); border:1px solid rgba(255,95,138,0.3); margin-top:12px; position:relative;">
-      <div style="display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:9999px; background:rgba(255,95,138,0.15); color:#ff5f8a; font-size:10.5px; font-weight:750; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">
-        <span style="width:6px; height:6px; border-radius:9999px; background:#ff5f8a;"></span>
-        Programa de Afiliados agendo
+    <!-- Carrossel / Scroll Horizontal de Banners da Home -->
+    <div class="home-banners-scroll">
+      <div class="hero">
+        <div>
+          <p class="hero-eyebrow">Seu perfil está no ar</p>
+          <h1>Um link só, com todos os seus serviços.</h1>
+          <p>Monte seu catálogo, compartilhe o link e receba agendamentos direto na sua agenda.</p>
+        </div>
+        <a href="#" class="btn btn-light" data-nav="public" style="margin-top:14px;">
+          Ver meu site público
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </a>
       </div>
-      <h1 style="font-size:22px; line-height:1.2;">Indique o agendo e ganhe 30% de comissão recorrente</h1>
-      <p style="font-size:13px; color:rgba(255,255,255,0.82); margin-bottom:16px;">
-        Compartilhe seu link exclusivo com outros estúdios e receba comissão todo mês sobre as assinaturas via Cakto Split.
-      </p>
-      <div style="display:flex; flex-wrap:wrap; gap:8px;">
-        <button type="button" class="btn btn-light" onclick="openAffiliateUserModal()" style="font-size:12.5px; height:38px; padding:0 16px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
-          Ver meu link & comissões
-        </button>
-        <button type="button" class="btn btn-outline" onclick="copyUserAffiliateLink()" style="font-size:12.5px; height:38px; padding:0 14px; background:rgba(255,255,255,0.04);">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copiar link
-        </button>
+
+      <!-- Banner Programa de Afiliados no Scroll -->
+      <div class="hero" style="background:linear-gradient(135deg, #1f1b2e 0%, #171520 60%, #0d0c12 100%); border:1px solid rgba(255,95,138,0.3); position:relative;">
+        <div>
+          <div style="display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:9999px; background:rgba(255,95,138,0.15); color:#ff5f8a; font-size:10.5px; font-weight:750; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">
+            <span style="width:6px; height:6px; border-radius:9999px; background:#ff5f8a;"></span>
+            Programa de Afiliados agendo
+          </div>
+          <h1 style="font-size:20px; line-height:1.22;">Indique o agendo e ganhe 30% recorrente</h1>
+          <p style="font-size:12.5px; color:rgba(255,255,255,0.82); margin-top:6px;">
+            Indique outros estúdios e receba comissão todo mês sobre as assinaturas via Cakto Split.
+          </p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;">
+          <button type="button" class="btn btn-light" onclick="openAffiliateUserModal()" style="font-size:12px; height:36px; padding:0 14px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+            Ver meu link & comissões
+          </button>
+          <button type="button" class="btn btn-outline" onclick="copyUserAffiliateLink()" style="font-size:12px; height:36px; padding:0 12px; background:rgba(255,255,255,0.04);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copiar link
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1545,8 +1574,9 @@
       <span class="tag">Visão do cliente</span>
     </div>
     
-    <div class="pub-cover" id="pub-cover">
-      <button class="pub-share" onclick="sharePublicPage()" aria-label="Compartilhar" title="Compartilhar">
+    <div class="pub-cover" id="pub-cover" style="position:relative; overflow:hidden;">
+      <div class="pub-cover-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.92) 100%); pointer-events:none; z-index:1;"></div>
+      <button class="pub-share" onclick="sharePublicPage()" aria-label="Compartilhar" title="Compartilhar" style="position:absolute; right:16px; top:16px; z-index:5;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.6 6.6-4.2m-6.6 7 6.6 4.2"/></svg>
       </button>
     </div>
@@ -4902,19 +4932,28 @@
         </${tag}>`;
       }).join('');
 
-      // Posicionamento dinâmico (Topo abaixo do perfil | Meio entre abas e catálogo | Rodapé)
-      const targetPos = activeBanners[0]?.position || bannerPosition || 'top';
+      // Posicionamento dinâmico 100% funcional (top | middle | bottom)
+      const targetPos = bannerPosition || activeBanners[0]?.position || 'top';
       const viewPub = document.getElementById('view-public');
       const tabsWrap = document.getElementById('pub-main-tabs');
-      if(viewPub && tabsWrap){
+      if(viewPub && tabsWrap && promosSec){
         if(targetPos === 'top'){
+          // Topo: logo abaixo do cabeçalho de perfil e bio, antes das abas
           tabsWrap.parentNode.insertBefore(promosSec, tabsWrap);
         } else if(targetPos === 'middle'){
-          const activePane = document.getElementById('pub-tab-' + publicCurrentTab);
-          if(activePane) activePane.parentNode.insertBefore(promosSec, activePane);
+          // Meio: abaixo das abas de navegação, logo antes do catálogo de serviços/produtos
+          const activePane = document.getElementById('pub-tab-' + publicCurrentTab) || tabsWrap.nextElementSibling;
+          if(activePane && activePane.parentNode) {
+            activePane.parentNode.insertBefore(promosSec, activePane);
+          }
         } else if(targetPos === 'bottom'){
+          // Rodapé: no final do conteúdo público
           const spacer = viewPub.querySelector('.spacer');
-          if(spacer) viewPub.insertBefore(promosSec, spacer);
+          if(spacer) {
+            viewPub.insertBefore(promosSec, spacer);
+          } else {
+            viewPub.appendChild(promosSec);
+          }
         }
       }
     }
@@ -5282,6 +5321,38 @@ async function sharePublicPage(){
   function changeBannerPos(id, pos){
     const b = banners.find(x => x.id === id);
     if(b){ b.position = pos; renderProfile(); renderPublicProfile(); }
+  }
+
+  
+  // Inicialização e persistência dos controles de Banner (Modo e Posição)
+  const bModeToggle = document.getElementById('banner-mode-toggle');
+  if(bModeToggle){
+    bModeToggle.querySelectorAll('button').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.bmode === bannerDisplayMode);
+      btn.addEventListener('click', () => {
+        bModeToggle.querySelectorAll('button').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        bannerDisplayMode = btn.dataset.bmode;
+        localStorage.setItem('bannerDisplayMode', bannerDisplayMode);
+        renderProfile();
+        renderPublicProfile();
+        toast('Formato de exibição alterado para: ' + (bannerDisplayMode === 'scroll' ? 'Scroll horizontal' : 'Lista'));
+      });
+    });
+  }
+
+  const bPosSelect = document.getElementById('banner-position-select');
+  if(bPosSelect){
+    bPosSelect.value = bannerPosition || 'top';
+    bPosSelect.addEventListener('change', (e) => {
+      bannerPosition = e.target.value;
+      localStorage.setItem('bannerPosition', bannerPosition);
+      banners.forEach(b => { b.position = bannerPosition; });
+      renderProfile();
+      renderPublicProfile();
+      const posLabels = { top: 'Topo (Abaixo do perfil)', middle: 'Entre seções (Acima do catálogo)', bottom: 'Rodapé da página' };
+      toast('Posicionamento atualizado: ' + (posLabels[bannerPosition] || bannerPosition));
+    });
   }
 
   // Gestor de Mídias no Perfil
