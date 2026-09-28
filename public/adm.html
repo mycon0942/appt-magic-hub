@@ -1,504 +1,488 @@
+<!-- Sincronizado: agendo em tempo real -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>agendo — Painel Super Admin SaaS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;650;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;650;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --canvas: #0c0b0e;
-    --canvas-soft: #141218;
-    --raised: #1c1922;
-    --field: #221f2b;
-    --hairline: #2e2a3b;
-    --hairline-soft: #23202e;
-    --ink: #f5f3f7;
-    --muted: #a39eb0;
-    --faint: #6e687e;
-    --cta-fill: #f5f3f7;
-    --cta-text: #0c0b0e;
-    --brand: #ff5f8a;
-    --brand-glow: rgba(255, 95, 138, 0.25);
-    --success: #34c281;
-    --purple: #a855f7;
+  :root{
+    --canvas:#000000;
+    --canvas-soft:#161616;
+    --field:#1e1e1e;
+    --raised:#262626;
+    --hairline-soft:rgba(255,255,255,0.08);
+    --hairline:rgba(255,255,255,0.16);
+    --ink:#fafafa;
+    --ink-soft:#d6d6d6;
+    --muted:rgba(255,255,255,0.55);
+    --faint:rgba(255,255,255,0.32);
+    --cta-fill:#fafafa;
+    --cta-text:#0a0a0a;
+    --accent:#2f7dff;
+    --vip:#ffb020;
+    --grad-a:#ff5f8a;
+    --grad-b:#ef1f4d;
+    --grad-c:#8f0d24;
+    --success:#34c281;
+    --purple:#a855f7;
+    --font:'Inter', -apple-system, "Helvetica Neue", Arial, sans-serif;
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body {
-    margin: 0; background: var(--canvas); color: var(--ink);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 13px; line-height: 1.45; overflow-x: hidden;
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:#050505;
+    color:var(--ink);
+    font-family:var(--font);
+    -webkit-font-smoothing:antialiased;
+    display:flex; justify-content:center;
   }
-  .adm-app {
-    max-width: 520px; margin: 0 auto; min-height: 100vh; position: relative;
-    padding-bottom: 90px; background: var(--canvas);
-  }
-  @media(min-width: 768px){ .adm-app { max-width: 780px; } }
-  @media(min-width: 1200px){ .adm-app { max-width: 960px; } }
+  img,svg{ display:block; }
+  button{ font-family:inherit; cursor:pointer; }
+  a{ text-decoration:none; color:inherit; }
+  .hidden{ display:none !important; }
+  :focus-visible{ outline:2px solid var(--ink); outline-offset:2px; border-radius:8px; }
 
-  /* Topbar Super Admin */
-  .adm-topbar {
-    position: sticky; top: 0; z-index: 50; padding: 14px 18px;
-    background: rgba(12, 11, 14, 0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--hairline-soft); display: flex; align-items: center; justify-content: space-between;
+  h1,h2,h3{ margin:0; font-weight:650; letter-spacing:0; color:var(--ink); }
+
+  /* ---------- Mobile app shell idêntico ao agendo ---------- */
+  .app{
+    width:100%; max-width:430px;
+    min-height:100vh;
+    background:var(--canvas);
+    position:relative;
+    padding-bottom:112px;
   }
-  .adm-brand { display: flex; align-items: center; gap: 10px; }
-  .adm-logo {
-    width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, #ff5f8a 0%, #e0245e 100%);
-    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #fff;
-    box-shadow: 0 4px 14px var(--brand-glow);
+  @media (min-width:768px){
+    body{ padding:0; }
+    .app{ max-width:480px; border-left:1px solid var(--hairline-soft); border-right:1px solid var(--hairline-soft); box-shadow:0 0 60px rgba(0,0,0,.6); }
   }
-  .adm-brand-text h1 { margin: 0; font-size: 16px; font-weight: 750; letter-spacing: -0.02em; }
-  .adm-brand-text span { font-size: 10.5px; color: var(--muted); }
-  .adm-status-chip {
-    display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700;
-    padding: 3px 9px; border-radius: 9999px; background: rgba(52, 194, 129, 0.12); color: var(--success);
-    border: 1px solid rgba(52, 194, 129, 0.25); text-transform: uppercase; letter-spacing: 0.04em;
+  @media (min-width:1280px){
+    .app{ max-width:520px; }
   }
 
-  /* Seções e Cards */
-  .adm-section { padding: 16px 18px 0; }
-  .adm-section-title {
-    font-size: 14px; font-weight: 750; color: var(--ink); margin: 0 0 4px;
+  /* ---------- Top bar ---------- */
+  .topbar{ display:flex; align-items:center; justify-content:space-between; padding:22px 18px 0; }
+  .identity{ display:flex; align-items:center; gap:12px; min-width:0; }
+  .avatar{
+    width:48px; height:48px; border-radius:9999px;
+    background:var(--canvas-soft); border:1px solid var(--hairline);
+    color:var(--ink); display:flex; align-items:center; justify-content:center;
+    font-weight:650; font-size:17px; flex-shrink:0; position:relative;
   }
-  .adm-section-desc { font-size: 11.5px; color: var(--muted); margin: 0 0 14px; }
+  .avatar .dot{ position:absolute; bottom:1px; right:1px; width:11px; height:11px; border-radius:9999px; background:var(--grad-a); border:2px solid var(--canvas); }
+  .greeting{ font-size:12.5px; font-weight:400; color:var(--muted); margin:0 0 2px; }
+  .name{ font-size:20px; line-height:1.1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .icon-btn{
+    width:42px; height:42px; border-radius:9999px; background:var(--canvas-soft); border:1px solid var(--hairline);
+    display:flex; align-items:center; justify-content:center; color:var(--ink); flex-shrink:0;
+  }
+  .icon-btn:hover{ background:var(--field); }
 
-  /* Grid de KPIs */
-  .adm-kpi-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px;
+  .meta-row{ display:flex; align-items:center; justify-content:space-between; padding:14px 18px 0; }
+  .location{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:400; color:var(--muted); }
+  .tag{
+    display:inline-flex; align-items:center; gap:7px; padding:6px 13px; border-radius:9999px;
+    background:var(--canvas-soft); border:1px solid var(--hairline-soft); font-size:12.5px; font-weight:600; color:var(--ink-soft);
   }
-  @media(min-width: 768px){ .adm-kpi-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
-  .adm-kpi-card {
-    background: var(--canvas-soft); border: 1px solid var(--hairline-soft); border-radius: 16px;
-    padding: 14px; display: flex; flex-direction: column; gap: 4px; transition: border-color .15s ease;
-  }
-  .adm-kpi-card:hover { border-color: var(--hairline); }
-  .adm-kpi-lbl { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
-  .adm-kpi-val { font-size: 19px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
-  .adm-kpi-tag { font-size: 10.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; }
-  .adm-kpi-tag.positive { color: var(--success); }
-  .adm-kpi-tag.neutral { color: var(--muted); }
+  .tag .dot{ width:6px; height:6px; border-radius:9999px; background:var(--success); }
 
-  /* Filtro de Período */
-  .adm-period-wrap {
-    display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+  /* ---------- Hero Banner Degrade agendo ---------- */
+  .hero{
+    margin:20px 18px 6px; padding:26px 20px; border-radius:22px;
+    background:linear-gradient(135deg, var(--grad-a) 0%, var(--grad-b) 55%, var(--grad-c) 100%);
+    color:#fff; position:relative; overflow:hidden;
   }
-  .adm-pills {
-    display: inline-flex; gap: 3px; background: var(--canvas-soft); border: 1px solid var(--hairline-soft);
-    padding: 3px; border-radius: 9999px;
-  }
-  .adm-pill {
-    border: none; background: transparent; color: var(--muted); font-size: 11.5px; font-weight: 600;
-    padding: 5px 14px; border-radius: 9999px; cursor: pointer; transition: all .15s ease;
-  }
-  .adm-pill.is-active { background: var(--cta-fill); color: var(--cta-text); }
+  .hero::after{ content:""; position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:9999px; background:radial-gradient(circle, rgba(255,255,255,0.35), transparent 70%); }
+  .hero-eyebrow{ font-size:12px; font-weight:700; color:rgba(255,255,255,0.9); margin:0 0 10px; position:relative; text-transform:uppercase; letter-spacing:0.04em; }
+  .hero h1{ font-size:24px; line-height:1.15; margin:0 0 10px; color:#fff; position:relative; }
+  .hero p{ font-size:13px; font-weight:300; line-height:1.45; color:rgba(255,255,255,0.9); margin:0 0 18px; position:relative; }
 
-  /* Gráfico Financeiro */
-  .adm-chart-card {
-    background: var(--canvas-soft); border: 1px solid var(--hairline-soft); border-radius: 20px;
-    padding: 18px; margin-bottom: 18px; position: relative; overflow: hidden;
-  }
-  .adm-chart-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-  .adm-chart-val { font-size: 24px; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; margin-top: 2px; }
+  /* Botões e Ações */
+  .btn{ display:inline-flex; align-items:center; gap:8px; height:42px; padding:0 18px; border-radius:9999px; font-size:13.5px; font-weight:600; border:none; position:relative; }
+  .btn-light{ background:#fff; color:#0c0c0c; }
+  .btn-light:hover{ background:#eee; }
+  .btn-outline{ background:transparent; color:var(--ink); border:1px solid var(--hairline); }
+  .btn-outline:hover{ background:var(--canvas-soft); }
+  .btn-dark{ background:var(--cta-fill); color:var(--cta-text); }
+  .btn-dark:hover{ background:#e2e2e2; }
 
-  /* Tabela de Assinaturas e Registros */
-  .adm-table-card {
-    background: var(--canvas-soft); border: 1px solid var(--hairline-soft); border-radius: 16px;
-    overflow: hidden; margin-bottom: 18px;
-  }
-  .adm-table-row {
-    display: flex; justify-content: space-between; align-items: center; padding: 12px 14px;
-    border-bottom: 1px solid var(--hairline-soft); transition: background .12s ease;
-  }
-  .adm-table-row:last-child { border-bottom: none; }
-  .adm-table-row:hover { background: var(--raised); }
-  .adm-badge {
-    font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.04em;
-  }
-  .badge-pro { background: rgba(255, 95, 138, 0.16); color: #ff5f8a; border: 1px solid rgba(255, 95, 138, 0.3); }
-  .badge-studio { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
-  .badge-basic { background: rgba(255, 255, 255, 0.08); color: var(--muted); border: 1px solid rgba(255, 255, 255, 0.12); }
-  .badge-enterprise { background: rgba(234, 179, 8, 0.16); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+  /* ---------- Section heading ---------- */
+  .section{ padding:6px 18px 0; }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; }
+  .section-head h2{ font-size:17px; }
+  .section-head a{ font-size:12.5px; font-weight:600; color:var(--muted); }
+  .section-head a:hover{ color:var(--ink); }
 
-  /* Listas e Linhas de Ação */
-  .adm-action-row {
-    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    padding: 13px 14px; border-radius: 14px; background: var(--canvas-soft); border: 1px solid var(--hairline-soft);
-    color: var(--ink); text-align: left; cursor: pointer; margin-bottom: 8px; font-family: inherit;
-    transition: background .15s ease, border-color .15s ease;
+  /* ---------- Listas de Ações (qa-list e qa-row) ---------- */
+  .qa-list{ display:flex; flex-direction:column; gap:8px; }
+  .qa-row{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:13px 14px; border-radius:16px; background:var(--canvas-soft);
+    border:1px solid var(--hairline-soft); color:var(--ink); text-align:left;
   }
-  .adm-action-row:hover { background: var(--raised); border-color: var(--hairline); }
-  .adm-action-row .ic {
-    width: 34px; height: 34px; border-radius: 10px; background: var(--field); display: flex;
-    align-items: center; justify-content: center; color: var(--ink); flex-shrink: 0;
-  }
-  .adm-action-row .txt { flex: 1; min-width: 0; }
-  .adm-action-row .txt b { display: block; font-size: 13px; font-weight: 650; }
-  .adm-action-row .txt span { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .qa-row:hover{ background:var(--field); }
+  .qa-row .ic{ width:34px; height:34px; border-radius:9999px; background:var(--raised); display:flex; align-items:center; justify-content:center; color:var(--ink); flex-shrink:0; }
+  .qa-row .txt{ display:flex; flex-direction:column; gap:2px; min-width:0; flex:1; }
+  .qa-row .txt b{ font-size:13px; font-weight:650; }
+  .qa-row .txt .desc{ font-size:11.5px; color:var(--muted); line-height:1.35; }
+  .qa-row .chev{ font-size:16px; color:var(--faint); font-weight:700; }
 
-  /* Botões */
-  .adm-btn {
-    border: none; padding: 10px 18px; border-radius: 12px; font-size: 12.5px; font-weight: 650;
-    cursor: pointer; display: inline-flex; align-items: center; gap: 8px; justify-content: center;
-    transition: opacity .15s ease; font-family: inherit;
-  }
-  .adm-btn-dark { background: var(--cta-fill); color: var(--cta-text); }
-  .adm-btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--hairline); }
-  .adm-btn:hover { opacity: 0.9; }
+  /* ---------- KPI Grid agendo ---------- */
+  .fin-kpi-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-bottom:18px; }
+  .fin-kpi-card{ background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:4px; }
+  .fin-kpi-value{ font-size:18px; font-weight:700; color:var(--ink); letter-spacing:-0.02em; }
+  .fin-kpi-label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; font-weight:600; }
 
-  /* ================= NAVBAR DO ADMINISTRADOR (4 ITENS SOLICITADOS) ================= */
-  /* [Início] [Financeiro] [Anúncios] [Configurações] */
-  .adm-bottom-nav {
-    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-    width: calc(100% - 32px); max-width: 440px; margin: 0;
-    background: rgba(20, 18, 24, 0.95); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-    border: 1px solid var(--hairline); border-radius: 9999px; display: flex; align-items: center;
-    justify-content: space-between; padding: 6px 8px; z-index: 60; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  }
-  .adm-nav-item {
-    display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--faint);
-    background: none; border: none; font-size: 10px; font-weight: 600; padding: 6px 12px;
-    border-radius: 9999px; flex: 1; cursor: pointer; transition: all .15s ease; font-family: inherit;
-  }
-  .adm-nav-item svg { width: 17px; height: 17px; }
-  .adm-nav-item.is-active { color: var(--ink); background: var(--field); }
+  /* ---------- Controles segmentados (Filtros Dia / Semana / Mês) ---------- */
+  .seg-control{ display:inline-flex; gap:3px; background:var(--canvas-soft); border:1px solid var(--hairline-soft); padding:4px; border-radius:9999px; }
+  .seg-btn{ border:none; background:transparent; color:var(--muted); font-size:12px; font-weight:600; padding:6px 14px; border-radius:9999px; }
+  .seg-btn.is-active{ background:var(--cta-fill); color:var(--cta-text); }
 
-  /* Modais e Overlays */
-  .adm-modal-overlay {
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
-    z-index: 90; display: flex; align-items: center; justify-content: center; padding: 16px;
-  }
-  .adm-modal-overlay.hidden { display: none; }
-  .adm-modal-card {
-    width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; background: #15131a;
-    border: 1px solid var(--hairline); border-radius: 20px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-  }
-  .adm-modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-  .adm-modal-name { font-size: 16px; font-weight: 750; }
-  .adm-field-label { display: block; font-size: 11px; font-weight: 650; color: var(--muted); margin: 12px 0 5px; text-transform: uppercase; letter-spacing: 0.03em; }
-  .adm-input {
-    width: 100%; background: var(--field); border: 1px solid var(--hairline-soft); border-radius: 10px;
-    padding: 10px 12px; color: var(--ink); font-size: 13px; font-family: inherit; outline: none;
-  }
-  .adm-input:focus { border-color: var(--brand); }
-  .adm-textarea {
-    width: 100%; background: var(--field); border: 1px solid var(--hairline-soft); border-radius: 10px;
-    padding: 10px 12px; color: var(--ink); font-size: 13px; font-family: inherit; outline: none; resize: vertical;
-  }
-  .adm-textarea:focus { border-color: var(--brand); }
+  /* ---------- Card de Gráfico ---------- */
+  .chart-box{ background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:20px; padding:18px; margin-bottom:18px; }
 
-  #adm-toast {
-    position: fixed; bottom: 84px; left: 50%; transform: translateX(-50%);
-    background: var(--ink); color: var(--canvas); padding: 8px 16px; border-radius: 9999px;
-    font-size: 12px; font-weight: 700; z-index: 99; opacity: 0; pointer-events: none; transition: opacity .2s ease;
+  /* ---------- Badges de Planos ---------- */
+  .sub-badge{ font-size:9.5px; font-weight:800; padding:2px 7px; border-radius:9999px; text-transform:uppercase; letter-spacing:0.04em; }
+  .b-pro{ background:rgba(255,95,138,0.18); color:#ff5f8a; border:1px solid rgba(255,95,138,0.3); }
+  .b-studio{ background:rgba(168,85,247,0.18); color:#c084fc; border:1px solid rgba(168,85,247,0.3); }
+  .b-basic{ background:rgba(255,255,255,0.08); color:var(--muted); border:1px solid rgba(255,255,255,0.12); }
+  .b-enterprise{ background:rgba(234,179,8,0.18); color:#facc15; border:1px solid rgba(234,179,8,0.3); }
+
+  /* ---------- Bottom pill nav (ESTRUTURA IDENTICA AO AGENDO COM 4 ITENS) ---------- */
+  .bottom-nav{
+    position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
+    width:calc(100% - 36px); max-width:394px; margin:0; background:rgba(22,22,22,.94);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--hairline-soft); border-radius:9999px; display:flex; align-items:center;
+    justify-content:space-between; padding:7px 7px; z-index:60;
   }
-  #adm-toast.show { opacity: 1; }
+  @media (min-width:768px){ .bottom-nav{ max-width:444px; } }
+  @media (min-width:1280px){ .bottom-nav{ max-width:484px; } }
+  .nav-item{ display:flex; flex-direction:column; align-items:center; gap:2px; color:var(--faint); background:none; border:none; font-size:9.5px; font-weight:600; padding:7px 10px; border-radius:9999px; flex:1; }
+  .nav-item.is-active{ color:var(--ink); background:var(--field); }
+
+  /* Modais */
+  .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(6px); z-index:90; display:flex; align-items:flex-end; justify-content:center; }
+  .modal-card{ width:100%; max-width:430px; background:#161616; border-top:1px solid var(--hairline); border-radius:24px 24px 0 0; padding:22px 18px 28px; max-height:85vh; overflow-y:auto; }
+  @media(min-width:768px){ .modal-overlay{ align-items:center; } .modal-card{ max-width:480px; border-radius:20px; } }
+  .modal-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .modal-name{ font-size:17px; font-weight:700; color:var(--ink); }
+  .modal-close{ width:32px; height:32px; border-radius:9999px; background:var(--field); border:1px solid var(--hairline-soft); color:var(--muted); display:flex; align-items:center; justify-content:center; }
+  .field-label{ display:block; font-size:11px; font-weight:650; color:var(--muted); margin:12px 0 6px; text-transform:uppercase; letter-spacing:0.04em; }
+  .field-input, .field-textarea, .field-select{ width:100%; background:var(--field); border:1px solid var(--hairline-soft); border-radius:12px; padding:11px 13px; color:var(--ink); font-size:13px; font-family:inherit; outline:none; }
+  .field-input:focus, .field-textarea:focus, .field-select:focus{ border-color:var(--hairline); }
+
+  .toast{ position:fixed; bottom:84px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--canvas); padding:8px 16px; border-radius:9999px; font-size:12px; font-weight:700; z-index:99; opacity:0; pointer-events:none; transition:opacity .2s ease; }
+  .toast.show{ opacity:1; }
+  .spacer{ height:32px; }
 </style>
 </head>
 <body>
 
-<div class="adm-app">
-  <!-- Topbar Super Admin -->
-  <header class="adm-topbar">
-    <div class="adm-brand">
-      <div class="adm-logo">ag</div>
-      <div class="adm-brand-text">
-        <h1>Super Admin</h1>
-        <span>Plataforma agendo.app</span>
+<div class="app">
+  <!-- Topbar Superior Master -->
+  <div class="topbar">
+    <div class="identity">
+      <div class="avatar">ag<span class="dot"></span></div>
+      <div style="min-width:0;">
+        <p class="greeting">Super Administrador SaaS</p>
+        <h1 class="name">Plataforma agendo</h1>
       </div>
     </div>
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span class="adm-status-chip">● SaaS Produção</span>
-      <a href="/" style="text-decoration:none;" class="adm-btn adm-btn-outline" style="padding:5px 10px; font-size:11px;">
-        Ver App ↗
-      </a>
+    <a href="/" class="icon-btn" aria-label="Ver App" title="Acessar aplicativo principal">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+    </a>
+  </div>
+
+  <div class="meta-row">
+    <div class="location">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      Cloud São Paulo · Latência 42ms
     </div>
-  </header>
+    <span class="tag"><span class="dot"></span>Produção Ativa</span>
+  </div>
 
-  <!-- ================= TAB 1: INÍCIO ================= -->
-  <main id="pane-inicio" class="adm-pane">
-    <div class="adm-section">
-      <div class="adm-kpi-grid">
-        <div class="adm-kpi-card">
-          <span class="adm-kpi-lbl">MRR (Mensal)</span>
-          <span class="adm-kpi-val">R$ 58.420</span>
-          <span class="adm-kpi-tag positive">↑ +22.4% este mês</span>
-        </div>
-        <div class="adm-kpi-card">
-          <span class="adm-kpi-lbl">Estúdios Ativos</span>
-          <span class="adm-kpi-val">642 contas</span>
-          <span class="adm-kpi-tag neutral">Churn: 1.8%</span>
-        </div>
-        <div class="adm-kpi-card">
-          <span class="adm-kpi-lbl">GMV Transacionado</span>
-          <span class="adm-kpi-val">R$ 412.800</span>
-          <span class="adm-kpi-tag positive">Pix + InfinitePay</span>
-        </div>
-        <div class="adm-kpi-card">
-          <span class="adm-kpi-lbl">Agendamentos</span>
-          <span class="adm-kpi-val">18.940</span>
-          <span class="adm-kpi-tag neutral">Total do mês</span>
-        </div>
-      </div>
-
-      <!-- Atalho Gráfico Rápido -->
-      <div class="adm-chart-card">
-        <div class="adm-chart-head">
-          <div>
-            <span style="font-size:11.5px; color:var(--muted);">Faturamento da Plataforma (Assinaturas)</span>
-            <div class="adm-chart-val">R$ 318.900</div>
-          </div>
-          <button class="adm-btn adm-btn-outline" style="padding:5px 12px; font-size:11px;" onclick="switchTab('financeiro')">
-            Ver detalhes →
-          </button>
-        </div>
-        <div id="chart-mini-home" style="width:100%; height:110px;"></div>
-      </div>
-
-      <!-- Últimos Estúdios Cadastrados -->
-      <h2 class="adm-section-title">Últimos Estúdios Assinantes</h2>
-      <p class="adm-section-desc">Novas adesões registradas em tempo real na plataforma</p>
-      
-      <div class="adm-table-card" id="home-subs-list"></div>
-
-      <!-- Ações Rápidas -->
-      <h2 class="adm-section-title" style="margin-top:20px;">Ações Imediatas</h2>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <button class="adm-action-row" onclick="openBroadcastModal()">
-          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
-          <span class="txt"><b>Notificar Todos os Estúdios</b><span>Disparar aviso para 642 painéis</span></span>
-          <span>›</span>
-        </button>
-        <button class="adm-action-row" onclick="switchTab('anuncios')">
-          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4M14 4v4"/></svg></span>
-          <span class="txt"><b>Gerenciar Banners & Anúncios SaaS</b><span>Campanhas promocionais em destaque</span></span>
-          <span>›</span>
-        </button>
-      </div>
-    </div>
-  </main>
-
-  <!-- ================= TAB 2: FINANCEIRO ================= -->
-  <main id="pane-financeiro" class="adm-pane" style="display:none;">
-    <div class="adm-section">
-      <div class="adm-period-wrap">
-        <div>
-          <h2 class="adm-section-title" style="margin:0;">Receita & Faturamento</h2>
-          <span style="font-size:11.5px; color:var(--muted);">Demonstrativo detalhado de receitas da agendo</span>
-        </div>
-        <div class="adm-pills" id="fin-period-pills">
-          <button type="button" class="adm-pill" data-period="dia" onclick="setChartPeriod('dia')">Dia</button>
-          <button type="button" class="adm-pill" data-period="semana" onclick="setChartPeriod('semana')">Semana</button>
-          <button type="button" class="adm-pill is-active" data-period="mes" onclick="setChartPeriod('mes')">Mês</button>
-        </div>
-      </div>
-
-      <!-- Gráfico de Linhas Completo -->
-      <div class="adm-chart-card">
-        <div class="adm-chart-head">
-          <div>
-            <div style="font-size:11.5px; color:var(--muted);" id="fin-period-title">Período: Últimos 6 Meses</div>
-            <div class="adm-chart-val" id="fin-period-total">R$ 318.900</div>
-          </div>
-          <div style="text-align:right;">
-            <span style="font-size:11.5px; color:var(--success); font-weight:700;">+22.4% vs anterior</span>
-            <div style="font-size:10.5px; color:var(--muted); margin-top:2px;">Ticket médio: R$ 89/mês</div>
-          </div>
-        </div>
-        <div id="chart-fin-full" style="width:100%; height:160px;"></div>
-      </div>
-
-      <!-- Breakdown de Fontes de Receita -->
-      <h2 class="adm-section-title">Fontes de Receita</h2>
-      <div class="adm-table-card">
-        <div class="adm-table-row">
-          <div>
-            <b>Assinaturas Mensais dos Planos</b>
-            <div style="font-size:11px; color:var(--muted);">Planos Básico, Pro e Studio</div>
-          </div>
-          <b style="font-size:13.5px; color:var(--ink);">R$ 48.650 / mês</b>
-        </div>
-        <div class="adm-table-row">
-          <div>
-            <b>Taxas de Intermediação Checkout Pix</b>
-            <div style="font-size:11px; color:var(--muted);">0.99% sobre GMV transacionado</div>
-          </div>
-          <b style="font-size:13.5px; color:var(--ink);">R$ 4.086 / mês</b>
-        </div>
-        <div class="adm-table-row">
-          <div>
-            <b>Taxas de Gateway InfinitePay</b>
-            <div style="font-size:11px; color:var(--muted);">Revenue share de cartões</div>
-          </div>
-          <b style="font-size:13.5px; color:var(--ink);">R$ 5.684 / mês</b>
-        </div>
-      </div>
-
-      <!-- Exportação Financeira -->
-      <button class="adm-btn adm-btn-outline" style="width:100%; margin-top:10px;" onclick="exportAdminSaaSReport()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-        Exportar Demonstrativo Contábil (CSV)
+  <!-- ================= TELA 1: INÍCIO ================= -->
+  <div id="view-inicio">
+    <div class="hero">
+      <p class="hero-eyebrow">Gestão Global SaaS</p>
+      <h1>Visão Geral da Plataforma agendo</h1>
+      <p>Acompanhe o crescimento dos estúdios cadastrados, faturamento de assinaturas e métricas operacionais.</p>
+      <button type="button" class="btn btn-light" onclick="goToTab('financeiro')">
+        Ver métricas financeiras
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M7 7h10v10"/></svg>
       </button>
     </div>
-  </main>
 
-  <!-- ================= TAB 3: ANÚNCIOS ================= -->
-  <main id="pane-anuncios" class="adm-pane" style="display:none;">
-    <div class="adm-section">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <div>
-          <h2 class="adm-section-title" style="margin:0;">Campanhas & Anúncios SaaS</h2>
-          <span style="font-size:11.5px; color:var(--muted);">Banners exibidos aos estúdios e clientes</span>
+    <div class="section" style="margin-top:16px;">
+      <div class="fin-kpi-grid">
+        <div class="fin-kpi-card">
+          <span class="fin-kpi-label">MRR (Mensal)</span>
+          <span class="fin-kpi-value">R$ 58.420</span>
+          <span style="font-size:11px; color:var(--success); font-weight:600;">↑ +22.4% este mês</span>
         </div>
-        <button class="adm-btn adm-btn-dark" style="font-size:11px; padding:6px 12px;" onclick="openNewAdModal()">
+        <div class="fin-kpi-card">
+          <span class="fin-kpi-label">Estúdios Ativos</span>
+          <span class="fin-kpi-value">642 contas</span>
+          <span style="font-size:11px; color:var(--muted);">Churn rate 1.8%</span>
+        </div>
+        <div class="fin-kpi-card">
+          <span class="fin-kpi-label">GMV Transacionado</span>
+          <span class="fin-kpi-value">R$ 412.800</span>
+          <span style="font-size:11px; color:var(--success); font-weight:600;">Pix + InfinitePay</span>
+        </div>
+        <div class="fin-kpi-card">
+          <span class="fin-kpi-label">Agendamentos</span>
+          <span class="fin-kpi-value">18.940</span>
+          <span style="font-size:11px; color:var(--muted);">Total processado</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:8px;">
+      <div class="section-head">
+        <h2>Últimas Assinaturas de Estúdios</h2>
+        <a onclick="goToTab('financeiro')">Ver todas</a>
+      </div>
+      <div id="home-subs-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+
+    <div class="section" style="margin-top:20px;">
+      <div class="section-head"><h2>Ações Rápidas do Master</h2></div>
+      <div class="qa-list">
+        <button class="qa-row" onclick="openBroadcastModal()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
+          <span class="txt"><b>Transmitir Notificação Global</b><span class="desc">Enviar mensagem para 642 painéis de estúdios</span></span>
+          <span class="chev">›</span>
+        </button>
+        <button class="qa-row" onclick="goToTab('anuncios')">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4M14 4v4"/></svg></span>
+          <span class="txt"><b>Campanhas & Anúncios SaaS</b><span class="desc">Gerenciar banners promocionais em destaque</span></span>
+          <span class="chev">›</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TELA 2: FINANCEIRO ================= -->
+  <div id="view-financeiro" class="hidden">
+    <div class="page-head" style="padding:22px 18px 0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div>
+          <h2>Evolução Financeira SaaS</h2>
+          <span style="font-size:12px; color:var(--muted);">Faturamento de assinaturas e taxas</span>
+        </div>
+        <div class="seg-control" id="adm-period-selector">
+          <button type="button" class="seg-btn" data-period="dia" onclick="setChartPeriod('dia')">Dia</button>
+          <button type="button" class="seg-btn" data-period="semana" onclick="setChartPeriod('semana')">Semana</button>
+          <button type="button" class="seg-btn is-active" data-period="mes" onclick="setChartPeriod('mes')">Mês</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:10px;">
+      <!-- Gráfico Financeiro em SVG Idêntico ao Estilo do Agendo -->
+      <div class="chart-box">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+          <div>
+            <div style="font-size:12px; color:var(--muted);" id="chart-period-title">Período: Últimos 6 Meses</div>
+            <div style="font-size:24px; font-weight:750; color:var(--ink); margin-top:2px;" id="chart-total-value">R$ 318.900</div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:12px; color:var(--success); font-weight:700;">+22.4% vs anterior</span>
+            <div style="font-size:11px; color:var(--muted); margin-top:2px;">Ticket médio: R$ 89/mês</div>
+          </div>
+        </div>
+        <div id="chart-svg-container" style="width:100%; height:150px;"></div>
+      </div>
+
+      <div class="section-head"><h2>Fontes de Receita</h2></div>
+      <div class="qa-list" style="margin-bottom:16px;">
+        <div class="qa-row">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <span class="txt"><b>Assinaturas Mensais dos Planos</b><span class="desc">Planos Básico, Pro e Studio</span></span>
+          <b style="font-size:13.5px; color:var(--ink);">R$ 48.650</b>
+        </div>
+        <div class="qa-row">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3 3-3 3-3-3 3-3z"/><path d="M12 16l3 3-3 3-3-3 3-3z"/></svg></span>
+          <span class="txt"><b>Intermediação Pix API</b><span class="desc">Taxa de 0.99% sobre checkout</span></span>
+          <b style="font-size:13.5px; color:var(--ink);">R$ 4.086</b>
+        </div>
+        <div class="qa-row">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="15" rx="2.5"/><path d="M2 10h20"/></svg></span>
+          <span class="txt"><b>Revenue Share InfinitePay</b><span class="desc">Taxas de transação de cartões</span></span>
+          <b style="font-size:13.5px; color:var(--ink);">R$ 5.684</b>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-outline" style="width:100%; justify-content:center;" onclick="exportAdminSaaSReport()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Exportar Relatório Contábil (CSV)
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= TELA 3: ANÚNCIOS ================= -->
+  <div id="view-anuncios" class="hidden">
+    <div class="page-head" style="padding:22px 18px 0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div>
+          <h2>Campanhas & Anúncios SaaS</h2>
+          <span style="font-size:12px; color:var(--muted);">Banners exibidos aos estúdios e clientes</span>
+        </div>
+        <button type="button" class="btn btn-dark" style="height:36px; padding:0 14px; font-size:12px;" onclick="openNewAdModal()">
           + Novo Anúncio
         </button>
       </div>
+    </div>
 
-      <!-- Lista de Campanhas e Banners Globais -->
-      <div id="adm-ads-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;"></div>
+    <div class="section" style="margin-top:10px;">
+      <div id="ads-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;"></div>
 
-      <div class="adm-kpi-card" style="margin-top:14px;">
-        <span class="adm-kpi-lbl">Engajamento dos Anúncios</span>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+      <div class="chart-box" style="margin-top:14px;">
+        <span style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em;">Engajamento Geral das Campanhas</span>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:12px; text-align:center;">
           <div>
-            <div style="font-size:16px; font-weight:800; color:var(--ink);">48.210</div>
+            <div style="font-size:18px; font-weight:700; color:var(--ink);">48.210</div>
             <span style="font-size:11px; color:var(--muted);">Impressões</span>
           </div>
           <div>
-            <div style="font-size:16px; font-weight:800; color:#ff5f8a;">3.490</div>
-            <span style="font-size:11px; color:var(--muted);">Cliques (CTR 7.2%)</span>
+            <div style="font-size:18px; font-weight:700; color:var(--grad-a);">3.490</div>
+            <span style="font-size:11px; color:var(--muted);">Cliques (7.2%)</span>
           </div>
           <div>
-            <div style="font-size:16px; font-weight:800; color:var(--success);">412</div>
-            <span style="font-size:11px; color:var(--muted);">Upgrades de Plano</span>
+            <div style="font-size:18px; font-weight:700; color:var(--success);">412</div>
+            <span style="font-size:11px; color:var(--muted);">Upgrades</span>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 
-  <!-- ================= TAB 4: CONFIGURAÇÕES ================= -->
-  <main id="pane-configuracoes" class="adm-pane" style="display:none;">
-    <div class="adm-section">
-      <h2 class="adm-section-title">Configurações Globais da Plataforma</h2>
-      <p class="adm-section-desc">Parâmetros essenciais do ecossistema agendo SaaS</p>
+  <!-- ================= TELA 4: CONFIGURAÇÕES ================= -->
+  <div id="view-configuracoes" class="hidden">
+    <div class="page-head" style="padding:22px 18px 0;">
+      <h2>Configurações da Plataforma</h2>
+      <span style="font-size:12px; color:var(--muted);">Parâmetros master do ecossistema agendo SaaS</span>
+    </div>
 
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <button class="adm-action-row" onclick="openPlanManagerModal()">
+    <div class="section" style="margin-top:16px;">
+      <div class="qa-list">
+        <button class="qa-row" onclick="openPlanManagerModal()">
           <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-          <span class="txt"><b>Planos & Mensalidades</b><span>Básico R$ 49 · Pro R$ 89 · Studio R$ 149</span></span>
-          <span>›</span>
+          <span class="txt"><b>Planos & Mensalidades dos Estúdios</b><span class="desc">Básico (R$ 49), Pro (R$ 89), Studio (R$ 149)</span></span>
+          <span class="chev">›</span>
         </button>
 
-        <button class="adm-action-row" onclick="openGatewaySettingsModal()">
+        <button class="qa-row" onclick="openGatewaySettingsModal()">
           <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="15" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></span>
-          <span class="txt"><b>Gateways & Taxas Globais</b><span>SyncPayments API Pix e InfinitePay</span></span>
-          <span>›</span>
+          <span class="txt"><b>Conectores & Taxas Globais</b><span class="desc">SyncPayments API Pix (0.99%) e InfinitePay (2.49%)</span></span>
+          <span class="chev">›</span>
         </button>
 
-        <button class="adm-action-row" onclick="openServerHealthModal()">
+        <button class="qa-row" onclick="openServerHealthModal()">
           <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-          <span class="txt"><b>Infraestrutura & Uptime</b><span>Servidores em SP (99.98% uptime · 42ms)</span></span>
-          <span>›</span>
+          <span class="txt"><b>Infraestrutura & Uptime</b><span class="desc">Cluster São Paulo · 99.98% uptime operacional</span></span>
+          <span class="chev">›</span>
         </button>
 
-        <button class="adm-action-row" onclick="openSecurityModal()">
+        <button class="qa-row" onclick="openSecurityModal()">
           <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-          <span class="txt"><b>Segurança & Políticas LGPD</b><span>Contratos de dados e criptografia ponta a ponta</span></span>
-          <span>›</span>
+          <span class="txt"><b>Segurança, Backups & LGPD</b><span class="desc">Criptografia AES-256 e conformidade regulatória</span></span>
+          <span class="chev">›</span>
         </button>
       </div>
 
-      <div class="adm-table-card" style="margin-top:20px; padding:14px;">
-        <span class="adm-kpi-lbl">Versão da Plataforma</span>
-        <div style="font-size:13px; font-weight:700; color:var(--ink); margin-top:2px;">agendo Cloud v4.2.0-stable</div>
-        <div style="font-size:11px; color:var(--muted); margin-top:4px;">Node.js 20 LTS · PostgreSQL Cloud · Vite SPA React</div>
+      <div class="qa-row" style="margin-top:20px; background:transparent; border-color:var(--hairline-soft);">
+        <span class="txt">
+          <b>Versão da Plataforma</b>
+          <span class="desc">agendo Cloud v4.2.0-stable · Node.js 20 LTS · PostgreSQL Cloud</span>
+        </span>
       </div>
     </div>
-  </main>
+  </div>
 
-  <!-- ================= NAVBAR DO ADMINISTRADOR (4 ITENS) ================= -->
+  <div class="spacer"></div>
+
+  <!-- ================= NAVBAR DO ADMINISTRADOR (4 ITENS RIGOROSAMENTE SOLICITADOS) ================= -->
   <!-- [ Início ] [ Financeiro ] [ Anúncios ] [ Configurações ] -->
-  <nav class="adm-bottom-nav">
-    <button type="button" class="adm-nav-item is-active" data-tab="inicio" onclick="switchTab('inicio')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg>
+  <nav class="bottom-nav">
+    <button class="nav-item is-active" data-nav="inicio" onclick="goToTab('inicio')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9"/></svg>
       Início
     </button>
-    <button type="button" class="adm-nav-item" data-tab="financeiro" onclick="switchTab('financeiro')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+    <button class="nav-item" data-nav="financeiro" onclick="goToTab('financeiro')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
       Financeiro
     </button>
-    <button type="button" class="adm-nav-item" data-tab="anuncios" onclick="switchTab('anuncios')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4M14 4v4"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+    <button class="nav-item" data-nav="anuncios" onclick="goToTab('anuncios')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4M14 4v4"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
       Anúncios
     </button>
-    <button type="button" class="adm-nav-item" data-tab="configuracoes" onclick="switchTab('configuracoes')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <button class="nav-item" data-nav="configuracoes" onclick="goToTab('configuracoes')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
       Configurações
     </button>
   </nav>
 </div>
 
-<!-- ================= MODAIS DA PLATAFORMA ADMIN ================= -->
-<!-- Modal Broadcast -->
-<div id="adm-modal-broadcast" class="adm-modal-overlay hidden">
-  <div class="adm-modal-card">
-    <div class="adm-modal-head">
-      <div class="adm-modal-name">Transmitir Notificação Geral</div>
-      <button class="adm-btn adm-btn-outline" style="padding:4px 8px;" onclick="closeModal('adm-modal-broadcast')">✕</button>
+<!-- ================= MODAIS ================= -->
+<div id="modal-broadcast" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-name">Transmitir Notificação Geral</div>
+      <button class="modal-close" onclick="closeModal('modal-broadcast')">✕</button>
     </div>
-    <span class="adm-field-label">Título do Comunicado</span>
-    <input class="adm-input" id="bcast-title" placeholder="Ex: Manutenção Programada ou Nova Função">
-    <span class="adm-field-label">Corpo da Mensagem</span>
-    <textarea class="adm-textarea" id="bcast-body" rows="3" placeholder="Mensagem enviada a todos os estúdios conectados..."></textarea>
+    <span class="field-label">Título do Comunicado</span>
+    <input class="field-input" id="bcast-title" placeholder="Ex: Nova Função de Checkout Pix Ativa!">
+    <span class="field-label">Corpo da Mensagem</span>
+    <textarea class="field-textarea" id="bcast-body" rows="3" placeholder="Mensagem enviada a todos os estúdios conectados..."></textarea>
     <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-      <button class="adm-btn adm-btn-outline" onclick="closeModal('adm-modal-broadcast')">Cancelar</button>
-      <button class="adm-btn adm-btn-dark" onclick="sendBroadcastMsg()">Enviar para 642 estúdios</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-broadcast')">Cancelar</button>
+      <button class="btn btn-dark" onclick="sendBroadcastMsg()">Enviar para 642 estúdios</button>
     </div>
   </div>
 </div>
 
-<!-- Modal Novo Anúncio -->
-<div id="adm-modal-new-ad" class="adm-modal-overlay hidden">
-  <div class="adm-modal-card">
-    <div class="adm-modal-head">
-      <div class="adm-modal-name">Criar Campanha de Anúncio</div>
-      <button class="adm-btn adm-btn-outline" style="padding:4px 8px;" onclick="closeModal('adm-modal-new-ad')">✕</button>
+<div id="modal-new-ad" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-name">Criar Campanha de Anúncio</div>
+      <button class="modal-close" onclick="closeModal('modal-new-ad')">✕</button>
     </div>
-    <span class="adm-field-label">Título da Campanha</span>
-    <input class="adm-input" id="ad-title" placeholder="Ex: Upgrade Black Friday — 30% OFF no Plano Studio">
-    <span class="adm-field-label">Texto de Apoio</span>
-    <input class="adm-input" id="ad-sub" placeholder="Ex: Aproveite checkout ilimitado e multi-salas">
-    <span class="adm-field-label">Público Alvo</span>
-    <select class="adm-input" id="ad-target">
+    <span class="field-label">Título da Campanha</span>
+    <input class="field-input" id="ad-title" placeholder="Ex: Upgrade Black Friday — 30% OFF no Plano Studio">
+    <span class="field-label">Texto de Apoio</span>
+    <input class="field-input" id="ad-sub" placeholder="Ex: Aproveite checkout ilimitado e multi-salas">
+    <span class="field-label">Público Alvo</span>
+    <select class="field-select" id="ad-target">
       <option value="all">Todos os Usuários e Visitantes</option>
       <option value="basic">Apenas Assinantes do Plano Básico</option>
       <option value="pro">Apenas Assinantes do Plano Pro</option>
     </select>
-    <span class="adm-field-label">Link de Destino</span>
-    <input class="adm-input" id="ad-link" placeholder="Ex: https://agendo.app/upgrade">
     <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-      <button class="adm-btn adm-btn-outline" onclick="closeModal('adm-modal-new-ad')">Cancelar</button>
-      <button class="adm-btn adm-btn-dark" onclick="saveNewAd()">Ativar Campanha</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-new-ad')">Cancelar</button>
+      <button class="btn btn-dark" onclick="saveNewAd()">Ativar Campanha</button>
     </div>
   </div>
 </div>
 
-<div id="adm-toast"></div>
+<div class="toast" id="toast-el"></div>
 
 <script>
-  let currentTab = 'inicio';
+  let activeTab = 'inicio';
   let chartPeriod = 'mes';
 
   const saasSubscriptions = [
-    { studio: 'Studio Marina Ravi', owner: 'Marina Ravi', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Hoje, 14:22', city: 'São Paulo — SP', badge: 'badge-pro' },
-    { studio: 'Bella Donna Estética', owner: 'Camila Fontana', plan: 'Studio', price: 'R$ 149/mês', status: 'Ativa', date: 'Hoje, 11:05', city: 'Curitiba — PR', badge: 'badge-studio' },
-    { studio: 'Espaço Glow & Spa', owner: 'Juliana Paes', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Ontem, 19:40', city: 'Rio de Janeiro — RJ', badge: 'badge-pro' },
-    { studio: 'Dermato & Harmonização', owner: 'Dra. Aline Torres', plan: 'Enterprise', price: 'R$ 299/mês', status: 'Ativa', date: 'Ontem, 15:10', city: 'Belo Horizonte — MG', badge: 'badge-enterprise' },
-    { studio: 'Studio Fio a Fio', owner: 'Beatriz Duarte', plan: 'Básico', price: 'R$ 49/mês', status: 'Ativa', date: '25/09/2026', city: 'Campinas — SP', badge: 'badge-basic' }
+    { studio: 'Studio Marina Ravi', owner: 'Marina Ravi', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Hoje, 14:22', city: 'São Paulo — SP', badge: 'b-pro' },
+    { studio: 'Bella Donna Estética', owner: 'Camila Fontana', plan: 'Studio', price: 'R$ 149/mês', status: 'Ativa', date: 'Hoje, 11:05', city: 'Curitiba — PR', badge: 'b-studio' },
+    { studio: 'Espaço Glow & Spa', owner: 'Juliana Paes', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Ontem, 19:40', city: 'Rio de Janeiro — RJ', badge: 'b-pro' },
+    { studio: 'Dermato & Harmonização', owner: 'Dra. Aline Torres', plan: 'Enterprise', price: 'R$ 299/mês', status: 'Ativa', date: 'Ontem, 15:10', city: 'Belo Horizonte — MG', badge: 'b-enterprise' },
+    { studio: 'Studio Fio a Fio', owner: 'Beatriz Duarte', plan: 'Básico', price: 'R$ 49/mês', status: 'Ativa', date: '25/09/2026', city: 'Campinas — SP', badge: 'b-basic' }
   ];
 
   let saasAds = [
@@ -533,30 +517,37 @@
     }
   };
 
-  function switchTab(tabId){
-    currentTab = tabId;
-    document.querySelectorAll('.adm-pane').forEach(p => p.style.display = 'none');
-    const active = document.getElementById('pane-' + tabId);
-    if(active) active.style.display = 'block';
+  const tabs = {
+    inicio: document.getElementById('view-inicio'),
+    financeiro: document.getElementById('view-financeiro'),
+    anuncios: document.getElementById('view-anuncios'),
+    configuracoes: document.getElementById('view-configuracoes')
+  };
 
-    document.querySelectorAll('.adm-bottom-nav .adm-nav-item').forEach(b => {
-      b.classList.toggle('is-active', b.dataset.tab === tabId);
+  function goToTab(tabKey){
+    if(!tabs[tabKey]) return;
+    activeTab = tabKey;
+    Object.keys(tabs).forEach(k => {
+      tabs[k].classList.toggle('hidden', k !== tabKey);
+    });
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.nav === tabKey);
     });
 
-    if(tabId === 'inicio') renderHome();
-    if(tabId === 'financeiro') renderFinancial();
-    if(tabId === 'anuncios') renderAds();
+    if(tabKey === 'inicio') renderHome();
+    if(tabKey === 'financeiro') renderFinancial();
+    if(tabKey === 'anuncios') renderAds();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function drawSvgChart(containerId, pts, height = 140){
+  function drawSvgChart(containerId, pts, height = 150){
     const container = document.getElementById(containerId);
     if(!container) return;
     const maxVal = Math.max(...pts.map(p => p.val)) * 1.15;
     const minVal = Math.min(...pts.map(p => p.val)) * 0.85;
-    const w = 480;
-    const padX = 30;
+    const w = 380;
+    const padX = 26;
     const padY = 16;
 
     const coords = pts.map((p, i) => {
@@ -571,15 +562,15 @@
     const svg = `
       <svg viewBox="0 0 ${w} ${height}" style="width:100%; height:100%; overflow:visible;">
         <defs>
-          <linearGradient id="g_${containerId}" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#ff5f8a" stop-opacity="0.35"/>
+          <linearGradient id="chart_grad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ff5f8a" stop-opacity="0.32"/>
             <stop offset="100%" stop-color="#ff5f8a" stop-opacity="0.0"/>
           </linearGradient>
         </defs>
         <line x1="${padX}" y1="${padY}" x2="${w-padX}" y2="${padY}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3"/>
         <line x1="${padX}" y1="${height-padY}" x2="${w-padX}" y2="${height-padY}" stroke="rgba(255,255,255,0.1)"/>
-        <path d="${areaD}" fill="url(#g_${containerId})"/>
-        <path d="${pathD}" fill="none" stroke="#ff5f8a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="${areaD}" fill="url(#chart_grad)"/>
+        <path d="${pathD}" fill="none" stroke="#ff5f8a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         ${coords.map(c => `
           <circle cx="${c.x}" cy="${c.y}" r="3" fill="#fff" stroke="#ff5f8a" stroke-width="2"/>
           <text x="${c.x}" y="${height - 2}" font-size="9" fill="var(--muted)" text-anchor="middle">${c.label}</text>
@@ -593,27 +584,27 @@
     const list = document.getElementById('home-subs-list');
     if(list){
       list.innerHTML = saasSubscriptions.slice(0, 4).map(s => `
-        <div class="adm-table-row">
-          <div>
+        <div class="qa-row">
+          <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+          <div class="txt">
             <div style="display:flex; align-items:center; gap:6px;">
-              <b style="font-size:13px; color:var(--ink);">${s.studio}</b>
-              <span class="adm-badge ${s.badge}">${s.plan}</span>
+              <b>${s.studio}</b>
+              <span class="sub-badge ${s.badge}">${s.plan}</span>
             </div>
-            <div style="font-size:11px; color:var(--muted); margin-top:2px;">${s.owner} · ${s.city}</div>
+            <span class="desc">${s.owner} · ${s.city}</span>
           </div>
           <div style="text-align:right;">
-            <div style="font-size:13px; font-weight:750; color:var(--ink);">${s.price}</div>
-            <span style="font-size:10.5px; color:var(--success); font-weight:600;">● ${s.status}</span>
+            <b style="font-size:13px; color:var(--ink);">${s.price}</b>
+            <div style="font-size:10.5px; color:var(--success); font-weight:600;">● ${s.status}</div>
           </div>
         </div>
       `).join('');
     }
-    drawSvgChart('chart-mini-home', financialData.mes.points, 110);
   }
 
   function setChartPeriod(period){
     chartPeriod = period;
-    document.querySelectorAll('#fin-period-pills .adm-pill').forEach(b => {
+    document.querySelectorAll('#adm-period-selector .seg-btn').forEach(b => {
       b.classList.toggle('is-active', b.dataset.period === period);
     });
     renderFinancial();
@@ -621,35 +612,35 @@
 
   function renderFinancial(){
     const data = financialData[chartPeriod] || financialData.mes;
-    const titleEl = document.getElementById('fin-period-title');
-    const totalEl = document.getElementById('fin-period-total');
+    const titleEl = document.getElementById('chart-period-title');
+    const totalEl = document.getElementById('chart-total-value');
     if(titleEl) titleEl.textContent = data.title;
     if(totalEl) totalEl.textContent = data.total;
-    drawSvgChart('chart-fin-full', data.points, 160);
+    drawSvgChart('chart-svg-container', data.points, 150);
   }
 
   function renderAds(){
-    const list = document.getElementById('adm-ads-list');
+    const list = document.getElementById('ads-list');
     if(!list) return;
     list.innerHTML = saasAds.map(ad => `
-      <div class="adm-table-card" style="padding:14px; margin-bottom:8px;">
+      <div class="qa-row" style="flex-direction:column; align-items:stretch; gap:10px;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
           <div>
-            <b style="font-size:13.5px; color:var(--ink);">${ad.title}</b>
-            <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">${ad.sub}</div>
+            <b>${ad.title}</b>
+            <div class="desc" style="margin-top:2px;">${ad.sub}</div>
           </div>
           <span style="font-size:10.5px; font-weight:700; color:var(--success); background:rgba(52,194,129,0.15); padding:2px 8px; border-radius:9999px;">Ativo</span>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; border-top:1px solid var(--hairline-soft); padding-top:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--hairline-soft); padding-top:8px;">
           <span style="font-size:11px; color:var(--muted);">Engajamento: <b>${ad.clicks} cliques</b></span>
-          <button class="adm-btn adm-btn-outline" style="padding:4px 10px; font-size:11px;" onclick="toast('Campanha pausada')">Pausar</button>
+          <button class="btn btn-outline" style="height:28px; padding:0 10px; font-size:11px;" onclick="toast('Campanha pausada')">Pausar</button>
         </div>
       </div>
     `).join('');
   }
 
   function toast(msg){
-    const t = document.getElementById('adm-toast');
+    const t = document.getElementById('toast-el');
     if(!t) return;
     t.textContent = msg;
     t.classList.add('show');
@@ -659,34 +650,34 @@
   function openModal(id){ const el = document.getElementById(id); if(el) el.classList.remove('hidden'); }
   function closeModal(id){ const el = document.getElementById(id); if(el) el.classList.add('hidden'); }
 
-  function openBroadcastModal(){ openModal('adm-modal-broadcast'); }
-  function openNewAdModal(){ openModal('adm-modal-new-ad'); }
+  function openBroadcastModal(){ openModal('modal-broadcast'); }
+  function openNewAdModal(){ openModal('modal-new-ad'); }
 
   function sendBroadcastMsg(){
     const title = document.getElementById('bcast-title')?.value.trim();
     if(!title){ toast('Digite o título'); return; }
-    closeModal('adm-modal-broadcast');
+    closeModal('modal-broadcast');
     toast('Notificação transmitida para 642 estúdios ✓');
   }
 
   function saveNewAd(){
     const title = document.getElementById('ad-title')?.value.trim();
     const sub = document.getElementById('ad-sub')?.value.trim();
-    if(!title){ toast('Preencha o título do anúncio'); return; }
+    if(!title){ toast('Preencha o título'); return; }
     saasAds.unshift({ id: 'ad-' + Date.now(), title, sub: sub || 'Promoção exclusiva agendo', clicks: 0, active: true });
-    closeModal('adm-modal-new-ad');
+    closeModal('modal-new-ad');
     renderAds();
-    toast('Nova campanha de anúncio ativada com sucesso ✓');
+    toast('Nova campanha de anúncio ativada ✓');
   }
 
-  function openPlanManagerModal(){ toast('Planos SaaS: Básico (R$ 49), Pro (R$ 89), Studio (R$ 149)'); }
-  function openGatewaySettingsModal(){ toast('Gateways: Pix API em 0.99% e InfinitePay em 2.49%'); }
-  function openServerHealthModal(){ toast('Infraestrutura: Servidores operando com 99.98% de Uptime'); }
-  function openSecurityModal(){ toast('Segurança: Criptografia ponta a ponta e Conformidade LGPD ✓'); }
+  function openPlanManagerModal(){ toast('Planos: Básico (R$ 49), Pro (R$ 89), Studio (R$ 149)'); }
+  function openGatewaySettingsModal(){ toast('Taxas: Pix API (0.99%) e InfinitePay (2.49%)'); }
+  function openServerHealthModal(){ toast('Status: Servidores operando com 99.98% de Uptime ✓'); }
+  function openSecurityModal(){ toast('Segurança: Criptografia AES-256 e LGPD ativa ✓'); }
 
   function exportAdminSaaSReport(){
-    const csvContent = 'data:text/csv;charset=utf-8,Estudio,Responsavel,Plano,Valor,Cidade,Data,Status\\n'
-      + saasSubscriptions.map(s => `"${s.studio}","${s.owner}","${s.plan}","${s.price}","${s.city}","${s.date}","${s.status}"`).join('\\n');
+    const csvContent = 'data:text/csv;charset=utf-8,Estudio,Responsavel,Plano,Valor,Cidade,Data,Status\n'
+      + saasSubscriptions.map(s => `"${s.studio}","${s.owner}","${s.plan}","${s.price}","${s.city}","${s.date}","${s.status}"`).join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
