@@ -573,6 +573,10 @@
   .booking-progress span{ flex:1; text-align:center; border-bottom:2px solid var(--hairline); color:var(--faint); padding:0 2px 10px; font-size:11px; }
   .booking-progress span.is-active{ color:var(--ink); border-color:var(--ink); }
   #bkprev-body .pub-step{ border-radius:8px; }
+  #bkprev-overlay{ z-index:70; }
+  #bkprev-overlay .modal-card{ max-height:min(90dvh,720px); display:flex; flex-direction:column; }
+  #bkprev-body{ overflow-y:auto; min-height:0; }
+  #bkprev-overlay .modal-actions{ flex-shrink:0; padding-top:12px; }
   @media(min-width:768px){ .app{ max-width:760px; } .bottom-nav{ max-width:700px; } .modal-overlay{ align-items:center; } .modal-card{ max-width:540px; border-radius:12px; } }
   @media(min-width:1280px){ .app{ max-width:960px; } .bottom-nav{ max-width:880px; } .section{ padding-left:28px; padding-right:28px; } .topbar,.page-head{ padding-left:28px; padding-right:28px; } }
   @media(max-width:370px){ .fin-kpi-grid{ gap:5px; } .fin-kpi-card{ padding:9px 6px; } .fin-kpi-value{ font-size:12px; } .profile-meta{ gap:6px; } }
