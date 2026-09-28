@@ -715,6 +715,37 @@
   }
 
   
+  
+  /* Painel Administrativo Master Agendo SaaS */
+  .adm-filter-bar{
+    display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px;
+  }
+  .adm-period-pills{
+    display:inline-flex; gap:3px; background:var(--canvas-soft); border:1px solid var(--hairline-soft);
+    padding:3px; border-radius:9999px;
+  }
+  .adm-period-btn{
+    border:none; background:transparent; color:var(--muted); font-size:11.5px; font-weight:600;
+    padding:5px 12px; border-radius:9999px; cursor:pointer;
+  }
+  .adm-period-btn.is-active{
+    background:var(--cta-fill); color:var(--cta-text);
+  }
+  .adm-chart-card{
+    background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:18px;
+    padding:16px; margin-bottom:18px;
+  }
+  .adm-chart-head{
+    display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;
+  }
+  .adm-sub-badge{
+    font-size:10px; font-weight:800; padding:3px 8px; border-radius:9999px; text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .adm-badge-pro{ background:rgba(255,95,138,0.18); color:#ff5f8a; border:1px solid rgba(255,95,138,0.3); }
+  .adm-badge-studio{ background:rgba(168,85,247,0.18); color:#c084fc; border:1px solid rgba(168,85,247,0.3); }
+  .adm-badge-basic{ background:rgba(255,255,255,0.08); color:var(--muted); border:1px solid rgba(255,255,255,0.12); }
+  .adm-badge-enterprise{ background:rgba(234,179,8,0.18); color:#facc15; border:1px solid rgba(234,179,8,0.3); }
+
   /* Painel Administrativo */
   .admin-kpi-grid{
     display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin-bottom:18px;
@@ -1606,7 +1637,7 @@
   </div>
   <div class="spacer"></div>
   
-  <!-- ================= PAINEL ADMINISTRADOR ================= -->
+  <!-- ================= PAINEL ADMINISTRADOR (PLATAFORMA AGENDO SAAS) ================= -->
   <div id="view-admin" class="hidden">
     <div class="topbar">
       <div style="display:flex; align-items:center; gap:10px;">
@@ -1614,75 +1645,119 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
         <div>
-          <span style="font-size:10px; font-weight:800; color:var(--grad-a); text-transform:uppercase; letter-spacing:0.06em;">Administração</span>
-          <h2 style="margin:0; font-size:19px; font-weight:750;">Painel de Gestão Master</h2>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:9.5px; font-weight:800; color:#ff5f8a; text-transform:uppercase; letter-spacing:0.06em; background:rgba(255,95,138,0.12); padding:2px 6px; border-radius:4px;">SUPER ADMIN</span>
+            <span style="font-size:11px; color:var(--muted);">agendo.app</span>
+          </div>
+          <h2 style="margin:2px 0 0; font-size:19px; font-weight:750;">Painel da Plataforma Agendo</h2>
         </div>
       </div>
-      <span class="agenda-status-badge" style="background:rgba(52,194,129,0.15); color:#34c281;">Sistema Ativo</span>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span class="agenda-status-badge" style="background:rgba(52,194,129,0.15); color:#34c281;">● Produção Ativa</span>
+      </div>
     </div>
 
     <div class="section" style="margin-top:14px;">
-      <!-- KPIs Administrativos Gerais -->
+      <!-- KPIs Globais da Plataforma SaaS -->
       <div class="admin-kpi-grid">
         <div class="admin-kpi-card">
-          <span class="lbl">Faturamento Total</span>
-          <span class="val" id="adm-kpi-revenue">R$ 18.420</span>
-          <span style="font-size:10.5px; color:#34c281; font-weight:600;">↑ +18% este mês</span>
+          <span class="lbl">MRR (Recorrência Mensal)</span>
+          <span class="val" id="adm-saas-mrr">R$ 58.420</span>
+          <span style="font-size:10.5px; color:#34c281; font-weight:600;">↑ +22.4% este mês</span>
         </div>
         <div class="admin-kpi-card">
-          <span class="lbl">Atendimentos</span>
-          <span class="val" id="adm-kpi-appts">142</span>
-          <span style="font-size:10.5px; color:var(--muted);">98% de presença</span>
+          <span class="lbl">Assinantes Ativos</span>
+          <span class="val" id="adm-saas-subs">642 estúdios</span>
+          <span style="font-size:10.5px; color:var(--muted);">Taxa Churn: 1.8%</span>
         </div>
         <div class="admin-kpi-card">
-          <span class="lbl">Vendas de Produtos</span>
-          <span class="val" id="adm-kpi-prods">R$ 4.890</span>
-          <span style="font-size:10.5px; color:#34c281; font-weight:600;">38 pedidos no checkout</span>
+          <span class="lbl">Volume Transacionado (GMV)</span>
+          <span class="val" id="adm-saas-gmv">R$ 412.800</span>
+          <span style="font-size:10.5px; color:#34c281; font-weight:600;">Pix + InfinitePay</span>
         </div>
         <div class="admin-kpi-card">
-          <span class="lbl">Clientes Ativos</span>
-          <span class="val" id="adm-kpi-clients">68</span>
-          <span style="font-size:10.5px; color:var(--muted);">24 recorrentes VIP</span>
+          <span class="lbl">Agendamentos Realizados</span>
+          <span class="val" id="adm-saas-appts">18.940</span>
+          <span style="font-size:10.5px; color:var(--muted);">Na plataforma toda</span>
         </div>
       </div>
 
-      <!-- Atalhos de Gestão e Configurações Master -->
-      <div class="section-head">
-        <h2>Controles Rápidos do Administrador</h2>
+      <!-- Filtro de Período do Gráfico (Dia / Semana / Mês) -->
+      <div class="adm-filter-bar">
+        <div>
+          <span style="font-size:13.5px; font-weight:700; color:var(--ink);">Evolução Financeira SaaS</span>
+          <span style="font-size:11px; color:var(--muted); display:block;">Receita de assinaturas e taxas</span>
+        </div>
+        <div class="adm-period-pills" id="adm-period-selector">
+          <button type="button" class="adm-period-btn" data-period="dia" onclick="setAdminChartPeriod('dia')">Dia</button>
+          <button type="button" class="adm-period-btn" data-period="semana" onclick="setAdminChartPeriod('semana')">Semana</button>
+          <button type="button" class="adm-period-btn is-active" data-period="mes" onclick="setAdminChartPeriod('mes')">Mês</button>
+        </div>
+      </div>
+
+      <!-- Gráfico de Linhas Financeiro Interativo (SVG de alta fidelidade) -->
+      <div class="adm-chart-card">
+        <div class="adm-chart-head">
+          <div>
+            <div style="font-size:11.5px; color:var(--muted);" id="adm-chart-period-label">Período: Últimos 6 Meses</div>
+            <div style="font-size:22px; font-weight:800; color:var(--ink); margin-top:2px;" id="adm-chart-total-label">R$ 318.900</div>
+          </div>
+          <div style="text-align:right;">
+            <span style="display:inline-flex; align-items:center; gap:4px; font-size:11.5px; color:#34c281; font-weight:700;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              +19.8% vs período anterior
+            </span>
+            <div style="font-size:10.5px; color:var(--muted); margin-top:3px;">Ticket médio por conta: R$ 89/mês</div>
+          </div>
+        </div>
+
+        <!-- Canvas / SVG do Gráfico de Linhas com Gradiente -->
+        <div id="adm-chart-svg-container" style="width:100%; height:160px; position:relative;"></div>
+      </div>
+
+      <!-- Últimas Assinaturas da Plataforma Agendo -->
+      <div class="section-head" style="margin-top:14px;">
+        <div>
+          <h2>Últimas Assinaturas & Planos</h2>
+          <span style="font-size:11.5px; color:var(--muted);">Profissionais e estúdios cadastrados recentemente</span>
+        </div>
+        <span style="font-size:11px; color:#34c281; font-weight:600;">Tempo real</span>
+      </div>
+
+      <div id="adm-subs-list" style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; overflow:hidden; margin-bottom:18px;"></div>
+
+      <!-- Controles e Configurações Globais da Plataforma Agendo -->
+      <div class="section-head" style="margin-top:22px;">
+        <h2>Gestão Master da Plataforma</h2>
       </div>
       <div class="qa-list" style="margin-bottom:20px;">
-        <button class="qa-row" onclick="openPaymentConfig()">
+        <button class="qa-row" onclick="openPlanManagerModal()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <span class="txt"><b>Planos & Preços da Plataforma</b><span class="desc">Básico (R$ 49), Pro (R$ 89), Studio (R$ 149)</span></span>
+          <span class="chev">›</span>
+        </button>
+        <button class="qa-row" onclick="openGatewaysConfigModal()">
           <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="15" rx="2.5"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></span>
-          <span class="txt"><b>Gateway de Pagamentos & Checkout</b><span class="desc">Pix API, InfinitePay e pedidos via WhatsApp</span></span>
+          <span class="txt"><b>Taxas de Gateway & Conectores</b><span class="desc">Configuração global de taxas Pix e InfinitePay</span></span>
           <span class="chev">›</span>
         </button>
-        <button class="qa-row" onclick="openBookingConfig()">
-          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span>
-          <span class="txt"><b>Regras do Fluxo de Agendamento</b><span class="desc">Etapas, sinal de pagamento e cupons de desconto</span></span>
+        <button class="qa-row" onclick="openBroadcastModal()">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>
+          <span class="txt"><b>Notificações & Comunicados Gerais</b><span class="desc">Enviar avisos para todos os estúdios da plataforma</span></span>
           <span class="chev">›</span>
         </button>
-        <button class="qa-row" onclick="openHoursConfig()">
+        <button class="qa-row" onclick="openPlatformMetricsModal()">
           <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
-          <span class="txt"><b>Horários de Funcionamento & Bloqueios</b><span class="desc">Dias da semana e intervalos de atendimento</span></span>
-          <span class="chev">›</span>
-        </button>
-        <button class="qa-row" onclick="openTemplateEditor()">
-          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></span>
-          <span class="txt"><b>Ficha de Anamnese Master</b><span class="desc">Personalizar campos clínicos e termos de consentimento</span></span>
+          <span class="txt"><b>Métricas de Servidores & APIs</b><span class="desc">Uptime 99.98%, latência média de 42ms</span></span>
           <span class="chev">›</span>
         </button>
       </div>
 
-      <!-- Tabela / Lista de Transações Recentes -->
-      <div class="section-head" style="margin-top:20px;">
-        <h2>Últimas Transações & Pedidos</h2>
-      </div>
-      <div id="adm-trans-list" style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; overflow:hidden;"></div>
-
-      <div class="modal-actions" style="margin-top:20px;">
-        <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="exportAdminData()">
+      <!-- Exportação Master de Dados da Plataforma -->
+      <div class="modal-actions" style="margin-top:16px;">
+        <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="exportAdminSaaSReport()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          Exportar Relatório Completo (CSV)
+          Exportar Relatório Geral de Assinaturas (CSV)
         </button>
       </div>
     </div>
@@ -2480,6 +2555,67 @@
     <div class="modal-actions" style="margin-top:16px;">
       <button class="btn btn-outline" onclick="closeAddMediaModal()">Cancelar</button>
       <button class="btn btn-dark" onclick="saveNewMedia()">Salvar na galeria pública</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= MODAL : GESTÃO DE PLANOS SAAS ================= -->
+<div id="plan-manager-overlay" class="modal-overlay hidden" style="z-index:92;">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-name">Planos da Plataforma Agendo</div>
+      <button class="modal-close" onclick="closePlanManagerModal()" aria-label="Fechar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <p style="font-size:12px; color:var(--muted); margin:0 0 14px;">Preços de assinatura cobrados dos profissionais que utilizam o Agendo:</p>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+      <div style="background:var(--field); border-radius:12px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <b style="font-size:13px; color:var(--ink);">Plano Básico</b>
+          <div style="font-size:11px; color:var(--muted);">1 profissional · Catálogo e agenda online</div>
+        </div>
+        <span style="font-size:14px; font-weight:800; color:var(--ink);">R$ 49/mês</span>
+      </div>
+      <div style="background:var(--field); border-radius:12px; padding:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,95,138,0.4);">
+        <div>
+          <b style="font-size:13px; color:#ff5f8a;">Plano Pro (Mais popular)</b>
+          <div style="font-size:11px; color:var(--muted);">Até 3 profissionais · Checkout Pix, InfinitePay e Carrinho</div>
+        </div>
+        <span style="font-size:14px; font-weight:800; color:#ff5f8a;">R$ 89/mês</span>
+      </div>
+      <div style="background:var(--field); border-radius:12px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <b style="font-size:13px; color:#c084fc;">Plano Studio</b>
+          <div style="font-size:11px; color:var(--muted);">Profissionais ilimitados · Multi-salas e relatórios master</div>
+        </div>
+        <span style="font-size:14px; font-weight:800; color:#c084fc;">R$ 149/mês</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closePlanManagerModal()">Fechar</button>
+      <button class="btn btn-dark" onclick="toast('Alterações de planos sincronizadas ✓'); closePlanManagerModal();">Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL : COMUNICADO GERAL SAAS ================= -->
+<div id="broadcast-overlay" class="modal-overlay hidden" style="z-index:92;">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-name">Enviar Notificação para Todos os Estúdios</div>
+      <button class="modal-close" onclick="closeBroadcastModal()" aria-label="Fechar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <span class="field-label">Título do Comunicado</span>
+    <input class="field-input" id="broadcast-title" placeholder="Ex: Nova funcionalidade de Checkout Pix Liberada!">
+    <span class="field-label">Mensagem para os Usuários</span>
+    <textarea class="field-textarea" id="broadcast-msg" rows="3" placeholder="Escreva a mensagem que aparecerá nos painéis de todos os profissionais..."></textarea>
+    <div class="modal-actions" style="margin-top:14px;">
+      <button class="btn btn-outline" onclick="closeBroadcastModal()">Cancelar</button>
+      <button class="btn btn-dark" onclick="sendBroadcast()">Enviar para 642 estúdios</button>
     </div>
   </div>
 </div>
@@ -5286,109 +5422,214 @@ async function sharePublicPage(){
   // -------------------------------------------------------------
   // LÓGICA DO PAINEL ADMINISTRADOR MASTER
   // -------------------------------------------------------------
-  function renderAdminDashboard(){
-    const list = document.getElementById('adm-trans-list');
+  let adminChartPeriod = 'mes';
+
+  const saasFinancialData = {
+    dia: {
+      periodLabel: 'Período: Hoje (Hora a Hora)',
+      total: 'R$ 3.840',
+      change: '+14.2% vs ontem',
+      points: [
+        { label: '08h', val: 180 },
+        { label: '10h', val: 540 },
+        { label: '12h', val: 980 },
+        { label: '14h', val: 1450 },
+        { label: '16h', val: 2300 },
+        { label: '18h', val: 3200 },
+        { label: '20h', val: 3840 }
+      ]
+    },
+    semana: {
+      periodLabel: 'Período: Últimos 7 Dias',
+      total: 'R$ 21.650',
+      change: '+18.5% vs semana anterior',
+      points: [
+        { label: 'Seg', val: 2400 },
+        { label: 'Ter', val: 2900 },
+        { label: 'Qua', val: 3200 },
+        { label: 'Qui', val: 3800 },
+        { label: 'Sex', val: 4600 },
+        { label: 'Sáb', val: 3100 },
+        { label: 'Dom', val: 1650 }
+      ]
+    },
+    mes: {
+      periodLabel: 'Período: Últimos 6 Meses',
+      total: 'R$ 318.900',
+      change: '+22.4% vs semestre anterior',
+      points: [
+        { label: 'Abr', val: 38000 },
+        { label: 'Mai', val: 44500 },
+        { label: 'Jun', val: 49000 },
+        { label: 'Jul', val: 53200 },
+        { label: 'Ago', val: 56800 },
+        { label: 'Set', val: 77400 }
+      ]
+    }
+  };
+
+  const saasSubscriptions = [
+    { studio: 'Studio Marina Ravi', owner: 'Marina Ravi', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Hoje, 14:22', city: 'São Paulo — SP', badgeClass: 'adm-badge-pro' },
+    { studio: 'Bella Donna Estética', owner: 'Camila Fontana', plan: 'Studio', price: 'R$ 149/mês', status: 'Ativa', date: 'Hoje, 11:05', city: 'Curitiba — PR', badgeClass: 'adm-badge-studio' },
+    { studio: 'Espaço Glow & Spa', owner: 'Juliana Paes', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Ontem, 19:40', city: 'Rio de Janeiro — RJ', badgeClass: 'adm-badge-pro' },
+    { studio: 'Dermato & Harmonização', owner: 'Dra. Aline Torres', plan: 'Enterprise', price: 'R$ 299/mês', status: 'Ativa', date: 'Ontem, 15:10', city: 'Belo Horizonte — MG', badgeClass: 'adm-badge-enterprise' },
+    { studio: 'Studio Fio a Fio', owner: 'Beatriz Duarte', plan: 'Básico', price: 'R$ 49/mês', status: 'Ativa', date: '25/09/2026', city: 'Campinas — SP', badgeClass: 'adm-badge-basic' }
+  ];
+
+  function setAdminChartPeriod(period){
+    adminChartPeriod = period;
+    document.querySelectorAll('#adm-period-selector .adm-period-btn').forEach(b => {
+      b.classList.toggle('is-active', b.dataset.period === period);
+    });
+    renderAdminChart();
+  }
+
+  function renderAdminChart(){
+    const data = saasFinancialData[adminChartPeriod] || saasFinancialData.mes;
+    const pLabel = document.getElementById('adm-chart-period-label');
+    const tLabel = document.getElementById('adm-chart-total-label');
+    if(pLabel) pLabel.textContent = data.periodLabel;
+    if(tLabel) tLabel.textContent = data.total;
+
+    const container = document.getElementById('adm-chart-svg-container');
+    if(!container) return;
+
+    const pts = data.points;
+    const maxVal = Math.max(...pts.map(p => p.val)) * 1.15;
+    const minVal = Math.min(...pts.map(p => p.val)) * 0.85;
+    const w = 480;
+    const h = 140;
+    const padX = 35;
+    const padY = 20;
+
+    const coords = pts.map((p, i) => {
+      const x = padX + (i / (pts.length - 1)) * (w - padX * 2);
+      const y = h - padY - ((p.val - minVal) / (maxVal - minVal)) * (h - padY * 2);
+      return { x, y, label: p.label, val: p.val };
+    });
+
+    const pathD = coords.reduce((acc, c, i) => {
+      return i === 0 ? `M ${c.x} ${c.y}` : `${acc} L ${c.x} ${c.y}`;
+    }, '');
+
+    const areaD = `${pathD} L ${coords[coords.length-1].x} ${h - padY} L ${coords[0].x} ${h - padY} Z`;
+
+    const svg = `
+      <svg viewBox="0 0 ${w} ${h}" style="width:100%; height:100%; overflow:visible;">
+        <defs>
+          <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ff5f8a" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#ff5f8a" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+        <!-- Linhas guias horizontais -->
+        <line x1="${padX}" y1="${padY}" x2="${w-padX}" y2="${padY}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3"/>
+        <line x1="${padX}" y1="${h/2}" x2="${w-padX}" y2="${h/2}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3"/>
+        <line x1="${padX}" y1="${h-padY}" x2="${w-padX}" y2="${h-padY}" stroke="rgba(255,255,255,0.1)"/>
+        
+        <!-- Área e Linha de Crescimento -->
+        <path d="${areaD}" fill="url(#chartGrad)"/>
+        <path d="${pathD}" fill="none" stroke="#ff5f8a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        
+        <!-- Pontos e Labels dos Eixos -->
+        ${coords.map(c => `
+          <circle cx="${c.x}" cy="${c.y}" r="3.5" fill="#fff" stroke="#ff5f8a" stroke-width="2"/>
+          <text x="${c.x}" y="${h - 4}" font-size="9" fill="var(--muted)" text-anchor="middle">${c.label}</text>
+        `).join('')}
+      </svg>
+    `;
+
+    container.innerHTML = svg;
+  }
+
+  function renderAdminSubscriptions(){
+    const list = document.getElementById('adm-subs-list');
     if(!list) return;
-    const sampleTransactions = [
-      { id: 'TRX-9481', client: 'Beatriz Lima', type: 'Serviço', item: 'Limpeza de pele profunda', val: 'R$ 180', status: 'Aprovado', date: 'Hoje, 14:30' },
-      { id: 'TRX-9480', client: 'Camila Rocha', type: 'Produto', item: 'Sérum Vitamina C 15% (2x)', val: 'R$ 238', status: 'Aprovado', date: 'Hoje, 11:15' },
-      { id: 'TRX-9479', client: 'Fernanda Alves', type: 'Serviço', item: 'Peeling de diamante', val: 'R$ 150', status: 'Concluído', date: 'Ontem, 16:00' },
-      { id: 'TRX-9478', client: 'Juliana Costa', type: 'Produto', item: 'Home Care Hidratante', val: 'R$ 95', status: 'Aprovado', date: 'Ontem, 10:20' }
-    ];
-    list.innerHTML = sampleTransactions.map(t => `
+    list.innerHTML = saasSubscriptions.map(s => `
       <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--hairline-soft);">
         <div>
           <div style="display:flex; align-items:center; gap:6px;">
-            <b style="font-size:13px; color:var(--ink);">${t.client}</b>
-            <span style="font-size:10px; font-weight:700; padding:2px 6px; border-radius:9999px; background:rgba(255,255,255,0.06); color:var(--muted);">${t.type}</span>
+            <b style="font-size:13.5px; color:var(--ink);">${s.studio}</b>
+            <span class="adm-sub-badge ${s.badgeClass}">${s.plan}</span>
           </div>
-          <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">${t.item} · ${t.date}</div>
+          <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">
+            Resp: ${s.owner} · ${s.city}
+          </div>
+          <div style="font-size:10.5px; color:var(--faint); margin-top:1px;">
+            Cadastrado em ${s.date}
+          </div>
         </div>
         <div style="text-align:right;">
-          <div style="font-size:13.5px; font-weight:750; color:var(--ink);">${t.val}</div>
-          <span style="font-size:10.5px; color:#34c281; font-weight:600;">✓ ${t.status}</span>
+          <div style="font-size:13.5px; font-weight:750; color:var(--ink);">${s.price}</div>
+          <span style="font-size:11px; color:#34c281; font-weight:600;">● ${s.status}</span>
         </div>
       </div>
     `).join('');
   }
 
-  function exportAdminData(){
-    const csvContent = 'data:text/csv;charset=utf-8,ID,Cliente,Tipo,Item,Valor,Data,Status\n'
-      + 'TRX-9481,Beatriz Lima,Serviço,Limpeza de pele profunda,180.00,2026-09-27,Aprovado\n'
-      + 'TRX-9480,Camila Rocha,Produto,Serum Vitamina C 15%,238.00,2026-09-27,Aprovado\n'
-      + 'TRX-9479,Fernanda Alves,Serviço,Peeling de diamante,150.00,2026-09-26,Concluído\n';
+  function renderAdminDashboard(){
+    renderAdminChart();
+    renderAdminSubscriptions();
+  }
+
+  // Modais de Funções Master
+  const planManagerOverlay = document.getElementById('plan-manager-overlay');
+  function openPlanManagerModal(){ if(planManagerOverlay) planManagerOverlay.classList.remove('hidden'); }
+  function closePlanManagerModal(){ if(planManagerOverlay) planManagerOverlay.classList.add('hidden'); }
+
+  const broadcastOverlay = document.getElementById('broadcast-overlay');
+  function openBroadcastModal(){ if(broadcastOverlay) broadcastOverlay.classList.remove('hidden'); }
+  function closeBroadcastModal(){ if(broadcastOverlay) broadcastOverlay.classList.add('hidden'); }
+  function sendBroadcast(){
+    const title = document.getElementById('broadcast-title')?.value.trim();
+    if(!title){ toast('Digite o título do comunicado'); return; }
+    closeBroadcastModal();
+    toast('Comunicado disparado com sucesso para 642 estúdios ✓');
+  }
+
+  function openGatewaysConfigModal(){
+    toast('Módulo Master de Conectores: Taxas Pix em 0.99% e Cartão em 2.49%');
+  }
+
+  function openPlatformMetricsModal(){
+    toast('Servidores Globais: Uptime 99.98% · APIs 100% Operacionais');
+  }
+
+  function exportAdminSaaSReport(){
+    const csvContent = 'data:text/csv;charset=utf-8,Estudio,Responsavel,Plano,Valor,Cidade,Data,Status\n'
+      + saasSubscriptions.map(s => `"${s.studio}","${s.owner}","${s.plan}","${s.price}","${s.city}","${s.date}","${s.status}"`).join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'relatorio_agendo_admin.csv');
+    link.setAttribute('download', 'agendo_saas_relatorio_geral.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    toast('Relatório exportado em formato CSV ✓');
+    toast('Relatório Geral da Plataforma exportado (CSV) ✓');
   }
 
-  // Chamar renderAdminDashboard ao mudar para view admin
+  // Interceptar navegação para inicializar o painel SaaS
   const origGoTo = goTo;
   goTo = function(view){
     origGoTo(view);
     if(view === 'admin') renderAdminDashboard();
   };
 
-  // Expor funções essenciais para chamadas inline (onclick) com verificação segura
-  window.goTo = typeof goTo !== 'undefined' ? goTo : null;
-  window.closeAllModals = typeof closeAllModals !== 'undefined' ? closeAllModals : null;
-  window.openProductModal = typeof openProductModal !== 'undefined' ? openProductModal : null;
-  window.closeProductModal = typeof closeProductModal !== 'undefined' ? closeProductModal : null;
-  window.toggleProductEditMode = typeof toggleProductEditMode !== 'undefined' ? toggleProductEditMode : null;
-  window.saveProductModalEdit = typeof saveProductModalEdit !== 'undefined' ? saveProductModalEdit : null;
-  window.changeProductQty = typeof changeProductQty !== 'undefined' ? changeProductQty : null;
-  window.addProductToCheckout = typeof addProductToCheckout !== 'undefined' ? addProductToCheckout : null;
-  window.openBookingPreview = typeof openBookingPreview !== 'undefined' ? openBookingPreview : null;
-  window.closeBookingPreview = typeof closeBookingPreview !== 'undefined' ? closeBookingPreview : null;
-  window.openLightbox = typeof openLightbox !== 'undefined' ? openLightbox : null;
-  window.closeLightbox = typeof closeLightbox !== 'undefined' ? closeLightbox : null;
-  window.openClientsList = typeof openClientsList !== 'undefined' ? openClientsList : null;
-  window.closeClientsList = typeof closeClientsList !== 'undefined' ? closeClientsList : null;
-  window.sharePublicPage = typeof sharePublicPage !== 'undefined' ? sharePublicPage : null;
-  window.openEditModal = typeof openEditModal !== 'undefined' ? openEditModal : null;
-  window.closeEdit = typeof closeEdit !== 'undefined' ? closeEdit : null;
-  window.saveEditItem = typeof saveEditItem !== 'undefined' ? saveEditItem : null;
-  window.openModal = typeof openModal !== 'undefined' ? openModal : null;
-  window.closeClientModal = typeof closeClientModal !== 'undefined' ? closeClientModal : null;
-  window.openBannerForm = typeof openBannerForm !== 'undefined' ? openBannerForm : null;
-  window.closeBannerForm = typeof closeBannerForm !== 'undefined' ? closeBannerForm : null;
-  window.saveBanner = typeof saveBanner !== 'undefined' ? saveBanner : null;
-  window.openQuick = typeof openQuick !== 'undefined' ? openQuick : null;
-  window.closeQuick = typeof closeQuick !== 'undefined' ? closeQuick : null;
-  window.openManualBooking = typeof openManualBooking !== 'undefined' ? openManualBooking : null;
-  window.closeManualBooking = typeof closeManualBooking !== 'undefined' ? closeManualBooking : null;
-  window.openReschedule = typeof openReschedule !== 'undefined' ? openReschedule : null;
-  window.closeReschedule = typeof closeReschedule !== 'undefined' ? closeReschedule : null;
-  window.openHoursConfig = typeof openHoursConfig !== 'undefined' ? openHoursConfig : null;
-  window.closeHoursConfig = typeof closeHoursConfig !== 'undefined' ? closeHoursConfig : null;
-  window.openPaymentConfig = typeof openPaymentConfig !== 'undefined' ? openPaymentConfig : null;
-  window.closePaymentConfig = typeof closePaymentConfig !== 'undefined' ? closePaymentConfig : null;
-  window.openTemplateEditor = typeof openTemplateEditor !== 'undefined' ? openTemplateEditor : null;
-  window.closeTemplateEditor = typeof closeTemplateEditor !== 'undefined' ? closeTemplateEditor : null;
-  window.openBookingConfig = typeof openBookingConfig !== 'undefined' ? openBookingConfig : null;
-  window.closeBookingConfig = typeof closeBookingConfig !== 'undefined' ? closeBookingConfig : null;
-  window.openProfileEdit = typeof openProfileEdit !== 'undefined' ? openProfileEdit : null;
-  window.closeProfileEdit = typeof closeProfileEdit !== 'undefined' ? closeProfileEdit : null;
-
-  window.addToCart = typeof addToCart !== 'undefined' ? addToCart : null;
-  window.openCart = typeof openCart !== 'undefined' ? openCart : null;
-  window.closeCart = typeof closeCart !== 'undefined' ? closeCart : null;
-  window.updateCartQty = typeof updateCartQty !== 'undefined' ? updateCartQty : null;
-  window.removeFromCart = typeof removeFromCart !== 'undefined' ? removeFromCart : null;
-  window.checkoutCart = typeof checkoutCart !== 'undefined' ? checkoutCart : null;
-  window.openAddMediaModal = typeof openAddMediaModal !== 'undefined' ? openAddMediaModal : null;
-  window.closeAddMediaModal = typeof closeAddMediaModal !== 'undefined' ? closeAddMediaModal : null;
-  window.saveNewMedia = typeof saveNewMedia !== 'undefined' ? saveNewMedia : null;
-  window.removeMedia = typeof removeMedia !== 'undefined' ? removeMedia : null;
-  window.toggleBannerActive = typeof toggleBannerActive !== 'undefined' ? toggleBannerActive : null;
-  window.changeBannerPos = typeof changeBannerPos !== 'undefined' ? changeBannerPos : null;
   window.renderAdminDashboard = typeof renderAdminDashboard !== 'undefined' ? renderAdminDashboard : null;
   window.exportAdminData = typeof exportAdminData !== 'undefined' ? exportAdminData : null;
+
+  window.setAdminChartPeriod = typeof setAdminChartPeriod !== 'undefined' ? setAdminChartPeriod : null;
+  window.renderAdminChart = typeof renderAdminChart !== 'undefined' ? renderAdminChart : null;
+  window.renderAdminSubscriptions = typeof renderAdminSubscriptions !== 'undefined' ? renderAdminSubscriptions : null;
+  window.openPlanManagerModal = typeof openPlanManagerModal !== 'undefined' ? openPlanManagerModal : null;
+  window.closePlanManagerModal = typeof closePlanManagerModal !== 'undefined' ? closePlanManagerModal : null;
+  window.openBroadcastModal = typeof openBroadcastModal !== 'undefined' ? openBroadcastModal : null;
+  window.closeBroadcastModal = typeof closeBroadcastModal !== 'undefined' ? closeBroadcastModal : null;
+  window.sendBroadcast = typeof sendBroadcast !== 'undefined' ? sendBroadcast : null;
+  window.openGatewaysConfigModal = typeof openGatewaysConfigModal !== 'undefined' ? openGatewaysConfigModal : null;
+  window.openPlatformMetricsModal = typeof openPlatformMetricsModal !== 'undefined' ? openPlatformMetricsModal : null;
+  window.exportAdminSaaSReport = typeof exportAdminSaaSReport !== 'undefined' ? exportAdminSaaSReport : null;
+
 
 </script>
 </body>
