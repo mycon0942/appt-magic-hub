@@ -1,2 +1,2 @@
-- [ ] Finalizar e verificar ajustes de categorias, financeiro, perfil, vitrine pública, reserva e pagamentos.
+- [x] Atualizar categorias, financeiro, perfil, vitrine pública e reserva; verificar a navegação em computador e celular. O salvamento de pagamentos exige uma conta autenticada para teste completo.
 - [ ] Trazer atualizações do GitHub para este projeto. Bloqueio: identificar o repositório GitHub; os remotos locais apontam somente para o armazenamento do Lovable.
