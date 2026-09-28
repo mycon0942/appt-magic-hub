@@ -9,7 +9,6 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-## Diretrizes de Sincronização em Tempo Real
-- Mantenha sempre o repositório sincronizado com as últimas atualizações de interface e lógica de agendamento.
-- Todas as alterações em `agenda.html` e `public/agenda.html` devem estar rigorosamente sincronizadas.
-- O aplicativo suporta integração nativa de pagamentos e autenticação via Supabase.
+## App decisions
+- Keep the existing public/agenda.html experience embedded at `/` while the account bridge owns payment settings; this preserves the established dashboard and isolates protected writes from demo content.
+- Store provider credentials encrypted through authenticated server functions, never in browser storage; payment settings are per-account and not a live checkout integration.

@@ -1,8 +1,0 @@
-{
-  "name": "agendo — Painel de agendamentos",
-  "description": "Painel agendo: agenda, serviços, fichas de anamnese, mídias de evolução, banners promocionais estilo link da bio e pagamentos.",
-  "requestFramePermissions": [],
-  "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
-}

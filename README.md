@@ -1,30 +1,29 @@
-# agendo — Hub Completo de Agendamento, Estética e Gestão
+# Welcome to your Lovable project
 
-Aplicativo completo de agendamento profissional, fichas de anamnese, gestão de serviços, produtos e promoções, conectado em tempo real com **Lovable**, **Supabase** e **GitHub**.
+This project was built with [Lovable](https://lovable.dev).
 
-## 🚀 Funcionalidades Recentes
+## Build with Lovable
 
-- **Banners Promocionais Estilo "Link da Bio" (90x400px)**:
-  - Upload de fotos diretamente da galeria do dispositivo (sem necessidade de URL externa).
-  - Banners com link clicável e ícone indicador.
-  - Alternância de exibição instantânea: **Modo Lista** ou **Scroll Horizontal** (carrossel snap).
-  - Posicionamento dinâmico no site público: **Topo**, **Entre seções** ou **Rodapé**.
-- **Ficha Completa do Cliente com 3 Abas**:
-  - **Anamnese**: Histórico clínico, alergias, procedimentos anteriores, cuidados diários e queixas.
-  - **Dados da Agenda**: Telefone/WhatsApp com atalhos de discagem direta, nascimento, data de adesão e histórico de agendamentos (campos desnecessários de tipo sanguíneo e medidas físicas foram removidos).
-  - **Galeria de Mídias**: Registro fotográfico de antes/depois e evolução do tratamento com suporte a lightbox em tela cheia e upload da galeria.
-- **Navegação Inteligente**:
-  - Fechamento automático de qualquer modal ativo ao trocar de aba na barra de navegação inferior.
-- **Integração Supabase & Lovable**:
-  - Configuração de métodos de pagamento, autenticação e sincronização contínua.
+Open your project in the [Lovable editor](https://lovable.dev) and keep building.
 
-## 🛠️ Tecnologias
-- **Frontend**: React 19, TypeScript, Tailwind CSS, Vite
-- **Backend / Persistência**: Supabase, PostgreSQL
-- **Integração**: Lovable Sync & GitHub Actions
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
+- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
 
-## 📦 Desenvolvimento Local
+## Development
+
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+
 ```sh
-npm install
+git clone <this-repository-url>
+cd <repository-name>
+npm i
 npm run dev
 ```
+
+## Built with
+
+- TanStack Start
+- TypeScript
+- React
+- Tailwind CSS
