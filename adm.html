@@ -166,7 +166,7 @@
     width:calc(100% - 24px); max-width:440px; margin:0; background:rgba(22,22,22,.95);
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
     border:1px solid var(--hairline-soft); border-radius:9999px; display:flex; align-items:center;
-    justify-content:space-between; padding:6px 5px; z-index:60;
+    justify-content:space-between; padding:6px 5px; z-index:70;
   }
   @media (min-width:768px){ .bottom-nav{ max-width:470px; } }
   @media (min-width:1280px){ .bottom-nav{ max-width:510px; } }
@@ -179,7 +179,7 @@
   .nav-item svg{ width:16px; height:16px; }
 
   /* Modais */
-  .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.75); backdrop-filter:blur(6px); z-index:90; display:flex; align-items:flex-end; justify-content:center; }
+  .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:9999; display:flex; align-items:flex-end; justify-content:center; }
   .modal-card{ width:100%; max-width:430px; background:#161616; border-top:1px solid var(--hairline); border-radius:24px 24px 0 0; padding:22px 18px 28px; max-height:85vh; overflow-y:auto; }
   @media(min-width:768px){ .modal-overlay{ align-items:center; } .modal-card{ max-width:480px; border-radius:20px; } }
   .modal-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
@@ -523,7 +523,7 @@
 
 
   <!-- ================= MODAL : DETALHES DO ESTÚDIO / USUÁRIO SAAS ================= -->
-  <div id="modal-studio-detail" class="modal-overlay hidden" style="z-index:95;">
+  <div id="modal-studio-detail" class="modal-overlay hidden" style="z-index:9999;">
     <div class="modal-card" style="max-height:90vh; overflow-y:auto;">
       <div class="modal-head">
         <div>
@@ -565,6 +565,27 @@
         </div>
       </div>
 
+      
+      <!-- Status de Afiliado e Liberação pelo Administrador -->
+      <div style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; padding:14px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span style="font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:700;">Status do Programa de Afiliados</span>
+            <div style="font-size:13.5px; font-weight:700; color:var(--ink); margin-top:2px;" id="user-detail-affiliate-status">
+              ⏳ Aguardando Aprovação na Fila
+            </div>
+          </div>
+          <div id="user-detail-affiliate-btn-container">
+            <button type="button" class="btn btn-light" style="font-size:11.5px; height:32px; padding:0 12px;" onclick="approveStudioAffiliate()">
+              Aprovar Afiliação
+            </button>
+          </div>
+        </div>
+        <p style="font-size:11px; color:var(--muted); margin:8px 0 0; line-height:1.4;" id="user-detail-affiliate-desc">
+          Ao aprovar, o estúdio terá acesso imediato ao link próprio e passará a receber 30% recorrente via Cakto Split.
+        </p>
+      </div>
+  
       <!-- Estimativa de Uso do Usuário -->
       <div style="background:var(--canvas-soft); border:1px solid var(--hairline-soft); border-radius:14px; padding:12px; margin-bottom:12px;">
         <span style="font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:700; letter-spacing:0.04em;">Estimativa de Uso da Plataforma</span>
@@ -619,7 +640,7 @@
 
 
   <!-- ================= MODAL : GESTÃO E CRIAÇÃO DE PLANOS & MENSALIDADES SAAS ================= -->
-  <div id="modal-plans-manager" class="modal-overlay hidden" style="z-index:96;">
+  <div id="modal-plans-manager" class="modal-overlay hidden" style="z-index:9999;">
     <div class="modal-card" style="max-height:88vh; overflow-y:auto;">
       <div class="modal-head">
         <div>
@@ -835,7 +856,7 @@
   };
 
   const saasSubscriptions = [
-    { studio: 'Studio Marina Ravi', owner: 'Marina Ravi', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Hoje, 14:22', city: 'São Paulo — SP', badge: 'b-pro', affiliate: 'Camila Rocha (30%)' },
+    { studio: 'Studio Marina Ravi', owner: 'Marina Ravi', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Hoje, 14:22', city: 'São Paulo — SP', badge: 'b-pro', affiliate: 'Camila Rocha (30%)', affiliateAccess: 'pending' },
     { studio: 'Bella Donna Estética', owner: 'Camila Fontana', plan: 'Studio', price: 'R$ 149/mês', status: 'Ativa', date: 'Hoje, 11:05', city: 'Curitiba — PR', badge: 'b-studio', affiliate: 'Direto' },
     { studio: 'Espaço Glow & Spa', owner: 'Juliana Paes', plan: 'Pro', price: 'R$ 89/mês', status: 'Ativa', date: 'Ontem, 19:40', city: 'Rio de Janeiro — RJ', badge: 'b-pro', affiliate: 'Fernanda Alves (30%)' },
     { studio: 'Dermato & Harmonização', owner: 'Dra. Aline Torres', plan: 'Enterprise', price: 'R$ 299/mês', status: 'Ativa', date: 'Ontem, 15:10', city: 'Belo Horizonte — MG', badge: 'b-enterprise', affiliate: 'Direto' },
@@ -1341,6 +1362,20 @@
     document.getElementById('user-detail-plan-badge').textContent = s.price;
     document.getElementById('user-change-plan-select').value = s.plan;
 
+    const affiliateAccess = s.affiliateAccess || 'pending';
+    const statusEl = document.getElementById('user-detail-affiliate-status');
+    const btnCont = document.getElementById('user-detail-affiliate-btn-container');
+    if(statusEl && btnCont){
+      if(affiliateAccess === 'approved'){
+        statusEl.innerHTML = '<span style="color:var(--success);">● Afiliação Aprovada (30% Ativo)</span>';
+        btnCont.innerHTML = '<button type="button" class="btn btn-outline" style="font-size:11px; height:32px; padding:0 10px;" onclick="revokeStudioAffiliate()">Revogar</button>';
+      } else {
+        statusEl.innerHTML = '<span style="color:#ffb020;">⏳ Na Fila de Espera (Solicitada)</span>';
+        btnCont.innerHTML = '<button type="button" class="btn btn-light" style="font-size:11.5px; height:32px; padding:0 12px;" onclick="approveStudioAffiliate()">Aprovar Afiliação</button>';
+      }
+    }
+  
+
     // Métricas dinâmicas estimadas de uso
     const usageEstimates = [
       { appts: '142', rev: 'R$ 14.800', ret: '98%' },
@@ -1410,6 +1445,40 @@
     toast('Anúncio direcionado com sucesso para ' + (s ? s.studio : 'o estúdio') + ' ✓');
   }
 
+  
+  function approveStudioAffiliate(){
+    const s = saasSubscriptions[selectedStudioIdx];
+    if(!s) return;
+    s.affiliateAccess = 'approved';
+    localStorage.setItem('userAffiliateStatus', 'approved');
+
+    const statusEl = document.getElementById('user-detail-affiliate-status');
+    const btnCont = document.getElementById('user-detail-affiliate-btn-container');
+    if(statusEl) statusEl.innerHTML = '<span style="color:var(--success);">● Afiliação Aprovada (30% Ativo)</span>';
+    if(btnCont) btnCont.innerHTML = '<button type="button" class="btn btn-outline" style="font-size:11px; height:32px; padding:0 10px;" onclick="revokeStudioAffiliate()">Revogar</button>';
+
+    renderHome();
+    toast('Afiliação aprovada com sucesso para ' + s.studio + ' ✓');
+  }
+
+  function revokeStudioAffiliate(){
+    const s = saasSubscriptions[selectedStudioIdx];
+    if(!s) return;
+    s.affiliateAccess = 'pending';
+    localStorage.setItem('userAffiliateStatus', 'pending');
+
+    const statusEl = document.getElementById('user-detail-affiliate-status');
+    const btnCont = document.getElementById('user-detail-affiliate-btn-container');
+    if(statusEl) statusEl.innerHTML = '<span style="color:#ffb020;">⏳ Na fila de espera</span>';
+    if(btnCont) btnCont.innerHTML = '<button type="button" class="btn btn-light" style="font-size:11.5px; height:32px; padding:0 12px;" onclick="approveStudioAffiliate()">Aprovar Afiliação</button>';
+
+    renderHome();
+    toast('Afiliação revogada para ' + s.studio);
+  }
+
+  window.approveStudioAffiliate = approveStudioAffiliate;
+  window.revokeStudioAffiliate = revokeStudioAffiliate;
+  
   window.openStudioDetailModal = openStudioDetailModal;
   window.applyUserPlanChange = applyUserPlanChange;
   window.applyUserDiscountCoupon = applyUserDiscountCoupon;
